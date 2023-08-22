@@ -12,7 +12,8 @@
      * [Start/Status/Stop/Enable von MariaDB](start-status-stop.md)
      * [Does mariadb listen to the outside world](/installation/listening-where.md)
 
-  1. Database Objects 
+  1. Database Objects
+     * [Data Types](https://mariadb.com/kb/en/data-types/)
      * [Create Database](/basics/create-database.md)
      * [Show structure of table](show-create-table-describe.md)
      * [Show all tables within db](show-tables.md) 
@@ -153,7 +154,6 @@
      * [Functions](function.md)
      * [Stored Procedure](stored-procedure.md)
      * [Events](events.md)
-     * [Data Types](https://mariadb.com/kb/en/data-types/)
 
   1. Upgrade 
      * [MariaDB Upgrade 10.3 (Centos) -> 10.4 (Mariadb.org)](mariadb-upgrade-10-3-centos-to-10-4-maria-org.md)
