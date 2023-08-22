@@ -12,6 +12,10 @@
      * [Start/Status/Stop/Enable von MariaDB](start-status-stop.md)
      * [Does mariadb listen to the outside world](/installation/listening-where.md)
 
+  1. Configuration
+     * [Adjust configuration and restart](config-and-restart.md) 
+     * [Set global server system variable](set-global-variable.md)
+
   1. Database Objects
      * [Data Types](https://mariadb.com/kb/en/data-types/)
      * [Create Database](/basics/create-database.md)
@@ -111,10 +115,6 @@
      * [Installation (Ubuntu)](installation-ubuntu.md)
      * [Does mariadb listen to the outside world](/installation/listening-where.md)
      
-  1. Configuration
-     * [Adjust configuration and restart](config-and-restart.md) 
-     * [Set global server system variable](set-global-variable.md)
-
   1. Backup 
      * [Use xtrabackup for MariaDB 5.5](backup-restore/xtrabackup-for-mariadb-5-5.md)
      * [Ready-made-back-scripts](backup-restore/scripts.md) 
