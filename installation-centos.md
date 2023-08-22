@@ -48,6 +48,10 @@ sudo systemctl status mariadb
 
 ## Secure installation 
 
+  * Removes anonymous users (users without username)
+  * Remove test-db
+  * Eventually removes root-user connection from outside 
+
 ```
 mariadb-secure-installation 
 # OR: if not present before 10.4 
