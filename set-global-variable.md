@@ -12,6 +12,10 @@ select * from global_variables where variable_name like '%AUTOMATIC_SP%';
 # If you know the exact name 
 select @@global.automatic_sp_privileges;
 select @@GLOBAL.automatic_sp_privileges;
+
+# Find out session variable, if you know exact name
+select @@automatic_sp_privileges;
+
 ```
 
 ## Set global Variable 
