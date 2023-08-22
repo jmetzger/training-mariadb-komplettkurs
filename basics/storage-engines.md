@@ -45,3 +45,36 @@ How your data is stored
   * Archive
   * Partition
   * (Federated/FederatedX)
+
+## Comparison MyISAM vs. InnoDB  
+
+### On Detail: MyISAM - Storage Engine
+
+#### Features 
+
+  * table locks 
+  * Locks are done table-wide
+  * no automatic data-recovery
+  * you can loose more data on crashes than with e.g. InnoDB
+  * no transactions
+  * only indices are save in memory through MySQL
+  * compact saving (data is saved really dense)
+  * table scans are quick
+
+### In Detail: InnoDB - Storage Engine
+
+#### Features
+
+  * support hot backups (because of transactions)
+  * transactions are supported
+  * foreign keys are supported
+  * row-level locking
+  * multi-versioning
+  * indexes refer to the data through primary keys
+  * indexes can quickly get huge in size
+    * if size of primary index is not small
+
+### Difference MyISAM / Aria 
+
+  * Crash Recovery (only difference)
+
