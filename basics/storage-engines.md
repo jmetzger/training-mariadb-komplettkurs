@@ -18,7 +18,7 @@ How your data is stored
 
 ## What do they do ?
 
-  * In charge for: Responsible for storing and retrieving all data stored in MySQL
+  * In charge for: Responsible for storing and retrieving all data stored in MariaDB
   * Each storage engine has its:
     * Drawbacks and benefits
   * Server communicates with them through the storage engine API 
