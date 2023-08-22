@@ -15,8 +15,7 @@ dnf install -y mariadb-server
 
 ### Find Repo Settings 
 
-  * https://mariadb.org/download/?t=mariadb&p=mariadb&r=10.9.3&os=windows&cpu=x86_64&pkg=msi&m=hs-esslingen
-
+  * https://mariadb.org/download/?t=repo-config&d=Red+Hat+Enterprise+Linux+9&v=10.11&r_m=agdsn
 
 ### Setup Repo MariaDB - Server 10.6
 
