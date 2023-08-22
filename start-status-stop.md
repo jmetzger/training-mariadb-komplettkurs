@@ -12,11 +12,19 @@ systemctl start mariadb
 systemctl restart mariadb
 ```
 
-## enable 
+## enable / disable 
+
+  * autostart aktivieren (beim Booten des Systems automatisch starten) 
 
 ```
 # enable to be started after reboot 
-systemctl enable mariadb 
+systemctl enable mariadb
+
+# autostart deaktivieren
+systemctl disable mariadb
+
+# autostart config abfragen
+systemctl is-enabled mariadb  
 ```
 
 ## how is service configured / systemd-wise 
