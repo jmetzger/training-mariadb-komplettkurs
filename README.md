@@ -57,6 +57,7 @@
   1. Performance  
      * [Slow Query Log](slow-query-log.md)
      * [Percona-toolkit-Installation - Centos](/tools/percona-toolkit-centos.md)
+     * [Umgang mit grossen Datenbeständen](strategie/umgang-mit-grossen-datenbestaenden.md)
 
   1. Monitoring 
      * [What to monitor?](/monitoring/monitoring.md) 
