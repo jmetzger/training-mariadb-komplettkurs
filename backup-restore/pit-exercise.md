@@ -30,11 +30,13 @@ mysql>use sakila; select * from actor;
 # Simple take the last binlog 
 
 cd /var/lib/mysql
-# Find the position where the problem occured 
+# Find the position where the problem occured
+# Look into
+# mysqlbinlog -vv mysqld-bin.000005
 # and create a recover.sql - file (before apply full backup)
 mysqlbinlog -vv --stop-position=857 mysqld-bin.000005 > /usr/src/recover.sql
 # in case of multiple binlog like so:
-# mysqlbinlog -vv --stop-position=857 mysqld-bin.000005 mysqld-bin.000096 > /usr/src/recover.sql
+# mysqlbinlog -vv --stop-position=857 mysqld-bin.000005 mysqld-bin.000006 > /usr/src/recover.sql
 
 # Step 1: Apply full backup 
 cd /usr/src/
