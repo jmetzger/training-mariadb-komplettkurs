@@ -6,6 +6,25 @@
 create user training@localhost identified by 'deinpasswort';
 ```
 
+## Exercise create user 
+
+```
+# Als root: 1. Nutzer training anlegen, der sich von lokal anmelden kann 
+
+
+# 2. ausloggen als root aus mysql -> exit
+
+
+# 3. anmelden mit nutzer training über mysql-client
+# Passwort eingeben 
+mysql -utraining -p
+
+# 4. Anschauen, welchen Rechte wir als dieser Nutzer haben
+show grants; 
+
+```
+
+
 ## Drop user (=delete user) 
 
 ```
