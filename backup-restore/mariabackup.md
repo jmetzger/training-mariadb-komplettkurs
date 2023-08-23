@@ -92,7 +92,10 @@ systemctl start mariadb
 ## mariadb 10.6 from mariadb does not have problems here !
 ## does not start
 restorecon -vr /var/lib/mysql 
-systemctl start mariadb 
+systemctl start mariadb
+
+## Cleanup if everything works 
+rm -fR /var/lib/mysql/mysql.bkup 
 ```
 
 ## Ref. 
