@@ -1,4 +1,4 @@
-# Kill long running process 
+# Kill long running process or users 
 
 ```
 # Session 1
