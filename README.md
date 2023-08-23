@@ -37,7 +37,7 @@
   1. Security
      * [Table encryption](table-encryption.md)
       
-  1. User Rights 
+  1. User Rights / Users 
      * [Create User/Grant/Revoke - Management of users](grant-revoke.md)
      * [Change password of user](passwd-change-user.md)
      * [Automatisches Einloggen ohne Passwort](login-user-my-cnf.md)
@@ -48,6 +48,7 @@
      * [Auth with unix_socket](create-user-unix-socket.md)
      * [User- and Permission-concepts (best-practice)](/security/user-db-best-practice.md)
      * [Setup external access](external-access.md)
+     * [Users zwingen sich neu anzumelden](kill-process.md)
      
   1. Binlog, Backup and Restore (Point-In-Time aka PIT) 
      * [binlog aktivieren und auslesen](binlog.md)
