@@ -140,6 +140,46 @@ revoke select on *.* from training@localhost
 # only from a specific db 
 revoke select on training.* from training@localhost 
 ```
+## Exercise: Permission for a specific database 
+
+  * You need have sakila-db dumps on your local system
+  * See also documentation how to get them (in this document)
+
+```
+# on remote-server with root-user
+# 61.91.24.101 is the host you come from 
+create user extsakila@62.91.24.101 identified by 'deingeheimespw';
+# permissions on which databases (db does not to exist
+grant all on sakila.* to extsakila@62.91.24.101;
+create schema sakila;
+```
+
+```
+# on local system test connection
+mysql -uextsakila -p -h<ip des remoteserver>
+show grants;
+show databases;
+exit
+
+```
+
+```
+# on local system import to remote 
+cd /usr/src/sakila-db 
+mysql -uextsakila -p -h<ip des remoteservers> < sakila-schema.sql
+mysql -uextsakila -p -h<ip des remoteservers> < sakila-schema.sql
+```
+
+```
+# on local system 
+# test if data is present on remote 
+ mysql -uextsakila -p -h<ip des remoteservers> -e 'select * from actors' sakila 
+# oder ganz easy
+ mysql -uextsakila -p -h<ip des remoteservers>
+use sakila;
+select * from actor
+exit
+```
 
 ## Refs:
 
