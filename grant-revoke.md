@@ -159,7 +159,7 @@ create schema sakila;
 mysql -uextsakila -p -h<ip des remoteserver>
 show grants;
 show databases;
-exit
+exit;
 
 ```
 
@@ -167,7 +167,7 @@ exit
 # on local system import to remote 
 cd /usr/src/sakila-db 
 mysql -uextsakila -p -h<ip des remoteservers> < sakila-schema.sql
-mysql -uextsakila -p -h<ip des remoteservers> < sakila-schema.sql
+mysql -uextsakila -p -h<ip des remoteservers> < sakila-data.sql
 ```
 
 ```
@@ -175,10 +175,10 @@ mysql -uextsakila -p -h<ip des remoteservers> < sakila-schema.sql
 # test if data is present on remote 
  mysql -uextsakila -p -h<ip des remoteservers> -e 'select * from actors' sakila 
 # oder ganz easy
- mysql -uextsakila -p -h<ip des remoteservers>
+mysql -uextsakila -p -h<ip des remoteservers>
 use sakila;
-select * from actor
-exit
+select * from actor;
+exit;
 ```
 
 ## Refs:
