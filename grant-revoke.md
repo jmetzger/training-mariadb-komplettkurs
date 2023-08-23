@@ -84,7 +84,39 @@ show grants;
 exit;
 ``` 
 
+### Schritt 5 (auf dem RemoteServer): Nutzer alle Rechte aus grant privilegien geben
 
+```
+GRANT ALL ON *.* TO ext@'62.91.24.101';
+```
+
+### Schritt 6 (auf dem lokalen System): neu verbinden, damit rechte greifen 
+
+```
+mysql -uext -p -h <ip-des-remote-servers-aus-schritt1> `
+show grants; 
+show schemas;
+create schema training2;
+drop schema training2;
+exit;
+```
+
+### Schritt 7 (auf dem RemoteServer): Nutzer - Select - Rechte entziehen 
+
+```
+revoke select on *.* from ext@'62.81.24.101';
+```
+
+### Schritt 6 (auf dem lokalen System): neu verbinden, damit rechte greifen 
+
+```
+mysql -uext -p -h <ip-des-remote-servers-aus-schritt1> `
+show grants; 
+use mysql;
+-- should not work 
+select user,password from user; 
+exit;
+```
 
 ## Change User (e.g. change authentication) 
 
