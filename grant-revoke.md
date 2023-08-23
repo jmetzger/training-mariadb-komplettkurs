@@ -107,7 +107,7 @@ exit;
 revoke select on *.* from ext@'62.81.24.101';
 ```
 
-### Schritt 6 (auf dem lokalen System): neu verbinden, damit rechte greifen 
+### Schritt 8 (auf dem lokalen System): neu verbinden, damit rechte greifen 
 
 ```
 mysql -uext -p -h <ip-des-remote-servers-aus-schritt1> `
