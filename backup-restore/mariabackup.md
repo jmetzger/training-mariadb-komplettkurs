@@ -2,7 +2,7 @@
 
 ## Installation 
 
-### dnf 
+### dnf (using mariadb from mariadb.org - repo)
 ```
 dnf install MariaDB-backup 
 ```
