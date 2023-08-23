@@ -31,6 +31,61 @@ show grants;
 drop user training@localhost 
 ```
 
+## Exercise create external user with privileges 
+
+### Schritt 1 (auf Remote-Server):
+
+```
+# Auf dem Remote-System, auf dem der Server läuft (m[1-6].t3isp.de)
+# Als root: 1. Nutzer ext anlegen der von überall aus zugreifen darf '%'
+
+```
+
+### Schritt 2 (auf lokalen Server): 
+
+```
+# von entfernten System aus, auf dem ein mysql-client existiert (bei uns server1)
+# Verbindung aufbauen
+mysql -uext -p -h <ip-des-remote-servers-aus-schritt1> 
+```
+
+```
+-- hier erfahren unsere ip - addresse 
+status;
+show databases;
+show grants;
+exit;
+```
+
+### Schritt 3 (auf Remote-Server) 
+
+```
+-- löschen des Benutzers
+drop user ext@'%';
+
+-- neuen Benutzer anlegen mit der IP des lokalen Netzes (aus Schritt 2: status)
+# z.B.
+create user ext@'<ip-aus-status>' identified by 'meinsupergeheimespasswort'
+```
+
+### Schritt 4 (auf lokalen System) 
+
+```
+# von entfernten System aus, auf dem ein mysql-client existiert (bei uns server1)
+# Verbindung aufbauen
+mysql -uext -p -h <ip-des-remote-servers-aus-schritt1> 
+```
+
+```
+-- hier erfahren unsere ip - addresse 
+status;
+show databases;
+show grants;
+exit;
+``` 
+
+
+
 ## Change User (e.g. change authentication) 
 
 ```
