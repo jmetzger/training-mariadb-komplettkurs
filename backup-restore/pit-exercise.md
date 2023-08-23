@@ -3,8 +3,8 @@
 ## Problem coming up  
 
 ```
-# Step 1 : Create full backup (assuming 24:00 o'clock) 
-mysqldump --all-databases --single-transaction --gtid --master-data=2 --routines --events --flush-logs --delete-master-logs > /usr/src/all-databases.sql;
+# Step 1 : Create full backup (assuming 24:00 o'clock)
+mysqldump --all-databases --single-transaction --master-data=2 --routines --events --flush-logs --delete-master-logs > /usr/src/all-databases.sql;
 
 # Step 2: Working on data 
 mysql>use sakila; 
