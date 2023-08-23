@@ -88,7 +88,8 @@ chmod -R 755 /var/lib/mysql # otherwice socket for unprivileged user does not wo
 # ls -laZ /var/lib
 systemctl start mariadb 
 
-## important for selinux if it does not work 
+## important for selinux if it does not work
+## mariadb 10.6 from mariadb does not have problems here !
 ## does not start
 restorecon -vr /var/lib/mysql 
 systemctl start mariadb 
