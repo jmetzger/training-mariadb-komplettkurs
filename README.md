@@ -69,6 +69,7 @@
   1. Performance  
      * [Slow Query Log](slow-query-log.md)
      * [Percona-toolkit-Installation - Centos](/tools/percona-toolkit-centos.md)
+     * [pt-query-digest exercise (Hitliste von slow-query-log erstellen](/tools/exercise-pt-query-digest.md)
      * [Umgang mit grossen Datenbeständen](strategie/umgang-mit-grossen-datenbestaenden.md)
 
   1. Monitoring 
