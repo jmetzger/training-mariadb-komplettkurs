@@ -16,6 +16,10 @@
      * [Adjust configuration and restart](config-and-restart.md) 
      * [Set global server system variable](set-global-variable.md)
 
+  1. Administration / Troubleshooting
+     * [Create fresh datadir (Centos/Redhat)](create-fresh-datadir-centos.md)
+     * [Debug not starting service](troubleshooting/debug-service.md) 
+   
   1. Graphical Tools
      * [Overview](tools/grafische-tools.md)
 
@@ -145,10 +149,6 @@
      * [Ready-made-back-scripts](backup-restore/scripts.md) 
      * [Simple-Backup-Script](backup-restore/simple-backup.md)
 
-  1. Administration / Troubleshooting
-     * [Create fresh datadir (Centos/Redhat)](create-fresh-datadir-centos.md)
-     * [Debug not starting service](troubleshooting/debug-service.md) 
-   
   1. Galera 
      * [Installation and Configuration (Centos/Redhat 8)](setup-galera.md)
      * [1. Node started nicht nach Crash, z.B. Stromausfall](galera-recover-node1.md)  
