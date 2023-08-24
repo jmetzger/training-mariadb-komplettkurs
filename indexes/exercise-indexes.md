@@ -32,6 +32,10 @@ explain select * from actor where last_name like '%N';
 create index idx_actorneu_first_name_last_name on actorneu (first_name,last_name);
 show index from actorneu;
 
+# Cannot use index because it is being read from left to right and index does not start with last_name
+explain select * from actorneu where last_name like 'A%';
 
-
+# here it works 
+explain select * from actorneu where last_name like 'A%' and first_name like 'C%';
 ```
+
