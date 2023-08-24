@@ -26,7 +26,8 @@
      * [Show all tables within db](show-tables.md) 
 
   1. InnoDB - Storage Engine 
-     * [InnoDB - Storage Engine - Structure](/innodb/innodb-structure.md) 
+     * [InnoDB - Storage Engine - Structure](/innodb/innodb-structure.md)
+     * [InnoDB Buffer Pool Size bestimmen und setzen inkl. free buffers](/innodb/exercise-innodb-buffer-pool-size.md)
      * [Important InnoDB - configuration - options to optimized performance](/innodb/innodb.md) 
      * [Calculate innodb logfile size](calculate-innodb-logfile-size.md)
 
