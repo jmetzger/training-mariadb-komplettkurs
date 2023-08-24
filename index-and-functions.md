@@ -3,7 +3,7 @@
 ## No function can be used on an index:
 
 ```
-explain select * from actor where upper(last_name) like 'A%';
+explain select * from actor where substring(last_name,1,1) = 'A';
 +----+-------------+-------+------------+------+---------------+------+---------+------+------+----------+-------------+
 | id | select_type | table | partitions | type | possible_keys | key  | key_len | ref  | rows | filtered | Extra       |
 +----+-------------+-------+------------+------+---------------+------+---------+------+------+----------+-------------+
