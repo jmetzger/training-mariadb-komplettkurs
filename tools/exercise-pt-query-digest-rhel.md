@@ -1,4 +1,4 @@
-# Exercise Hitliste von slow_query_log erstellen 
+# Exercise Hitliste von slow_query_log erstellen  (Rocky, Centos, Redhat) 
 
 ```
 dnf install -y https://repo.percona.com/yum/percona-release-latest.noarch.rpm && dnf install -y percona-toolkit
