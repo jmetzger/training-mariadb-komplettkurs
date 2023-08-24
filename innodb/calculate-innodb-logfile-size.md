@@ -46,7 +46,7 @@ show engine innodb status;
 ### Step 2: In Session 2 (import sakila) 
 
 ```
-cd /usr/src
+cd /usr/src/sakila-db
 mysql < sakila-schema.sql; mysql < sakila-data.sql;
 ```
 
