@@ -25,7 +25,7 @@ systemctl stop mariadb
 # Step 3
 dnf remove -y MariaDB-* 
 # verify nothing is present 
-dnf list installed 
+dnf list installed | grep -i mariadb 
 
 # Step 4
 dnf install -y MariaDB-server MariaDB-backup  
@@ -33,9 +33,10 @@ dnf list --installed | grep -i mariadb # ist wirklich 10.11 installiert.
 
 # Step 4.5 
 # Check if old config files were saved as .rpmsave after delete of package 10.4 
-cd /etc/my.cnf.d/server.cnf 
+cd /etc/my.cnf.d/
 ls -la server.cnf
-# e.g. 
+# Eventually consolidate everything in one file loaded as last entry, e.g.
+# z_settings.cnf 
 
 # Step 5:
 systemctl start mariadb 
