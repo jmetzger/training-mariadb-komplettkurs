@@ -39,6 +39,7 @@ mysql
 
 ```
 -- Step 3: set long_query_time (global and in session)
+select @@slow_query_log;
 
 -- set and show global 
 set global long_query_time = 0.000001
