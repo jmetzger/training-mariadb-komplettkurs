@@ -61,6 +61,9 @@
      * [Flashback](/backup-restore/flashback.md) 
      * [mariabackup](backup-restore/mariabackup.md)
      * [incrementelles backup mit mariadb](https://mariadb.com/kb/en/incremental-backup-and-restore-with-mariabackup/)
+
+  1. Logging
+     * [General Log](general_log.md)
    
   1. Performance  
      * [Slow Query Log](slow-query-log.md)
