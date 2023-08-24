@@ -1,5 +1,7 @@
 # Exercise Indexes 
 
+## Exercise I 
+
 ```
 mysql
 ```
@@ -21,5 +23,15 @@ describe actor;
 explain select last_name from actor where actor_id > 2;
 explain select * from actor where last_name like 'A%';
 explain select * from actor where last_name like '%N';
+
+```
+
+## Exercise II 
+
+```
+create index idx_actorneu_first_name_last_name on actorneu (first_name,last_name);
+show index from actorneu;
+
+
 
 ```
