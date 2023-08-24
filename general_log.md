@@ -28,3 +28,16 @@ exit
 cd /var/lib/mysql
 cat server1.log
 ```
+
+## Disabled / Enable general_log during runtime 
+
+```
+# if general_log is activated disable like so
+mysql
+set global general_log = 0
+
+# activate if not activated
+set global general_log = 1
+
+# this is not persistent will be reset to default or setting my.cnf.d/server.cnf - config
+```
