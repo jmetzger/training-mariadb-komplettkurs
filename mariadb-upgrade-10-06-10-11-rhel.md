@@ -23,7 +23,7 @@ nano MariaDB.repo
 systemctl stop mariadb 
 
 # Step 3
-dnf remove MariaDB-* 
+dnf remove -y MariaDB-* 
 # verify nothing is present 
 dnf list installed 
 
