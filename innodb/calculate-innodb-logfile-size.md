@@ -47,10 +47,10 @@ show engine innodb status;
 
 ```
 cd /usr/src
-mysql < sakila-schema.sql; mysql < sakila-data.sql 
+mysql < sakila-schema.sql; mysql < sakila-data.sql;
 ```
 
-### Step 3: Calculate values 
+### Step 3: In Session 1 (measure) - Calculate values 
 
 ```
 -- Calculate values 
@@ -58,5 +58,6 @@ mysql < sakila-schema.sql; mysql < sakila-data.sql
 -- select (second_value - first_value) / 1024 / 1024 as MB_per_2min
 
 
+pager;
 select (3838334638 - 3836410803) / 1024 / 1024 as MB_per_2min;
 ```
