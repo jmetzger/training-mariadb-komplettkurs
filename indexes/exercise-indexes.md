@@ -1,6 +1,11 @@
 # Exercise Indexes 
 
 ```
+mysql
+```
+
+```
+use sakila;
 create table actorneu as select * from actor;
 
 -- Test 1
