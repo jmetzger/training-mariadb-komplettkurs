@@ -10,7 +10,7 @@
 # Change version in 
 # or where you have your repo definition
 # Change 10.6 -> 10.11 
-cd /etc/apt/yum.repos.d/
+cd /etc/yum.repos.d/
 nano MariaDB.repo
 ```
 
