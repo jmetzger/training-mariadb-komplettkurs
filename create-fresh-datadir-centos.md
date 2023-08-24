@@ -13,8 +13,8 @@ mv mysql mysql.bkup
 
 # Schritt 2: Fresh 
 mysql_install_db --user=mysql
-chown mysql:mysql mysql
-chmod g+rx,o+rx mysql 
+chown -R mysql:mysql mysql
+chmod -R g+rx,o+rx mysql 
 restorecon -rv /var/lib/mysql 
 
 # Schritt 3: Start 
