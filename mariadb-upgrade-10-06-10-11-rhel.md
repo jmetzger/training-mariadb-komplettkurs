@@ -1,5 +1,7 @@
 # Upgrade MariaDB 10.6 -> 10.11 (RHEL,Rocky,Centos)
 
+## Walkthrough
+
 ```
 # Step 0;
 # Sicherung anlegen (mysqldump / mariabackup) 
@@ -45,3 +47,7 @@ systemctl enable mariadb
 # Only necessary, if mysql_upgrade_info is not 10.11.x in /var/lib/mysql
 mysql_upgrade # After that mysql_upgrade_info will be present in /var/lib/mysql with version-info
 ```
+
+## Reference:
+
+  * https://mariadb.com/kb/en/upgrading-from-mariadb-10-6-to-mariadb-10-11/
