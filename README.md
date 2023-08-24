@@ -18,7 +18,10 @@
 
   1. Administration / Troubleshooting
      * [Create fresh datadir (Centos/Redhat)](create-fresh-datadir-centos.md)
-     * [Debug not starting service](troubleshooting/debug-service.md) 
+     * [Debug not starting service](troubleshooting/debug-service.md)
+    
+  1. Upgrade
+     * [MariaDB Upgrade 10.6 -> 10.11 (RHEL)](mariadb-upgrade-10-06-10-11-rhel.md)
    
   1. Graphical Tools
      * [Overview](tools/grafische-tools.md)
