@@ -22,6 +22,50 @@ mysql>SET long_query_time = 0.000001
 
 ```
 
+## Exercise (mariadb 10.6 from mariadb.org) 
+
+```
+# Step 1
+# /etc/my.cnf.d/server.cnf 
+[mysqld]
+slow-query-log 
+```
+
+```
+# Step 2: restart server
+systemctl restart mariadb
+mysql
+```
+
+```
+-- Step 3: set long_query_time (global and in session)
+
+-- set and show global 
+set global long_query_time = 0.000001
+select @@global.long_query_time;
+show global variables like '%long%';
+
+-- (Optional) set and show session (for this session)
+set long_query_time = 0.000001
+select @@long_query_time;
+show variables like '%long%';
+
+```
+
+```
+# Step 4: Import data
+cd /usr/src/sakila-db
+mysql < sakila-schema.sql
+mysql < sakila-data.sql
+```
+
+```
+# Step 5: what did we log
+cd /var/lib/mysql
+ls -la server1-slow.log 
+less server1-slow.log 
+```
+
 ## Show queries that do not use indexes 
 
 ```
