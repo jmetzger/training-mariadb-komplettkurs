@@ -12,7 +12,7 @@ slow-query-log
 # Step 2
 mysql>SET GLOBAL slow_query_log = 1 
 mysql>SET slow_query_log = 1 
-mysql>SET GLOBAL long_query_time = 0.000001 
+mysql>SET GLOBAL long_query_time = 0.000001;
 mysql>SET long_query_time = 0.000001
 
 # Step 3
@@ -42,12 +42,12 @@ mysql
 select @@slow_query_log;
 
 -- set and show global 
-set global long_query_time = 0.000001
+set global long_query_time = 0.000001;
 select @@global.long_query_time;
 show global variables like '%long%';
 
 -- (Optional) set and show session (for this session)
-set long_query_time = 0.000001
+set long_query_time = 0.000001;
 select @@long_query_time;
 show variables like '%long%';
 
