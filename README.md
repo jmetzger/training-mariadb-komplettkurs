@@ -71,6 +71,16 @@
      * [Percona-toolkit-Installation - Centos](/tools/percona-toolkit-centos.md)
      * [pt-query-digest exercise (Hitliste von slow-query-log erstellen)](/tools/exercise-pt-query-digest-rhel.md)
      * [Umgang mit grossen Datenbeständen](strategie/umgang-mit-grossen-datenbestaenden.md)
+    
+  1. Optimal use of indexes
+   
+     * Index-Types 
+     * [Describe and indexes](/indexes/describe-table.md)
+     * [Find out indexes](indexes/findout-indexes.md) 
+     * [Index and Functions](index-and-functions.md) 
+     * [Index and Likes](/indexes/like-index-not-index.md)   
+     * [profiling-get-time-for-execution-of.query](/indexes/profiling.md) 
+     * [Find out cardinality without index](/indexes/cardinality.md)
 
   1. Monitoring 
      * [What to monitor?](/monitoring/monitoring.md) 
@@ -181,16 +191,6 @@
      * [Partitions and Explain](partitions/partitions-explain.md) 
      * [3 Phases of DataSize](3-phases-of-data-size-and-performance-impact.md)
      * [Slow Query Log](slow-query-log.md)
-
-  1. Optimal use of indexes
-   
-     * Index-Types 
-     * [Describe and indexes](/indexes/describe-table.md)
-     * [Find out indexes](indexes/findout-indexes.md) 
-     * [Index and Functions](index-and-functions.md) 
-     * [Index and Likes](/indexes/like-index-not-index.md)   
-     * [profiling-get-time-for-execution-of.query](/indexes/profiling.md) 
-     * [Find out cardinality without index](/indexes/cardinality.md)
 
   1. Replication 
 
