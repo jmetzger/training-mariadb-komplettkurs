@@ -8,28 +8,34 @@
 # Change version in 
 # or where you have your repo definition
 # Change 10.6 -> 10.11 
-/etc/apt/sources.list
-apt update
+cd /etc/apt/yum.repos.d/
+nano MariaDB.repo
+```
+
+```
+# Change version in file from 10.6 -> 10.11
+# Save + quit 
+```
+
+
+```
 # Step 2:
 systemctl stop mariadb 
 
-# STep 3:
-apt list --installed | grep -i mariadb
-
 # Step 3
-apt remove -y mariadb*10.6
-apt autoremove -y 
+dnf remove MariaDB-* 
+# verify nothing is present 
+dnf list installed 
 
 # Step 4
-sudo apt install -y mariadb-server # Achtung muss 10.11 sein 
-apt list --installed | grep -i mariadb # ist wirklich 10.11 installiert. 
+dnf install -y MariaDB-server MariaDB-backup  
+dnf list --installed | grep -i mariadb # ist wirklich 10.11 installiert. 
 
 # Step 4.5 
 # Check if old config files were saved as .rpmsave after delete of package 10.4 
-cd /etc/mysql/mariadb.conf.d/
-ls -la 50-server.cnf*
+cd /etc/my.cnf.d/server.cnf 
+ls -la server.cnf
 # e.g. 
-
 
 # Step 5:
 systemctl start mariadb 
