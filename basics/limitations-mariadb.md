@@ -239,8 +239,10 @@ CREATE OR REPLACE TABLE tab (
 
 ```
 
-
-
 ## Referenz:
 
   * https://mariadb.com/kb/en/innodb-limitations/
+
+## Ausweg 
+
+  * RocksDB (Sharding), TokuDB, ColumnStore, Partition
