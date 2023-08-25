@@ -14,6 +14,7 @@
 ```
 Speziell: 
 bei 16 KByte Pages - Max 64 TB pro Tablespace.
+oder maximal 1017 columns 
 ```
 
 ## Maximale Row-Länge bei Verwendung von InnoDB 
