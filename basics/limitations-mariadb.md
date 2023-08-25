@@ -19,7 +19,11 @@ oder maximal 1017 columns
 
 ## Maximale Row-Länge bei Verwendung von InnoDB 
 
-  * 50% der Page-Größe -> 16 Kbytes -> 8 Kbytes 
+  * 50% der Page-Größe -> 16 Kbytes -> 8 Kbytes
+
+## Bei grossen Datenmengen 
+
+  * innodb_log_file_size 
 
 ### Exercise 
 
