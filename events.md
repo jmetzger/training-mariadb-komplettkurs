@@ -177,3 +177,22 @@ CREATE TABLE messages (
     created_at DATETIME NOT NULL
 );
 ```
+
+### Step 3: create recurring event
+
+```
+CREATE EVENT test_event_03
+ON SCHEDULE EVERY 1 MINUTE
+STARTS CURRENT_TIMESTAMP
+ENDS CURRENT_TIMESTAMP + INTERVAL 1 HOUR
+DO
+   INSERT INTO messages(message,created_at)
+   VALUES('Test MariaDB recurring Event',NOW());
+
+SELECT * FROM messages;
+
+// after 1 minute 
+SELECT * FROM messages;
+
+
+```
