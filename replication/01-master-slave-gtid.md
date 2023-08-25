@@ -64,7 +64,7 @@ mysql -urepl -p -h10.135.0.x
 show grants;
 ```
 
-## Step 4a: Set server-id on master -> 1 
+## Step 7: Set server-id on master -> 1 
 
 ```
 [mysqld]
@@ -78,7 +78,7 @@ systemctl restart mariadb
 
 ```
 [mysqld]
-server-id              = 3
+server-id              = 2
 # activate master bin log, if this slave might be a master later 
 log_bin                = /var/log/mysql/mysql-bin.log
 binlog_format = ROW
