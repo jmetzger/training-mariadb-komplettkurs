@@ -83,20 +83,18 @@ systemctl restart mariadb
 ## 
 ```
 
-## Step 4b: Set server-id on slave -> 3 + same config as server 1 + log_slave_update
+## Step 8: Set server-id on slave -> 1 + same config as server 1 + log-slave-update
 
 ```
 [mysqld]
 server-id              = 2
 # activate master bin log, if this slave might be a master later 
-log_bin                = /var/log/mysql/mysql-bin.log
-binlog_format = ROW
-log_slave_update = 1 
+log-bin
+log-slave-update
+```
 
+```
 systemctl restart mariadb 
-## auf dem master config mit rsync rüberschrieben 
-## root@master 
-rsync -e ssh -avP /etc/mysql/mariadb.conf.d/z_uniruhr.cnf kurs@10.10.9.144:/home/kurs/
 ```
 
 ## Step 5: Restore Data on slave 
