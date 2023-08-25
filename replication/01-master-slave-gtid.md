@@ -1,20 +1,33 @@
 # Setting up new slave with master-slave replication 
 
-## Step 0.5a: Installation on ubuntu/debian 
+## Step 1a: Installation on ubuntu/debian 
 
 ```
 apt update
 apt install mariadb-backup 
 # check if available
 mariabackup --version 
+```
 
+
+## Step 1b: Installation on centos/rocky/rhel 
+
+```
+dnf install -y mariadb-backup 
+# check if available
+mariabackup --version 
+```
+
+## Step 2: Setup mariabackup 
+
+```
 # prepare for mariabackup if you use it with root and with unix_socket 
 /root/.my.cnf 
 [mariabackup]
 user=root
 ```
 
-## Step 1: mariabackup on master 
+## Step 3: mariabackup on master 
 
 ```
 mkdir /backups 
@@ -25,14 +38,14 @@ mariabackup --target-dir=/backups/20210121 --backup
 mariabackup --target-dir=/backups/20210121 --prepare 
 ```
 
-## Step 2: Transfer to new slave (from master) 
+## Step 4: Transfer to new slave (from master) 
 
 ```
 # root@master:
 rsync -e ssh -avP /backups/20210121 student@10.10.9.144:/home/student/
 ```
 
-## Step 3: Setup replication user on master 
+## Step 4: Setup replication user on master 
 
 ```
 # as root@master 
@@ -41,7 +54,7 @@ CREATE USER repl@'10.10.9.%' IDENTIFIED BY 'password';
 GRANT REPLICATION SLAVE ON *.*  TO 'repl'@'10.10.9.%';
 ```
 
-## Step 3a (Optional): Test repl user (connect) from slave 
+## Step 4a (Optional): Test repl user (connect) from slave 
 
 ```
 # as root@slave 
