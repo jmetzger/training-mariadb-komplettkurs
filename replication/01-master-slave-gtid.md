@@ -15,6 +15,8 @@ log-bin
 
 ```
 systemctl restart mariadb 
+## you should add data, otherwice no gtid will get created if you enable the binlog only from now on
+mysql -e "create schema foo;"
 ```
 
 ## Step 2a: Installation on ubuntu/debian (master)
