@@ -47,7 +47,7 @@ user=root
 ## Step 4: mariabackup on master 
 
 ```
-mkdir /backups 
+mkdir -p /backups 
 # target-dir needs to be empty or not present 
 mariabackup --target-dir=/backups/20210121 --backup 
 # apply ib_logfile0 to tablespaces 
