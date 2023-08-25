@@ -243,6 +243,13 @@ CREATE OR REPLACE TABLE tab (
 
 ```
 
+```
+ERROR 1118 (42000): Row size too large (> 8126). Changing some columns to TEXT or BLOB may help. In current row format, BLOB prefix of 0 bytes is stored inline.
+
+```
+  * Reference: https://mariadb.com/kb/en/innodb-limitations/#:~:text=Limitations%20on%20Size,-With%20the%20exception&text=MariaDB%20imposes%20a%20row%2Dsize,file%20size%20limit%20of%202GB.
+
+
 ## Referenz:
 
   * https://mariadb.com/kb/en/innodb-limitations/
