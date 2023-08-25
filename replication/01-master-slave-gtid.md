@@ -1,6 +1,23 @@
 # Setting up new slave with master-slave replication 
 
-## Step 1a: Installation on ubuntu/debian (master)
+## Step 1: set server-id 1 and log-bin 
+
+```
+cd /etc/my.cnf.d
+nano z_settings.cnf
+```
+
+```
+[mysqld]
+server-id = 1
+log-bin
+```
+
+```
+systemctl restart mariadb 
+```
+
+## Step 2a: Installation on ubuntu/debian (master)
 
 ```
 apt update
@@ -10,7 +27,7 @@ mariabackup --version
 ```
 
 
-## Step 1b: Installation on centos/rocky/rhel (master)
+## Step 2b: Installation on centos/rocky/rhel (master)
 
 ```
 dnf install -y mariadb-backup 
@@ -18,7 +35,7 @@ dnf install -y mariadb-backup
 mariabackup --version 
 ```
 
-## Step 2: Setup mariabackup 
+## Step 3: Setup mariabackup 
 
 ```
 # prepare for mariabackup if you use it with root and with unix_socket 
@@ -27,7 +44,7 @@ mariabackup --version
 user=root
 ```
 
-## Step 3: mariabackup on master 
+## Step 4: mariabackup on master 
 
 ```
 mkdir /backups 
@@ -38,14 +55,14 @@ mariabackup --target-dir=/backups/20210121 --backup
 mariabackup --target-dir=/backups/20210121 --prepare 
 ```
 
-## Step 4: Transfer to new slave (from master) 
+## Step 5: Transfer to new slave (from master) 
 
 ```
 # root@master:
 rsync -e ssh -avP /backups/20210121 11trainingdo@10.135.0.x:/home/11trainingdo
 ```
 
-## Step 5: Setup replication user on master 
+## Step 6: Setup replication user on master 
 
 ```
 # as root@master 
@@ -54,7 +71,7 @@ CREATE USER repl@'10.135.0.%' IDENTIFIED BY 'password';
 GRANT REPLICATION SLAVE ON *.*  TO 'repl'@'10.135.0.%';
 ```
 
-## Step 6 (Optional): Test repl user (connect) from slave 
+## Step 7 (Optional): Test repl user (connect) from slave 
 
 ```
 # as root@slave 
@@ -64,26 +81,12 @@ mysql -urepl -p -h10.135.0.x
 show grants;
 ```
 
-## Step 7: Set server-id on master -> 1 
+## Step 8: Set server-id on slave -> 1 + same config as server 1 + log-slave-update
 
 ```
 cd /etc/my.cnf.d
 nano z_settings.cnf
 ```
-
-```
-# /etc/my.cnf.d/z_settings.cnf
-[mysqld]
-server-id=1
-log-bin
-```
-
-```
-systemctl restart mariadb 
-## 
-```
-
-## Step 8: Set server-id on slave -> 1 + same config as server 1 + log-slave-update
 
 ```
 [mysqld]
