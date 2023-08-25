@@ -92,9 +92,6 @@
   1. Monitoring 
      * [What to monitor?](/monitoring/monitoring.md) 
      * [Percona Management and Monitoring](/monitoring/pmm.md)
-
-  1. Galera / MariaDB Cluster 
-     * [Upgrade Minor/Major](/galera/upgrade.md) 
  
   1. Replication 
      * [Slave einrichten - gtid (mit mariabackup)](/replication/01-master-slave-gtid.md)
@@ -197,6 +194,9 @@
      * [MariaDB Upgrade 10.3 (Centos) -> 10.4 (Mariadb.org)](mariadb-upgrade-10-3-centos-to-10-4-maria-org.md)
      * [MariaDB Upgrade 10.4 -> 10.5 (Centos)](mariadb-upgrade-10-04-10-05.md)
      * [MariaDB Upgrade 5.5 -> 10.5](https://mariadb.com/kb/en/upgrading-between-major-mariadb-versions/)
+
+  1. Galera / MariaDB Cluster 
+     * [Upgrade Minor/Major](/galera/upgrade.md) 
 
   1. Performance 
      * [io-Last/CPU-Last](performance/last.md) 
