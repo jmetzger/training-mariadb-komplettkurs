@@ -1,6 +1,6 @@
 # Setting up new slave with master-slave replication 
 
-## Step 1a: Installation on ubuntu/debian 
+## Step 1a: Installation on ubuntu/debian (master)
 
 ```
 apt update
@@ -10,7 +10,7 @@ mariabackup --version
 ```
 
 
-## Step 1b: Installation on centos/rocky/rhel 
+## Step 1b: Installation on centos/rocky/rhel (master)
 
 ```
 dnf install -y mariadb-backup 
