@@ -217,6 +217,7 @@ mysql> status
 
 ## Ref 
 
+  * https://mariadb.com/kb/en/securing-connections-for-client-and-server/
   * https://www.cyberciti.biz/faq/how-to-setup-mariadb-ssl-and-secure-connections-from-clients/
   
 
