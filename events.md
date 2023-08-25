@@ -21,6 +21,7 @@ show events;
 
 ```
 
+create schema if not exists schulung;
 USE schulung;
 CREATE TABLE messages (
     id INT PRIMARY KEY AUTO_INCREMENT,
@@ -32,7 +33,7 @@ CREATE TABLE messages (
 ## One time event 
 
 ```
-USE schulung 
+USE schulung;
 CREATE EVENT IF NOT EXISTS test_event_01
 ON SCHEDULE AT CURRENT_TIMESTAMP
 DO
@@ -170,6 +171,7 @@ show events;
 
 
 ```
+create schema if not exists schulung;
 USE schulung;
 CREATE TABLE messages (
     id INT PRIMARY KEY AUTO_INCREMENT,
@@ -181,6 +183,7 @@ CREATE TABLE messages (
 ### Step 3: create recurring event
 
 ```
+use schulung; 
 CREATE EVENT test_event_03
 ON SCHEDULE EVERY 1 MINUTE
 STARTS CURRENT_TIMESTAMP
@@ -193,11 +196,12 @@ show events;
 ```
 
 ```
-
+use schulung;
 SELECT * FROM messages;
 ```
 
 ```
+use schulung; 
 -- after 1 minute 
 SELECT * FROM messages;
 
