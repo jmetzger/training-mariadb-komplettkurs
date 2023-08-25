@@ -97,13 +97,15 @@ log-slave-update
 systemctl restart mariadb 
 ```
 
-## Step 5: Restore Data on slave 
+## Step 9: Restore Data on slave 
 
 ```
 systemctl stop mariadb 
 mv /var/lib/mysql /var/lib/mysql.bkup
-mariabackup --target-dir=/home/student/20210121 --copy-back 
-chown -R mysql:mysql /var/lib/mysql 
+mariabackup --target-dir=/home/11trainingdo/20210121 --copy-back 
+chown -R mysql:mysql /var/lib/mysql
+chmod -R 755 /var/lib/mysql
+restorecon -vr /var/lib/mysql
 systemctl start mariadb
 ```
 
