@@ -41,10 +41,7 @@
   1. Training Data 
      * [Setup training data "contributions"](/indexes/setup-training-data-contributions.md)
      * [Setup sakila test db](sakila.md)
-
-  1. Security
-     * [Table encryption](table-encryption.md)
-      
+     
   1. User Rights / Users 
      * [Create User/Grant/Revoke - Management of users](grant-revoke.md)
      * [Change password of user](passwd-change-user.md)
@@ -79,14 +76,12 @@
      * [pt-query-digest exercise (Hitliste von slow-query-log erstellen)](/tools/exercise-pt-query-digest-rhel.md)
      * [Umgang mit grossen Datenbeständen](strategie/umgang-mit-grossen-datenbestaenden.md)
     
-  1. Optimal use of indexes
-   
+  1. Optimal use of indexes   
      * Index-Types 
      * [Describe and indexes](/indexes/describe-table.md)
      * [Find out indexes](indexes/findout-indexes.md) 
      * [Index and Functions](index-and-functions.md) 
      * [Index and Likes](/indexes/like-index-not-index.md)   
-     * [profiling-get-time-for-execution-of.query](/indexes/profiling.md) 
      * [Find out cardinality without index](/indexes/cardinality.md)
 
   1. Monitoring 
@@ -168,7 +163,7 @@
      * [Kill long running process](kill-process.md)
      * [Kill (kickout user) and stop server](kill-shutdown.md) 
  
-  1. Security and User Rights 
+  1. User Rights 
      * [Debug and Setup External Connection](/security/debug-external-conn.md) 
      * [Get Rights of user](/security/get-rights-for-user.md)
      * [Secure with SSL server/client](/security/ssl.md) 
@@ -177,14 +172,16 @@
      * [User- and Permission-concepts (best-practice)](/security/user-db-best-practice.md)
      * [Setup external access](external-access.md)
      * [Table encryption](table-encryption.md)
- 
+
+  1. Security
+     * [Table encryption](table-encryption.md)
+
   1. SELinux 
      * [Welche Ports sind freigegeben? (MariaDb startet damit)](selinux-ports.md)
      * [Neues Datenverzeichnis SELinux bekanntmachen - semanage fcontext](selinux-fcontext.md) 
      * [Probleme mit SELinux erkennen und debuggen](selinux-logs.md)
  
-  1. Database - Objects  
-   
+  1. Database - Objects     
      * [Triggers](triggers.md) 
      * [Functions](function.md)
      * [Stored Procedure](stored-procedure.md)
@@ -204,6 +201,7 @@
      * [Partitions and Explain](partitions/partitions-explain.md) 
      * [3 Phases of DataSize](3-phases-of-data-size-and-performance-impact.md)
      * [Slow Query Log](slow-query-log.md)
+     * [profiling-get-time-for-execution-of.query](/indexes/profiling.md) 
 
   1. Replication 
 
