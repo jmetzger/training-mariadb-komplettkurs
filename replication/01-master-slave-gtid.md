@@ -141,12 +141,12 @@ CHANGE MASTER TO
 ```
 
 ```
-mysql < master.txt 
-# or: copy paste into mysql> 
+mysql < /root/master.txt 
+mysql 
 ```
 
 ```
--- mysql>
+-- in mysql 
 start slave
 show slave status 
 -- # Looking for
