@@ -58,8 +58,8 @@
      * [Setup external access](external-access.md)
      * [Users zwingen sich neu anzumelden](kill-process.md)
     
-  1. Documentation (Authentication)
-     * [ed25519 authentification](https://mariadb.com/kb/en/authentication-plugin-ed25519/)
+  1. User Authentication
+     * [ed25519 authentification](auth/ed25519.md)
      
   1. Binlog, Backup and Restore (Point-In-Time aka PIT) 
      * [binlog aktivieren und auslesen](binlog.md)
