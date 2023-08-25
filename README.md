@@ -108,7 +108,8 @@
      * [Service Debuggen](debug-service.md)
      * [online schema change without blocking](pt-online-schema-change.md)
             
-  1. Locking 
+  1. Locking
+     * [Table Locks](lock-tables.md)
      * [Implicit Locks](locks/innodb-implicit-locks.md)
      * [Identify Deadlocks in innodb](locks/deadlocks.md)
      
