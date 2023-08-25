@@ -30,8 +30,8 @@
      * [Data Types](https://mariadb.com/kb/en/data-types/)
      * [Create Database](/basics/create-database.md)
      * [Show structure of table](show-create-table-describe.md)
-     * [Show all tables within db](show-tables.md) 
-
+     * [Show all tables within db](show-tables.md)
+    
   1. InnoDB - Storage Engine 
      * [InnoDB - Storage Engine - Structure](/innodb/innodb-structure.md)
      * [InnoDB Buffer Pool Size bestimmen und setzen inkl. free buffers](/innodb/exercise-innodb-buffer-pool-size.md)
@@ -138,6 +138,12 @@
 
   1. Misc
      * [Bis zu welcher Größe taugt mariadb](/basics/limitations-mariadb.md)
+    
+  1. Database Functions/Procedure/Triggers/Events
+     * [Events](event.md)
+     * [Procedures](procedures.md)
+     * [Functions](functions.md)
+     * [Triggers](triggers.md)
 
 ## Backlog 
 
