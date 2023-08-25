@@ -51,7 +51,7 @@ rsync -e ssh -avP /backups/20210121 11trainingdo@10.135.0.x:/home/11trainingdo
 # as root@master 
 #mysql>
 CREATE USER repl@'10.135.0.%' IDENTIFIED BY 'password';
-GRANT REPLICATION SLAVE ON *.*  TO 'repl'@'10.10.9.%';
+GRANT REPLICATION SLAVE ON *.*  TO 'repl'@'10.135.0.%';
 ```
 
 ## Step 6 (Optional): Test repl user (connect) from slave 
