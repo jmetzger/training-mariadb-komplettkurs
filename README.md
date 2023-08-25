@@ -136,6 +136,9 @@
      * [Differences Community / Enterprise Version - nearly the same](https://fromdual.com/mariadb-enterprise-server-vs-mariadb-community-server)
      * [Hardware Optimization](https://mariadb.com/kb/en/hardware-optimization/)
 
+  1. Misc
+     * [Bis zu welcher Größe taugt mariadb](/basics/limitations-mariadb.md)
+
 ## Backlog 
 
   1. Architecture of MariaDB
