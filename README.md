@@ -140,10 +140,10 @@
      * [Bis zu welcher Größe taugt mariadb](/basics/limitations-mariadb.md)
     
   1. Database Functions/Procedure/Triggers/Events
-     * [Events](event.md)
-     * [Procedures](procedures.md)
-     * [Functions](functions.md)
-     * [Triggers](triggers.md)
+     * [Events](events.md)
+     * [Procedures](procedure.md)
+     * [Functions](function.md)
+     * [Triggers](trigger.md)
 
 ## Backlog 
 
