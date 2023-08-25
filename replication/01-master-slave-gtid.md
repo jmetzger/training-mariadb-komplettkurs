@@ -45,23 +45,23 @@ mariabackup --target-dir=/backups/20210121 --prepare
 rsync -e ssh -avP /backups/20210121 11trainingdo@10.135.0.x:/home/11trainingdo
 ```
 
-## Step 4: Setup replication user on master 
+## Step 5: Setup replication user on master 
 
 ```
 # as root@master 
 #mysql>
-CREATE USER repl@'10.10.9.%' IDENTIFIED BY 'password';
+CREATE USER repl@'10.135.0.%' IDENTIFIED BY 'password';
 GRANT REPLICATION SLAVE ON *.*  TO 'repl'@'10.10.9.%';
 ```
 
-## Step 4a (Optional): Test repl user (connect) from slave 
+## Step 6 (Optional): Test repl user (connect) from slave 
 
 ```
 # as root@slave 
 # you be able to connect to 
-mysql -urepl -p -h10.10.9.110
+mysql -urepl -p -h10.135.0.x
 # test if grants are o.k. 
-show grants 
+show grants;
 ```
 
 ## Step 4a: Set server-id on master -> 1 
