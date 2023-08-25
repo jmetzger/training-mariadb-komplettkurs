@@ -143,7 +143,7 @@
      * [Events](events.md)
      * [Procedures](procedure.md)
      * [Functions](function.md)
-     * [Triggers](trigger.md)
+     * [Triggers](triggers.md)
 
 ## Backlog 
 
