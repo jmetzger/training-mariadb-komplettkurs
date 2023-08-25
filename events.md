@@ -147,3 +147,21 @@ mysql>select now();
 mysql>--- time should ok now 
 ```
 
+## Exercise 
+
+### Step 1: Events einschalten 
+
+```
+-- scheduler is not there 
+SHOW PROCESSLIST;
+
+-- Prüfen ob scheduler läuft 
+show variables like '%event%';
+set GLOBAL event_scheduler = on; 
+
+-- scheduler appears 
+SHOW PROCESSLIST;
+
+-- Events anzeigen 
+show events; 
+```
