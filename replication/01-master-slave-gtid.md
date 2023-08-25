@@ -67,9 +67,18 @@ show grants;
 ## Step 7: Set server-id on master -> 1 
 
 ```
+cd /etc/my.cnf.d
+nano z_settings.cnf
+```
+
+```
+# /etc/my.cnf.d/z_settings.cnf
 [mysqld]
 server-id=1
+log-bin
+```
 
+```
 systemctl restart mariadb 
 ## 
 ```
