@@ -109,34 +109,44 @@ restorecon -vr /var/lib/mysql
 systemctl start mariadb
 ```
 
-## Step 6: master.txt for change command 
+## Step 10: master.txt for change command 
 
 ```
 # root@slave
-$ cat xtrabackup_binlog_info
-mariadb-bin.000096 568 0-1-2
+# $ cat xtrabackup_binlog_info
+cd /home/11trainingdo/20210121
+cat xtrabackup_binlog_info 
+# mariadb-bin.000096 568 0-1-2
+```
 
+```
+nano /root/master.txt
+```
+
+```
 SET GLOBAL gtid_slave_pos = "0-1-2";
 # /root/master.txt 
 # get information from master-databases.sql dump 
 CHANGE MASTER TO 
-   MASTER_HOST="192.168.56.102", 
+   MASTER_HOST="10.135.0.x", 
    MASTER_PORT=3306, 
    MASTER_USER="repl",  
    MASTER_PASSWORD="password", 
    MASTER_USE_GTID=slave_pos;
+```
 
+```
 mysql < master.txt 
 # or: copy paste into mysql> 
+```
 
-# mysql>
+```
+-- mysql>
 start slave
-
-# in mysql -> show slave status 
-mysql>show slave status 
-# Looking for
-Slave_IO_Running: Yes
-Slave_SQL_Running: Yes
+show slave status 
+-- # Looking for
+-- Slave_IO_Running: Yes
+-- Slave_SQL_Running: Yes
 
 ```
 
@@ -144,4 +154,4 @@ Slave_SQL_Running: Yes
 
 ## Walkthrough 
 
-https://mariadb.com/kb/en/setting-up-a-replication-slave-with-mariabackup/
+  * https://mariadb.com/kb/en/setting-up-a-replication-slave-with-mariabackup/
