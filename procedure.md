@@ -5,9 +5,9 @@ use sakila;
 DELIMITER //
 
 CREATE PROCEDURE simpleproc (OUT param1 INT)
- BEGIN
+BEGIN
   SELECT COUNT(*) INTO param1 FROM actor;
- END;
+END;
 //
 
 DELIMITER ;
