@@ -189,6 +189,8 @@ DO
    INSERT INTO messages(message,created_at)
    VALUES('Test MariaDB recurring Event',NOW());
 
+show events;
+
 SELECT * FROM messages;
 
 // after 1 minute 
