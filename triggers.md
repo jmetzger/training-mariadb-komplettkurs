@@ -1,16 +1,21 @@
 # Triggers - Example  
 
-## Create the structure 
+## Step 1: Create the structure 
 
 ```
+use sakila;
 create table countries (
     country_id int auto_increment,
     name varchar(50) not null,
     primary key(country_id) 
 );
+```
 
+```
 INSERT INTO countries (name) values ('Germany'), ('Austria'); 
+```
 
+```
 create table country_stats(
     country_id int,
     year int,
@@ -19,10 +24,13 @@ create table country_stats(
     foreign key(country_id)
 	references countries(country_id)
 );
+```
 
+```
 INSERT INTO country_stats (country_id, year, population) values (1,2020,100000);
+```
 
-
+```
 create table population_logs(
     log_id int auto_increment,
     country_id int not null,
@@ -35,7 +43,7 @@ create table population_logs(
 
 ```
 
-## Create the trigger 
+## Create the trigger (Optional)
 
 ```
 create trigger before_country_stats_update 
@@ -56,7 +64,7 @@ create trigger before_country_stats_update
 
 ```
 
-# Create trigger (the same) but with BEGIN/END - Block 
+# Step 2: Create trigger (the same) but with BEGIN/END - Block 
 
 ```
 delimiter //
@@ -85,7 +93,7 @@ create trigger before_country_stats_update
 
 ```
 
-## Run a test 
+## Step 3: Run a test 
 
 ```
 update 
@@ -102,7 +110,7 @@ select * from population_logs;
 
 ```
 
-## Continue although we have an error
+## Continue although we have an error (Optional)
 
 ```
 
