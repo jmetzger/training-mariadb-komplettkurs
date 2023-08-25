@@ -190,10 +190,15 @@ DO
    VALUES('Test MariaDB recurring Event',NOW());
 
 show events;
+```
+
+```
 
 SELECT * FROM messages;
+```
 
-// after 1 minute 
+```
+-- after 1 minute 
 SELECT * FROM messages;
 
 
