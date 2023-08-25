@@ -156,7 +156,8 @@
 
   1. Galera 
      * [Installation and Configuration (Centos/Redhat 8)](setup-galera.md)
-     * [1. Node started nicht nach Crash, z.B. Stromausfall](galera-recover-node1.md)  
+     * [1. Node started nicht nach Crash, z.B. Stromausfall](galera-recover-node1.md)
+     * [Upgrade Minor/Major](/galera/upgrade.md) 
    
   1. Information Schema / Status / Processes
      * [Show server/session status](show-server-status.md)
@@ -192,9 +193,6 @@
      * [MariaDB Upgrade 10.4 -> 10.5 (Centos)](mariadb-upgrade-10-04-10-05.md)
      * [MariaDB Upgrade 5.5 -> 10.5](https://mariadb.com/kb/en/upgrading-between-major-mariadb-versions/)
 
-  1. Galera / MariaDB Cluster 
-     * [Upgrade Minor/Major](/galera/upgrade.md) 
-
   1. Performance 
      * [io-Last/CPU-Last](performance/last.md) 
      * [Views and performance](/performance/views.md)  
@@ -204,7 +202,6 @@
      * [profiling-get-time-for-execution-of.query](/indexes/profiling.md) 
 
   1. Replication 
-
      * [Slave einrichten - Centos - old style (master_pos)](/replication/01-replication-centos-old-style.md)
      * [MaxScale installieren](/replication/02.5-maxscale-installation.md)
      * [Reference: MaxScale-Proxy mit Monitoring](/replication/02-mariadbmon.md)
