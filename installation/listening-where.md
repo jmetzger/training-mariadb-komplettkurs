@@ -16,7 +16,7 @@ netstat -an
 ## How to fix (Ubuntu -> Mariadb Foundation) 
 
 ```
-nano /etc/mysql/mariadb.d/server.cnf
+nano /etc/mysql/mariadb.conf.d/server.cnf
 ```
 
 ```
