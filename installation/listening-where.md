@@ -12,3 +12,21 @@ netstat -tupel
 netstat -an 
 
 ```
+
+## How to fix (Ubuntu -> Mariadb Foundation) 
+
+```
+nano /etc/mysql/mariadb.d/server.cnf
+```
+
+```
+# In Section [mysqld] 
+# Change bind-address to -> bind-address = 0.0.0.0
+[mysqld]
+bind-address = 0.0.0.0
+```
+
+```
+systemctl restart mariadb
+systemctl status mariadb
+```
