@@ -16,7 +16,7 @@ mysqldump --all-databases --single-transaction --routines --events > /usr/src/al
 
 # on local systems using socket, there are no huge benefits concerning --compress
 # when you dump over the network use it for sure 
-mysqldump --all-databases --single-transaction --gtid --master-data=2 --routines --events --flush-logs  > /usr/src/all-databases.sql;
+mysqldump --all-databases --single-transaction --routines --events  --master-data=2 --flush-logs  > /usr/src/all-databases.sql;
 ```
 
 ## With PIT_Recovery you can use --delete-master-logs 
