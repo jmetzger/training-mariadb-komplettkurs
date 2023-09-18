@@ -23,7 +23,6 @@ mysql
 -- is log-bin activated 
 show variables like '%log%bin';
 select @@log_bin;
+exit
 ```
-
-
 
