@@ -3,7 +3,7 @@
 ## How to activitate ? 
 
 ```
-nano /etc/mariadb.conf.d/zz_config.cnf
+nano /etc/mysql/mariadb.conf.d/zz_config.cnf
 ```
 
 ```
@@ -21,7 +21,7 @@ mysql
 
 ```
 -- is log-bin activated 
-show variables variables like '%log%bin';
+show variables like '%log%bin';
 select @@log_bin;
 ```
 
