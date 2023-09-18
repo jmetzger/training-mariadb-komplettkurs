@@ -69,7 +69,7 @@
 
   1. Logging
      * [General Log](general_log.md)
-     * [Binary Logs](binlog-ubuntu.md)
+     * [Binary Logs - Activating in Ubuntu](binlog-ubuntu.md)
      * [Binary Logs - Basics](binlog.md)
    
   1. Performance  
