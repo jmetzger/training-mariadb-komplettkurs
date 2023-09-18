@@ -60,6 +60,7 @@
      
   1. Binlog, Backup and Restore (Point-In-Time aka PIT) 
      * [binlog aktivieren und auslesen](binlog.md)
+     * [binlog_format](binlog_format.md)
      * [Backup with mysqldump - best practices](backup-restore/mysqldump.md) 
      * [PIT - Point in time Recovery - Exercise](backup-restore/pit-exercise.md)
      * [Backup Single Database, Structure and only data](backup-restore/mysqldump-structure-data.md)
