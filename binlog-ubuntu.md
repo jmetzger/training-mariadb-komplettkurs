@@ -26,3 +26,21 @@ select @@log_bin;
 exit
 ```
 
+## Exercise 
+
+```
+cd /var/lib/mysql
+# Das letzte nehmen, wenn mehrere da sind 
+mysqlbin -vv mysqld-bin.000001
+mysql
+```
+
+```
+create schema kurs;
+exit;
+```
+
+```
+# Das letzte nehmen, wenn mehrere da sind 
+mysqlbinlog -vv mysqld-bin.000001
+```
