@@ -5,14 +5,33 @@
  * https://downloads.mariadb.org/mariadb/repositories/
 
 ```
-## repo 
-sudo apt-get install software-properties-common
-sudo apt-key adv --fetch-keys 'https://mariadb.org/mariadb_release_signing_key.asc'
-# does an apt update after setting repo - automatically 
-sudo add-apt-repository 'deb [arch=amd64,arm64,ppc64el] https://mirror.dogado.de/mariadb/repo/10.5/ubuntu focal main'
-sudo apt install mariadb-server 
+sudo apt-get install apt-transport-https curl
+sudo mkdir -p /etc/apt/keyrings
+sudo curl -o /etc/apt/keyrings/mariadb-keyring.pgp 'https://mariadb.org/mariadb_release_signing_key.pgp'
+```
 
 ```
+nano /etc/apt/sources.list.d/mariadb.sources 
+```
+
+```
+# MariaDB 10.6 repository list - created 2023-09-18 08:26 UTC
+# https://mariadb.org/download/
+X-Repolib-Name: MariaDB
+Types: deb
+# deb.mariadb.org is a dynamic mirror if your preferred mirror goes offline. See https://mariadb.org/mirrorbits/ for details.
+# URIs: https://deb.mariadb.org/10.6/ubuntu
+URIs: https://ftp.agdsn.de/pub/mirrors/mariadb/repo/10.6/ubuntu
+Suites: jammy
+Components: main main/debug
+Signed-By: /etc/apt/keyrings/mariadb-keyring.pgp
+```
+
+```
+sudo apt-get update
+sudo apt-get install mariadb-server
+```
+
 
 ## Secure installation 
 
