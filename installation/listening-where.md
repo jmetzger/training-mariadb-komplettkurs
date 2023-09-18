@@ -29,4 +29,5 @@ bind-address = 0.0.0.0
 ```
 systemctl restart mariadb
 systemctl status mariadb
+lsof -i 
 ```
