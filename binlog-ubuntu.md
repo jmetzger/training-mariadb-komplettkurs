@@ -44,3 +44,10 @@ exit;
 # Das letzte nehmen, wenn mehrere da sind 
 mysqlbinlog -vv mysqld-bin.000001
 ```
+
+## Search in binlog with Unix-Tools 
+
+```
+cd /var/lib/mysql
+mysqlbinlog mysqld-bin.000001 | grep -B 10 -A 10 kurs
+```
