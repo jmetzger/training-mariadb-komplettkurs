@@ -8,7 +8,7 @@
      * [Storage Engines](/basics/storage-engines.md) 
 
   1. Installation 
-     * [Installation Centos/RockyLinux](installation-centos.md) 
+     * [Installation (Ubuntu)](installation-ubuntu.md)
      * [Start/Status/Stop/Enable von MariaDB](start-status-stop.md)
      * [Does mariadb listen to the outside world](/installation/listening-where.md)
        
@@ -147,7 +147,7 @@
  
   1. Installation 
      * [Installation SLES15](https://downloads.mariadb.org/mariadb/repositories/#distro=SLES&distro_release=sles15-amd64--sles15&mirror=timo&version=10.5) 
-     * [Installation (Ubuntu)](installation-ubuntu.md)
+     * [Installation Centos/RockyLinux](installation-centos.md) 
      * [Does mariadb listen to the outside world](/installation/listening-where.md)
      
   1. Backup 
