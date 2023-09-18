@@ -69,6 +69,7 @@
 
   1. Logging
      * [General Log](general_log.md)
+     * [Binary Logs](bin-logs.md)
    
   1. Performance  
      * [Slow Query Log](slow-query-log.md)
