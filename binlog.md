@@ -4,7 +4,6 @@
 
   * PIT (Point-in-Time) - Recovery
   * Master/Slave - Replication 
-  * MariaDB Galera Cluster (meckert, wenn nicht aktiviert -> GUT !)
 
 ## Binlog aktivieren (Centos)
 
@@ -25,12 +24,9 @@ systemctl restart mariadb
 ## Rowbasiertes Logging aktivieren
 
 ```
-# Generell empfehlenswert da sicherer 
 # /etc/my.cnf.d/server.cnf 
 [mysqld]
 log-bin 
-binlog-format=ROW 
-
 # Server neu starten 
 systemctl restart mariadb 
 ```
@@ -40,7 +36,7 @@ systemctl restart mariadb
 ```
 cd /var/lib/mysql
 # Zeigt auch mit Kommentar die SQL-Statements an die bei ROW-basierten binlog ausgeführt werden
-mysqlbinlog -vv rechnername1-bin.000001
+mysqlbinlog -vv mysqld-bin.000001
 ```
 
 ## Wie finde ich raus, welches binlog aktiv ist ? 
