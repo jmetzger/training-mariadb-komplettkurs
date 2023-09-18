@@ -31,3 +31,12 @@ systemctl restart mariadb
 systemctl status mariadb
 lsof -i 
 ```
+
+## Can I bind to multiple addresses  ?
+
+```
+# from 10.11 it is possible, before not, you have to use 0.0.0.0
+Starting with MariaDB 10.11, a comma-separated list of addresses to bind to can be given.
+```
+
+ * https://mariadb.com/kb/en/server-system-variables/#bind_address
