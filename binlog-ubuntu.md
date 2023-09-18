@@ -25,3 +25,5 @@ show variables like '%log%bin';
 select @@log_bin;
 ```
 
+
+
