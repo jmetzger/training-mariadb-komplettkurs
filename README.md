@@ -67,6 +67,7 @@
      * [Flashback](/backup-restore/flashback.md) 
      * [mariabackup](backup-restore/mariabackup.md)
      * [incrementelles backup mit mariadb](https://mariadb.com/kb/en/incremental-backup-and-restore-with-mariabackup/)
+     * [Delete binary logs](binary_logs_delete.md)
 
   1. Logging
      * [General Log](general_log.md)
