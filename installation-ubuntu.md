@@ -1,4 +1,4 @@
-# Installation Ubuntu 20.04 
+# Installation Ubuntu 22.04 LTS / Debian  
 
 ## Setup repo and install
 
