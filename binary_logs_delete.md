@@ -1,4 +1,4 @@
-# Delete binaray logs 
+# Delete binary logs 
 
 ## What ways do we have to delete binary logs (purge) 
 
