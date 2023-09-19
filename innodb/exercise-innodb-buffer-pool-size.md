@@ -28,13 +28,20 @@ mysql -e 'select 3.8/10 * 8'
 ## Schritt 3: innodb_buffer_pool_size in config setzten
 
 ```
+# Variante 1: Centos /  Redhat 
 cd /etc/my.cnf.d/
 nano server.cnf 
 ```
 
 ```
+# Variante 2:
+cd /etc/mysql/mariadb.conf.d
+nano 50-service.cnf 
+```
+
+```
 # unter mysqld - sektion eintrage
-innodb-buffer-pool-size=2500M
+innodb-buffer-pool-size=2500M  # 3G
 ```
 
 ```
