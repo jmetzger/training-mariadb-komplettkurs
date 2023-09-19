@@ -23,13 +23,16 @@ mysql -utraining -p
 
 # 4. Anschauen, welchen Rechte wir als dieser Nutzer haben
 show grants; 
-
 ```
+
+
+
 
 
 ## Drop user (=delete user) 
 
 ```
+# as user root 
 drop user training@localhost 
 ```
 
