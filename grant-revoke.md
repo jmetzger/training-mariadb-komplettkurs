@@ -63,6 +63,9 @@ create schema planung;
 ## In Session 1: mysql -> root 
 
 ```
+REVOKE ALL ON *.* FROM training@localhost;
+show grants for training@localhost;
+
 GRANT SELECT ON *.* TO training@localhost;
 show grants for training@localhost;
 ```
