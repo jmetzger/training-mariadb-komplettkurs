@@ -75,7 +75,7 @@ show grants for training@localhost;
 ```
 use sakila;
 # should not work but does work 
-delete from actor where actor_id = 1
+update actor set first_name = 'johanna' where actor_id = 1;
 exit;
 ```
 
@@ -85,9 +85,9 @@ mysql -utraining -p
 
 ```
 # jetzt geht es nicht mehr 
-delete from actor where actor_id = 2;
+update actor set first_name = 'johanna' where actor_id = 1;
 # aber das geht
-select * from actor where actor_id = 2;
+select * from actor where actor_id = 1;
 ```
 
 ## Exercise 1c: Drop user (=delete user) 
