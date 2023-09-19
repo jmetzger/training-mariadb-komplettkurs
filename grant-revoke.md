@@ -37,8 +37,8 @@ use sakila;
 ## In Session 1: mysql -> root 
 
 ```
-GRANT ALL ON *.* TO training@localhost
-show grants for training@localhost
+GRANT ALL ON *.* TO training@localhost;
+show grants for training@localhost;
 ```
 
 ## In Session 2: mysql -> training 
@@ -58,7 +58,31 @@ mysql -utraining -p
 create schema planung;
 ```
 
+## Exercise 1b: privileges anpassen / nur SELECT  
 
+## In Session 1: mysql -> root 
+
+```
+GRANT SELECT ON *.* TO training@localhost;
+show grants for training@localhost;
+```
+
+## In Session 2: mysql -> training 
+
+```
+# das geht noch nicht 
+create schema planung;
+exit;
+```
+
+```
+mysql -utraining -p
+```
+
+```
+# jetzt geht es
+create schema planung;
+```
 
 
 ## Exercise  : Drop user (=delete user) 
