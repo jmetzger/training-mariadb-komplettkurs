@@ -29,7 +29,7 @@ cd /var/lib/mysql
 cat server1.log
 ```
 
-## Exercise Version 1: Enable/Disable general_log during runtime 
+## Exercise Version 2: Enable/Disable general_log during runtime 
 
 ### Step 1: 
 
