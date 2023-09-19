@@ -97,13 +97,21 @@ select * from actor where actor_id = 1;
 drop user training@localhost 
 ```
 
-## Exercise create external user with privileges 
+## Exercise 2: create external user with privileges 
 
 ### Schritt 1 (auf Remote-Server):
 
 ```
+Variante 1:
 # Auf dem Remote-System, auf dem der Server läuft (m[1-6].t3isp.de)
 # Als root: 1. Nutzer ext anlegen der von überall aus zugreifen darf '%'
+
+```
+
+```
+Variante 2:
+create user ext@'192.168.56.%' identified by 'password';
+
 
 ```
 
@@ -112,7 +120,7 @@ drop user training@localhost
 ```
 # von entfernten System aus, auf dem ein mysql-client existiert (bei uns server1)
 # Verbindung aufbauen
-mysql -uext -p -h <ip-des-remote-servers-aus-schritt1> 
+mysql -uext -p -h <ip-des-remote-servers>
 ```
 
 ```
@@ -123,127 +131,20 @@ show grants;
 exit;
 ```
 
-### Schritt 3 (auf Remote-Server) 
+## Schritt 3: Remote-Server Set db rights for a user 
 
 ```
--- löschen des Benutzers
-drop user ext@'%';
-
--- neuen Benutzer anlegen mit der IP des lokalen Netzes (aus Schritt 2: status)
-# z.B.
-create user ext@'<ip-aus-status>' identified by 'meinsupergeheimespasswort'
+grant all on sakila.* to ext@'192.168.56.%';
 ```
 
-### Schritt 4 (auf lokalen System) 
+## Schritt 4: Local System 
 
 ```
-# von entfernten System aus, auf dem ein mysql-client existiert (bei uns server1)
-# Verbindung aufbauen
-mysql -uext -p -h <ip-des-remote-servers-aus-schritt1> 
-```
-
-```
--- hier erfahren unsere ip - addresse 
-status;
-show databases;
-show grants;
 exit;
-``` 
-
-### Schritt 5 (auf dem RemoteServer): Nutzer alle Rechte aus grant privilegien geben
-
-```
-GRANT ALL ON *.* TO ext@'62.91.24.101';
-```
-
-### Schritt 6 (auf dem lokalen System): neu verbinden, damit rechte greifen 
-
-```
-mysql -uext -p -h <ip-des-remote-servers-aus-schritt1> `
-show grants; 
-show schemas;
-create schema training2;
-drop schema training2;
-exit;
-```
-
-### Schritt 7 (auf dem RemoteServer): Nutzer - Select - Rechte entziehen 
-
-```
-revoke select on *.* from ext@'62.81.24.101';
-```
-
-### Schritt 8 (auf dem lokalen System): neu verbinden, damit rechte greifen 
-
-```
-mysql -uext -p -h <ip-des-remote-servers-aus-schritt1> `
-show grants; 
-use mysql;
--- should not work 
-select user,password from user; 
-exit;
-```
-
-## Change User (e.g. change authentication) 
-
-```
-# change pass
-alter user training@localhost identified by 'newpassword';
-```
-
-## Set global or db rights for a user 
-
-```
-grant all on *.* to training@localhost
-# only a specific db 
-grant all on mydb.* to training@localhost 
-```
-
-## Revoke global or revoke right from a user 
-
-```
-revoke select on *.* from training@localhost 
-# only from a specific db 
-revoke select on training.* from training@localhost 
-```
-## Exercise: Permission for a specific database 
-
-  * You need have sakila-db dumps on your local system
-  * See also documentation how to get them (in this document)
-
-```
-# on remote-server with root-user
-# 61.91.24.101 is the host you come from 
-create user extsakila@62.91.24.101 identified by 'deingeheimespw';
-# permissions on which databases (db does not to exist
-grant all on sakila.* to extsakila@62.91.24.101;
-create schema sakila;
-```
-
-```
 # on local system test connection
-mysql -uextsakila -p -h<ip des remoteserver>
+mysql -uext -p -h<ip des remoteserver>
 show grants;
 show databases;
-exit;
-
-```
-
-```
-# on local system import to remote 
-cd /usr/src/sakila-db 
-mysql -uextsakila -p -h<ip des remoteservers> < sakila-schema.sql
-mysql -uextsakila -p -h<ip des remoteservers> < sakila-data.sql
-```
-
-```
-# on local system 
-# test if data is present on remote 
- mysql -uextsakila -p -h<ip des remoteservers> -e 'select * from actors' sakila 
-# oder ganz easy
-mysql -uextsakila -p -h<ip des remoteservers>
-use sakila;
-select * from actor;
 exit;
 ```
 
