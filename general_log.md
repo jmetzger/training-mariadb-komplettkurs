@@ -1,6 +1,6 @@
 # general log 
 
-## Exercise 
+## Exercise Version 1: Enable in config  
 
 ```
 # set in configuration
@@ -29,15 +29,32 @@ cd /var/lib/mysql
 cat server1.log
 ```
 
-## Disabled / Enable general_log during runtime 
+## Exercise Version 1: Enable/Disable general_log during runtime 
+
+### Step 1: 
 
 ```
 # if general_log is activated disable like so
 mysql
-set global general_log = 0
-
-# activate if not activated
 set global general_log = 1
+```
 
-# this is not persistent will be reset to default or setting my.cnf.d/server.cnf - config
+## Step 2: fill with data 
+
+```
+-- in mysql
+select @@general_log;
+show processlist;
+use sakila;
+select * from actor;
+exit
+```
+
+## Step 3: See what's in general_log 
+
+```
+# depending on your server-name
+cd /var/lib/mysql
+# servename + log 
+cat server1.log
 ```
