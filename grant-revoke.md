@@ -131,13 +131,13 @@ show grants;
 exit;
 ```
 
-## Schritt 3: Remote-Server Set db rights for a user 
+### Schritt 3: Remote-Server Set db rights for a user 
 
 ```
 grant all on sakila.* to ext@'192.168.56.%';
 ```
 
-## Schritt 4: Local System 
+### Schritt 4: Local System 
 
 ```
 exit;
