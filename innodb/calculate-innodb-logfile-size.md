@@ -59,5 +59,34 @@ mysql < sakila-schema.sql; mysql < sakila-data.sql;
 
 
 pager;
+# eg. 312MB 
 select (3838334638 - 3836410803) / 1024 / 1024 as MB_per_2min;
+exit 
+```
+
+### Step 4: Adjust config accordingly 
+
+```
+# Ubuntu / Debian
+cd /etc/mysql/mariadb.conf.d/
+nano 50-server.cnf
+```
+
+```
+# mysqld section
+[mysqld]
+# other settings
+innodb-log-file-size=312M
+```
+
+```
+systemctl restart mariadb
+mysql
+```
+
+```
+select @@innodb_log_file_size
+# oder
+show variables like '%log_file%';
+exit
 ```
