@@ -10,7 +10,7 @@ create user training@localhost identified by 'deinpasswort';
 
 ```
 # Als root: 1. Nutzer training anlegen, der sich von lokal anmelden kann 
-
+create user training@localhost identified by 'deinpasswort';
 
 # 2. ausloggen als root aus mysql -> exit
 
