@@ -32,11 +32,36 @@ show databases;
 use sakila; 
 ```
 
+## Exercise 1a: privileges anpassen / alle Rechte 
+
+## In Session 1: mysql -> root 
+
+```
+GRANT ALL ON *.* TO training@localhost
+show grants for training@localhost
+```
+
+## In Session 2: mysql -> training 
+
+```
+# das geht noch nicht 
+create schema planung;
+exit;
+```
+
+```
+mysql -utraining -p
+```
+
+```
+# jetzt geht es
+create schema planung;
+```
 
 
 
 
-## Exercise x : Drop user (=delete user) 
+## Exercise  : Drop user (=delete user) 
 
 ```
 # as user root 
