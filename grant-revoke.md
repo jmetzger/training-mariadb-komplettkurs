@@ -6,30 +6,37 @@
 create user training@localhost identified by 'deinpasswort';
 ```
 
-## Exercise create user 
+## Exercise 1: create user 
+
+### In Session 1: (mysql - user - root) 
 
 ```
 # Als root: 1. Nutzer training anlegen, der sich von lokal anmelden kann 
 create user training@localhost identified by 'deinpasswort';
 # Wir zeigen uns die Rechte an:
 SHOW GRANTS FOR training@localhost;
+```
 
-# 2. ausloggen als root aus mysql -> exit
+### In Session 2: 
 
-
-# 3. anmelden mit nutzer training über mysql-client
+```
+# anmelden mit nutzer training über mysql-client
 # Passwort eingeben 
 mysql -utraining -p
+```
 
+```
 # 4. Anschauen, welchen Rechte wir als dieser Nutzer haben
 show grants; 
+show databases;
+use sakila; 
 ```
 
 
 
 
 
-## Drop user (=delete user) 
+## Exercise x : Drop user (=delete user) 
 
 ```
 # as user root 
