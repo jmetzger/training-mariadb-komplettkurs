@@ -23,6 +23,37 @@ apt install -y mariadb-backup
 
 ## Walkthrough (Ubuntu/Debian)
 
+### Schritt 1: Grundkonfiguration 
+
+```
+# user eintrag in /root/.my.cnf
+[mariabackup]
+user=root 
+# pass is not needed here, because we have the user root with unix_socket - auth 
+# or generic 
+# /etc/mysql/mariadb.conf.d/mariabackup.cnf
+[mariabackup]
+user=root
+```
+
+## Schritt 2: Backup erstellen 
+
+```
+mkdir /backups 
+# target-dir needs to be empty or not present 
+mariabackup --target-dir=/backups/2023091901 --backup 
+```
+
+## Schritt 3: Prepare durchführen 
+
+```
+# apply ib_logfile0 to tablespaces 
+# after that ib_logfile0 ->  0 bytes
+mariabackup --target-dir=/backups/2023091901 --prepare 
+```
+
+
+
 ```
 # user eintrag in /root/.my.cnf
 [mariabackup]
