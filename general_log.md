@@ -39,7 +39,7 @@ mysql
 set global general_log = 1
 ```
 
-## Step 2: fill with data 
+### Step 2: fill with data 
 
 ```
 -- in mysql
@@ -50,7 +50,7 @@ select * from actor;
 exit
 ```
 
-## Step 3: See what's in general_log 
+### Step 3: See what's in general_log 
 
 ```
 # depending on your server-name
