@@ -105,6 +105,8 @@
   1. Galera 
      * [How does Galera transfer data IST/SST](sst_ist.md)
      * [Installation and Configuration (Centos/Redhat 8)](setup-galera.md)
+     * [Installation and Configuration (Ubuntu)](galera/setup-galera-ubuntu.md)   
+     * [Installation and Configuration with mariabackup as sst (Ubuntu)](galera/setup-galera-mariabackup.md)
      * [1. Node started nicht nach Crash, z.B. Stromausfall](galera-recover-node1.md)
      * [Upgrade Minor/Major](/galera/upgrade.md)
      * [Determine rights size of gcache - e.g. for maintenance](determine-gcache.md)
