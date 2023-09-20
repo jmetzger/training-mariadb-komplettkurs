@@ -100,7 +100,7 @@ systemctl restart mariadb
 
 ```
 # root@master:
-rsync -e ssh -avP /backups/2023092001 11trainingdo@192.168.56.104:/home/kurs
+rsync -e ssh -avP /backups/2023092001 kurs@192.168.56.104:/home/kurs
 ```
 
 ## Step 6: Setup replication user on master 
