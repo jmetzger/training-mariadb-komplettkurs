@@ -144,6 +144,12 @@ systemctl restart mariadb
 ## Step 9: Restore Data on slave 
 
 ```
+# Install mariaback if not present
+apt install -y mariadb-backup
+```
+
+
+```
 systemctl stop mariadb 
 mv /var/lib/mysql /var/lib/mysql.bkup
 mariabackup --target-dir=/home/kurs/2023092001 --copy-back 
