@@ -29,7 +29,7 @@ Architectures: amd64
 
 ```
 apt update
-apt install -y mariadb-server mariadb-backup
+apt install -y mariadb-server mariadb-backup rsync
 ```
 
 ## Setting up 1st - node
