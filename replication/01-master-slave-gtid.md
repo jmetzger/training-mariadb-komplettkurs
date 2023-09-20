@@ -65,6 +65,16 @@ mariabackup --target-dir=/backups/2023092001 --backup
 mariabackup --target-dir=/backups/2023092001 --prepare 
 ```
 
+## Step 4.5: Setup slave-server 
+
+```
+# start server 
+apt update
+apt install mariadb-server 
+
+```
+
+
 ## Step 5: Transfer to new slave (from master) 
 
 ```
