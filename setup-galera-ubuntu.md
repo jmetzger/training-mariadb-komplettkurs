@@ -51,7 +51,7 @@ wsrep_on=ON
 # centos7 (x86_64)
 wsrep_provider=/usr/lib64/galera-4/libgalera_smm.so
 # Galera Cluster Configuration
-wsrep_cluster_name="test_cluster"
+wsrep_cluster_name="test_cluster_jm1"
 wsrep_cluster_address="gcomm://192.168.56.103,192.168.56.104,192.168.56.105"
 wsrep_node_address=192.168.56.103
 # Galera Synchronization Configuration
