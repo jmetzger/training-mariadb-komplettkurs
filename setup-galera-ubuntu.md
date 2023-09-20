@@ -24,6 +24,7 @@ URIs: https://ftp.agdsn.de/pub/mirrors/mariadb/repo/10.6/ubuntu
 Suites: jammy
 Components: main main/debug
 Signed-By: /etc/apt/keyrings/mariadb-keyring.pgp
+Architectures: amd64
 ```
 
 ```
