@@ -36,8 +36,8 @@ mv mysql mysql.bkup
 mysql_install_db --user=mysql
 
 # not sure, but safe ! 
-chown mysql:mysql mysql
-chmod g+rx,o+rx mysql 
+chown -R mysql:mysql mysql
+chmod -R g+rx,o+rx mysql 
 
 # Schritt 3: Start 
 systemctl start mariadb
