@@ -135,17 +135,9 @@
   1. Dokumentation (Releases)
      * [Identify Long-Term Support Releases](https://mariadb.com/kb/en/mariadb-server-release-dates/) 
 
-  1. Dokumentation 
-     * [MySQL - Performance - PDF](http://schulung.t3isp.de/documents/pdfs/mysql/mysql-performance.pdf)
-     * [Server System Variables](https://mariadb.com/kb/en/server-system-variables/#bind_address)
-     * [Killing connection](https://mariadb.com/kb/en/kill/)
-     * [MariaDB - One Script Installation](https://mariadb.com/kb/en/mariadb-package-repository-setup-and-usage/)
-     * [MariaDB - Information Schema Tables](https://mariadb.com/kb/en/information-schema-tables/)
-     * [MariaDB - slow query log](https://mariadb.com/kb/en/slow-query-log-overview/)
-     * [MariaDB - sys - vor 10.6](https://github.com/FromDual/mariadb-sys)
-     * [mysql performance blog](https://www.percona.com/blog/innodb-performance-optimization-basics-updated/)
-     * [Differences Community / Enterprise Version - nearly the same](https://fromdual.com/mariadb-enterprise-server-vs-mariadb-community-server)
-     * [Hardware Optimization](https://mariadb.com/kb/en/hardware-optimization/)
+  1. Dokumentation (Galera)
+     * [MariaDB Galera Cluster](http://schulung.t3isp.de/documents/pdfs/mariadb/mariadb-galera-cluster.pdf)
+     * [MySQL Galera Cluster](https://galeracluster.com/downloads/)   
 
   1. Misc
      * [Bis zu welcher Größe taugt mariadb](/basics/limitations-mariadb.md)
@@ -257,12 +249,17 @@
   1. Documentation / Literature 
    
      * [MySQL - Peformance Blog](https://www.percona.com/blog/)
+     * [Server System Variables](https://mariadb.com/kb/en/server-system-variables/#bind_address)
+     * [Killing connection](https://mariadb.com/kb/en/kill/)
+     * [MariaDB - One Script Installation](https://mariadb.com/kb/en/mariadb-package-repository-setup-and-usage/)
+     * [MariaDB - Information Schema Tables](https://mariadb.com/kb/en/information-schema-tables/)
+     * [MariaDB - slow query log](https://mariadb.com/kb/en/slow-query-log-overview/)
+     * [MariaDB - sys - vor 10.6](https://github.com/FromDual/mariadb-sys)
+     * [Differences Community / Enterprise Version - nearly the same](https://fromdual.com/mariadb-enterprise-server-vs-mariadb-community-server)
+     * [Hardware Optimization](https://mariadb.com/kb/en/hardware-optimization/)
      * [Source-Code MariaDB](https://github.com/MariaDB/server)
      * [Effective MySQL](https://www.amazon.com/Effective-MySQL-Optimizing-Statements-Oracle/dp/0071782796)
      * [Last Training](https://github.com/jmetzger/training-mysql-developers-basics)
-     * [MariaDB Galera Cluster](http://schulung.t3isp.de/documents/pdfs/mariadb/mariadb-galera-cluster.pdf)
-     * [MySQL Galera Cluster](https://galeracluster.com/downloads/)   
-     * [Releases List - Long Time / Stable](https://mariadb.com/kb/en/mariadb-server-release-dates/)
    
   1. Questions and Answers 
      * [Questions and Answers](q-and-a.md)
