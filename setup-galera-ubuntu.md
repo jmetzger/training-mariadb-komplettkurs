@@ -110,7 +110,6 @@ bind-address=0.0.0.0
 innodb_flush_log_at_trx_commit=0
 # Galera Provider Configuration
 wsrep_on=ON
-# centos7 (x86_64)
 wsrep_provider=/usr/lib/galera/libgalera_smm.so
 # Galera Cluster Configuration
 wsrep_cluster_name="test_cluster_jm1"
@@ -139,6 +138,62 @@ Variable_name: wsrep_local_state_comment
 *************************** 56. row ***************************
 Variable_name: wsrep_cluster_size
         Value: 2
+*************************** 58. row ***************************
+Variable_name: wsrep_cluster_status
+        Value: Primary
+*************************** 59. row ***************************
+Variable_name: wsrep_connected
+        Value: ON
+
+```
+
+## Node 3
+
+### Configure 
+
+```
+# Schritt 1: Create config 
+nano /etc/mysql/mariadb.conf.d/z_galera.cnf
+```
+
+```
+[mysqld]
+binlog_format=ROW
+innodb_autoinc_lock_mode=2
+bind-address=0.0.0.0
+# Set to 1 sec instead of per transaction
+# for better performance // Attention: You might loose data on power
+innodb_flush_log_at_trx_commit=0
+# Galera Provider Configuration
+wsrep_on=ON
+wsrep_provider=/usr/lib/galera/libgalera_smm.so
+# Galera Cluster Configuration
+wsrep_cluster_name="test_cluster_jm1"
+wsrep_cluster_address="gcomm://192.168.56.103,192.168.56.104,192.168.56.105"
+# ----> KORRIGIEREN 
+wsrep_node_address=192.168.56.105
+# Galera Synchronization Configuration
+wsrep_sst_method=rsync
+```
+
+### Stop the server and bootstrap cluster (only on first node) 
+
+```
+# setup first node in cluster 
+systemctl stop mariadb 
+systemctl start mariadb 
+```
+
+### Check if cluster is running 
+
+```
+mysql> show status like 'wsrep%'\G
+*************************** 38. row ***************************
+Variable_name: wsrep_local_state_comment
+        Value: Synced
+*************************** 56. row ***************************
+Variable_name: wsrep_cluster_size
+        Value: 3
 *************************** 58. row ***************************
 Variable_name: wsrep_cluster_status
         Value: Primary
