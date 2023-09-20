@@ -1,4 +1,4 @@
-# Galera Installation and Configuration 
+# Galera Installation and Configuration  (Ubuntu)
 
 ## Installation nodes (1, 2, 3) 
 
@@ -51,7 +51,6 @@ bind-address=0.0.0.0
 innodb_flush_log_at_trx_commit=0
 # Galera Provider Configuration
 wsrep_on=ON
-# centos7 (x86_64)
 wsrep_provider=/usr/lib/galera/libgalera_smm.so
 # Galera Cluster Configuration
 wsrep_cluster_name="test_cluster_jm1"
