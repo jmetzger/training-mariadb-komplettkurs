@@ -1,5 +1,36 @@
 # Galera Installation and Configuration 
 
+## Installation first node 
+
+```
+sudo apt-get install apt-transport-https curl
+sudo mkdir -p /etc/apt/keyrings
+sudo curl -o /etc/apt/keyrings/mariadb-keyring.pgp 'https://mariadb.org/mariadb_release_signing_key.pgp'
+```
+
+```
+nano /etc/apt/sources.list.d/mariadb.sources
+```
+
+
+```
+# MariaDB 10.6 repository list - created 2023-09-20 11:30 UTC
+# https://mariadb.org/download/
+X-Repolib-Name: MariaDB
+Types: deb
+# deb.mariadb.org is a dynamic mirror if your preferred mirror goes offline. See https://mariadb.org/mirrorbits/ for details.
+# URIs: https://deb.mariadb.org/10.6/ubuntu
+URIs: https://ftp.agdsn.de/pub/mirrors/mariadb/repo/10.6/ubuntu
+Suites: jammy
+Components: main main/debug
+Signed-By: /etc/apt/keyrings/mariadb-keyring.pgp
+```
+
+```
+apt update
+apt install -y mariadb-server mariadb-backup
+```
+
 ## Setting up 1st - node
 
 ```
