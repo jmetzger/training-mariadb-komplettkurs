@@ -59,17 +59,17 @@ user=root
 ```
 mkdir -p /backups 
 # target-dir needs to be empty or not present 
-mariabackup --target-dir=/backups/20210121 --backup 
+mariabackup --target-dir=/backups/2023092001 --backup 
 # apply ib_logfile0 to tablespaces 
 # after that ib_logfile0 ->  0 bytes 
-mariabackup --target-dir=/backups/20210121 --prepare 
+mariabackup --target-dir=/backups/2023092001 --prepare 
 ```
 
 ## Step 5: Transfer to new slave (from master) 
 
 ```
 # root@master:
-rsync -e ssh -avP /backups/20210121 11trainingdo@10.135.0.x:/home/11trainingdo
+rsync -e ssh -avP /backups/2023092001 11trainingdo@192.168.56.104:/home/kurs
 ```
 
 ## Step 6: Setup replication user on master 
@@ -77,8 +77,8 @@ rsync -e ssh -avP /backups/20210121 11trainingdo@10.135.0.x:/home/11trainingdo
 ```
 # as root@master 
 #mysql>
-CREATE USER repl@'10.135.0.%' IDENTIFIED BY 'password';
-GRANT REPLICATION SLAVE ON *.*  TO 'repl'@'10.135.0.%';
+CREATE USER repl@'192.168.56.%' IDENTIFIED BY 'password';
+GRANT REPLICATION SLAVE ON *.*  TO 'repl'@'192.168.56.%';
 ```
 
 ## Step 7 (Optional): Test repl user (connect) from slave 
@@ -86,7 +86,7 @@ GRANT REPLICATION SLAVE ON *.*  TO 'repl'@'10.135.0.%';
 ```
 # as root@slave 
 # you be able to connect to 
-mysql -urepl -p -h10.135.0.x
+mysql -urepl -p -h192.168.56.102
 # test if grants are o.k. 
 show grants;
 ```
