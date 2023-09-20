@@ -3,9 +3,17 @@
 ## Step 1: set server-id 1 and log-bin 
 
 ```
+# Variante Centos/Rocky 
 cd /etc/my.cnf.d
 nano z_settings.cnf
 ```
+
+```
+Variante Debian/Ubuntu
+cd /etc/mysql/mariadb.conf.d
+nano z_settings.cnf
+```
+
 
 ```
 [mysqld]
