@@ -50,7 +50,7 @@ innodb_flush_log_at_trx_commit=0
 # Galera Provider Configuration
 wsrep_on=ON
 # centos7 (x86_64)
-wsrep_provider=/usr/lib64/galera-4/libgalera_smm.so
+wsrep_provider=/usr/lib/galera/libgalera_smm.so
 # Galera Cluster Configuration
 wsrep_cluster_name="test_cluster_jm1"
 wsrep_cluster_address="gcomm://192.168.56.103,192.168.56.104,192.168.56.105"
