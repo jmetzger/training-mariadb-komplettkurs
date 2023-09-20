@@ -1,6 +1,6 @@
 # Galera Installation and Configuration 
 
-## Installation first node 
+## Installation nodes (1, 2, 3) 
 
 ```
 sudo apt-get install apt-transport-https curl
