@@ -100,7 +100,13 @@
      * [Binary Logs auf master bis slave-log-master-position ändern](purge-logs-with-slave-check.md)
     
   1. Replication / Galera
-     * [FAQ](replication-galera/faq.md) 
+     * [FAQ](replication-galera/faq.md)
+    
+  1. Galera 
+     * [How does Galera transfer data IST/SST](sst_ist.md)
+     * [Installation and Configuration (Centos/Redhat 8)](setup-galera.md)
+     * [1. Node started nicht nach Crash, z.B. Stromausfall](galera-recover-node1.md)
+     * [Upgrade Minor/Major](/galera/upgrade.md) 
 
   1. Tipps & Tricks 
      * [Set hostname on systemd-Systems](hostnamectl-set-hostname.md)
@@ -162,11 +168,6 @@
      * [Use xtrabackup for MariaDB 5.5](backup-restore/xtrabackup-for-mariadb-5-5.md)
      * [Ready-made-back-scripts](backup-restore/scripts.md) 
      * [Simple-Backup-Script](backup-restore/simple-backup.md)
-
-  1. Galera 
-     * [Installation and Configuration (Centos/Redhat 8)](setup-galera.md)
-     * [1. Node started nicht nach Crash, z.B. Stromausfall](galera-recover-node1.md)
-     * [Upgrade Minor/Major](/galera/upgrade.md) 
    
   1. Information Schema / Status / Processes
      * [Show server/session status](show-server-status.md)
