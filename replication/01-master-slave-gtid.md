@@ -72,6 +72,27 @@ mariabackup --target-dir=/backups/2023092001 --prepare
 apt update
 apt install mariadb-server 
 
+# use the same config-settings as on master
+# Why ? Get the same performance
+nano z_settings.cnf
+```
+
+```
+# Example
+
+[mysqld]
+
+server-id=2 # slave please do not use server-id=1 -> must be unique
+log-bin
+
+bind-address=0.0.0.0
+
+innodb-buffer-pool-size = 2500MB
+innodb-log-file-size=320M
+```
+
+```
+systemctl restart mariadb
 ```
 
 
