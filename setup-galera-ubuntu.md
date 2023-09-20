@@ -36,8 +36,10 @@ apt install -y mariadb-server mariadb-backup rsync
 
 ```
 # Schritt 1: Create config 
+nano /etc/mysql/mariadb.conf.d/z_galera.cnf
+```
 
-/etc/my.cnf.d/z_galera.cnf 
+```
 [mysqld]
 binlog_format=ROW
 default-storage-engine=innodb
