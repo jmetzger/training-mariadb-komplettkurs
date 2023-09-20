@@ -195,7 +195,7 @@ mysql
 ```
 -- in mysql 
 start slave
-show slave status 
+show slave status \G
 -- # Looking for
 -- Slave_IO_Running: Yes
 -- Slave_SQL_Running: Yes
