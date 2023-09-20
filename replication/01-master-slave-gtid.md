@@ -134,7 +134,7 @@ nano z_settings.cnf
 server-id              = 2
 # activate master bin log, if this slave might be a master later 
 log-bin
-log-slave-update
+log-slave-updates
 ```
 
 ```
