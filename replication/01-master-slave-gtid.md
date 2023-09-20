@@ -179,7 +179,7 @@ SET GLOBAL gtid_slave_pos = "0-1-2";
 # /root/master.txt 
 # get information from master-databases.sql dump 
 CHANGE MASTER TO 
-   MASTER_HOST="10.135.0.x", 
+   MASTER_HOST="192.168.56.102", 
    MASTER_PORT=3306, 
    MASTER_USER="repl",  
    MASTER_PASSWORD="password", 
