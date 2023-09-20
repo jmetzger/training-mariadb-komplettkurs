@@ -165,12 +165,13 @@ systemctl start mariadb
 ```
 # root@slave
 # $ cat xtrabackup_binlog_info
-cd /home/11trainingdo/20210121
+cd /home/kurs/2023092001
 cat xtrabackup_binlog_info 
 # mariadb-bin.000096 568 0-1-2
 ```
 
 ```
+sudo su -
 nano /root/master.txt
 ```
 
