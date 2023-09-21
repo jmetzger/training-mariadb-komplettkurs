@@ -30,8 +30,17 @@ mysql -e "create schema foo;"
 ## Step 2a: Installation on ubuntu/debian (master)
 
 ```
+# Debian / Ubuntu 
 apt update
-apt install mariadb-backup 
+apt install mariadb-backup
+```
+
+```
+dnf install -y MariaDB-server MariaDB-client MariaDB-backup
+```
+
+
+```
 # check if available
 mariabackup --version 
 ```
@@ -68,10 +77,28 @@ mariabackup --target-dir=/backups/2023092001 --prepare
 ## Step 4.5: Setup slave-server 
 
 ```
+# Debian / Ubuntu 
 # start server 
 apt update
-apt install mariadb-server 
+apt install mariadb-server
+```
 
+```
+# Redhat / Rocky
+dnf install -y MariaDB-server MariaDB-client MariaDB-backup
+```
+
+```
+# Ubuntu
+cd /etc/mysql/mariadb.conf.d/
+```
+
+```
+# Redhat / Rocky
+cd /etc/my.cnf.d/ 
+```
+
+```
 # use the same config-settings as on master
 # Why ? Get the same performance
 nano z_settings.cnf
