@@ -115,6 +115,7 @@
      * [1. Node started nicht nach Crash, z.B. Stromausfall](galera-recover-node1.md)
      * [Upgrade Minor/Major](/galera/upgrade.md)
      * [Determine rights size of gcache - e.g. for maintenance](determine-gcache.md)
+     * [Monitoring Galera - What to monitor](monitoring.md)
 
   1. Tipps & Tricks 
      * [Set hostname on systemd-Systems](hostnamectl-set-hostname.md)
