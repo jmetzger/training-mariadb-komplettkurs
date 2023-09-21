@@ -21,6 +21,7 @@
      * [Debug not starting service](troubleshooting/debug-service.md)
     
   1. Upgrade
+     * [MariaDB Upgrade 10.6. -> 10.11 (Debian/Ubuntu)](mariadb-upgrade-10-06-10-11-debian.md)
      * [MariaDB Upgrade 10.6 -> 10.11 (RHEL)](mariadb-upgrade-10-06-10-11-rhel.md)
    
   1. Graphical Tools
