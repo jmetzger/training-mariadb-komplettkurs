@@ -30,7 +30,7 @@ apt list --installed | grep -i mariadb
 ```
 
 ```
-apt remove -y mariadb*10.6
+apt remove -y mariadb*10.6 libmariadb3
 apt autoremove -y 
 ```
 
