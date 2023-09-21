@@ -69,7 +69,10 @@ systemctl restart mariadb
 ```
 cd /var/lib/mysql/mysql
 strings gtid_slave_pos;
+mysql;
+```
 
+```
 use information_schema;
 select * from innodb_tablespaces_encryption;
 SELECT CASE WHEN INSTR(NAME, '/') = 0 
