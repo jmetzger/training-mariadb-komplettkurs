@@ -75,6 +75,9 @@
      * [Binary Logs - Activating in Ubuntu](binlog-ubuntu.md)
      * [Binary Logs - Basics](binlog.md)
      * [Error logging (Output of start / stop of mariadb](logs/error-log.md)
+    
+  1. Security
+     * [Table encryption](table-encryption.md)
    
   1. Performance  
      * [Slow Query Log](slow-query-log.md)
@@ -83,7 +86,6 @@
      * [Umgang mit grossen Datenbeständen](strategie/umgang-mit-grossen-datenbestaenden.md)
     
   1. Optimal use of indexes   
-     * Index-Types 
      * [Describe and indexes](/indexes/describe-table.md)
      * [Find out indexes](indexes/findout-indexes.md) 
      * [Index and Functions](index-and-functions.md) 
@@ -178,10 +180,6 @@
      * Authentification and Authorization
      * [User- and Permission-concepts (best-practice)](/security/user-db-best-practice.md)
      * [Setup external access](external-access.md)
-     * [Table encryption](table-encryption.md)
-
-  1. Security
-     * [Table encryption](table-encryption.md)
 
   1. SELinux 
      * [Welche Ports sind freigegeben? (MariaDb startet damit)](selinux-ports.md)
