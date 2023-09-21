@@ -74,6 +74,7 @@
      * [General Log](general_log.md)
      * [Binary Logs - Activating in Ubuntu](binlog-ubuntu.md)
      * [Binary Logs - Basics](binlog.md)
+     * [Error logging (Output of start / stop of mariadb](logs/error-log.md)
    
   1. Performance  
      * [Slow Query Log](slow-query-log.md)
