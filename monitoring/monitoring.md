@@ -1,6 +1,6 @@
 # Monitoring
 
-## What to monitor 
+## What to monitor (stand-alone an cluster and replication as a basis)
 
 ### System 
 
@@ -79,6 +79,25 @@ mysqladmin status
 ```
 journalctl -u mariadb | grep -i Error
 ```
+
+## Replication 
+
+```
+show slaves status \G
+# These are important values for slaves 
+Slave_IO_Running: Yes
+Slave_SQL_Running: Yes
+Seconds_Behind_Master: 0
+```
+
+## Galera 
+
+  * see monitoring galera
+
+
+
+
+## External Tools 
 
 ### Monitoring with pmm (Percona Management Monitoring) 
 
