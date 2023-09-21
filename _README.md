@@ -8,6 +8,7 @@
      * [Storage Engines](#storage-engines)
 
   1. Installation 
+     * [Installation (Ubuntu)](#installation-ubuntu)
      * [Installation Centos/RockyLinux](#installation-centosrockylinux)
      * [Start/Status/Stop/Enable von MariaDB](#startstatusstopenable-von-mariadb)
      * [Does mariadb listen to the outside world](#does-mariadb-listen-to-the-outside-world)
@@ -17,10 +18,11 @@
      * [Set global server system variable](#set-global-server-system-variable)
 
   1. Administration / Troubleshooting
-     * [Create fresh datadir (Centos/Redhat)](#create-fresh-datadir-centosredhat)
+     * [Create fresh datadir](#create-fresh-datadir)
      * [Debug not starting service](#debug-not-starting-service)
     
   1. Upgrade
+     * [MariaDB Upgrade 10.6. -> 10.11 (Debian/Ubuntu)](#mariadb-upgrade-106-->-1011-debianubuntu)
      * [MariaDB Upgrade 10.6 -> 10.11 (RHEL)](#mariadb-upgrade-106-->-1011-rhel)
    
   1. Graphical Tools
@@ -60,15 +62,24 @@
      
   1. Binlog, Backup and Restore (Point-In-Time aka PIT) 
      * [binlog aktivieren und auslesen](#binlog-aktivieren-und-auslesen)
+     * [binlog_format](#binlog_format)
      * [Backup with mysqldump - best practices](#backup-with-mysqldump---best-practices)
      * [PIT - Point in time Recovery - Exercise](#pit---point-in-time-recovery---exercise)
      * [Backup Single Database, Structure and only data](#backup-single-database-structure-and-only-data)
      * [Flashback](#flashback)
+     * [mysqldump-vs-mariabackup](#mysqldump-vs-mariabackup)
      * [mariabackup](#mariabackup)
      * [incrementelles backup mit mariadb](https://mariadb.com/kb/en/incremental-backup-and-restore-with-mariabackup/)
+     * [Delete binary logs](#delete-binary-logs)
 
   1. Logging
      * [General Log](#general-log)
+     * [Binary Logs - Activating in Ubuntu](#binary-logs---activating-in-ubuntu)
+     * [Binary Logs - Basics](#binary-logs---basics)
+     * [Error logging (Output of start / stop of mariadb](#error-logging-output-of-start--stop-of-mariadb)
+    
+  1. Security
+     * [Table encryption](#table-encryption)
    
   1. Performance  
      * [Slow Query Log](#slow-query-log)
@@ -77,7 +88,6 @@
      * [Umgang mit grossen Datenbeständen](#umgang-mit-grossen-datenbeständen)
     
   1. Optimal use of indexes   
-     * Index-Types 
      * [Describe and indexes](#describe-and-indexes)
      * [Find out indexes](#find-out-indexes)
      * [Index and Functions](#index-and-functions)
@@ -93,6 +103,19 @@
      * [Slave einrichten - gtid (mit mariabackup)](#slave-einrichten---gtid-mit-mariabackup)
      * [Slave einrichten - old styke - masterpos](#slave-einrichten---old-styke---masterpos)
      * [Binary Logs auf master bis slave-log-master-position ändern](#binary-logs-auf-master-bis-slave-log-master-position-ändern)
+    
+  1. Replication / Galera
+     * [FAQ](#faq)
+    
+  1. Galera 
+     * [How does Galera transfer data IST/SST](#how-does-galera-transfer-data-istsst)
+     * [Installation and Configuration (Centos/Redhat 8)](#installation-and-configuration-centosredhat-8)
+     * [Installation and Configuration (Ubuntu)](#installation-and-configuration-ubuntu)
+     * [Installation and Configuration with mariabackup as sst (Ubuntu)](#installation-and-configuration-with-mariabackup-as-sst-ubuntu)
+     * [1. Node started nicht nach Crash, z.B. Stromausfall](#1-node-started-nicht-nach-crash-zb-stromausfall)
+     * [Upgrade Minor/Major](#upgrade-minormajor)
+     * [Determine rights size of gcache - e.g. for maintenance](#determine-rights-size-of-gcache---eg-for-maintenance)
+     * [Monitoring Galera - What to monitor](#monitoring-galera---what-to-monitor)
 
   1. Tipps & Tricks 
      * [Set hostname on systemd-Systems](#set-hostname-on-systemd-systems)
@@ -118,17 +141,9 @@
   1. Dokumentation (Releases)
      * [Identify Long-Term Support Releases](https://mariadb.com/kb/en/mariadb-server-release-dates/)
 
-  1. Dokumentation 
-     * [MySQL - Performance - PDF](http://schulung.t3isp.de/documents/pdfs/mysql/mysql-performance.pdf)
-     * [Server System Variables](https://mariadb.com/kb/en/server-system-variables/#bind_address)
-     * [Killing connection](https://mariadb.com/kb/en/kill/)
-     * [MariaDB - One Script Installation](https://mariadb.com/kb/en/mariadb-package-repository-setup-and-usage/)
-     * [MariaDB - Information Schema Tables](https://mariadb.com/kb/en/information-schema-tables/)
-     * [MariaDB - slow query log](https://mariadb.com/kb/en/slow-query-log-overview/)
-     * [MariaDB - sys - vor 10.6](https://github.com/FromDual/mariadb-sys)
-     * [mysql performance blog](https://www.percona.com/blog/innodb-performance-optimization-basics-updated/)
-     * [Differences Community / Enterprise Version - nearly the same](https://fromdual.com/mariadb-enterprise-server-vs-mariadb-community-server)
-     * [Hardware Optimization](https://mariadb.com/kb/en/hardware-optimization/)
+  1. Dokumentation (Galera)
+     * [MariaDB Galera Cluster](http://schulung.t3isp.de/documents/pdfs/mariadb/mariadb-galera-cluster.pdf)
+     * [MySQL Galera Cluster](https://galeracluster.com/downloads/)
 
   1. Misc
      * [Bis zu welcher Größe taugt mariadb](#bis-zu-welcher-größe-taugt-mariadb)
@@ -147,18 +162,12 @@
  
   1. Installation 
      * [Installation SLES15](https://downloads.mariadb.org/mariadb/repositories/#distro=SLES&distro_release=sles15-amd64--sles15&mirror=timo&version=10.5)
-     * [Installation (Ubuntu)](#installation-ubuntu)
      * [Does mariadb listen to the outside world](#does-mariadb-listen-to-the-outside-world)
      
   1. Backup 
      * [Use xtrabackup for MariaDB 5.5](#use-xtrabackup-for-mariadb-55)
      * [Ready-made-back-scripts](#ready-made-back-scripts)
      * [Simple-Backup-Script](#simple-backup-script)
-
-  1. Galera 
-     * [Installation and Configuration (Centos/Redhat 8)](#installation-and-configuration-centosredhat-8)
-     * [1. Node started nicht nach Crash, z.B. Stromausfall](#1-node-started-nicht-nach-crash-zb-stromausfall)
-     * [Upgrade Minor/Major](#upgrade-minormajor)
    
   1. Information Schema / Status / Processes
      * [Show server/session status](#show-serversession-status)
@@ -173,10 +182,6 @@
      * Authentification and Authorization
      * [User- and Permission-concepts (best-practice)](#user--and-permission-concepts-best-practice)
      * [Setup external access](#setup-external-access)
-     * [Table encryption](#table-encryption)
-
-  1. Security
-     * [Table encryption](#table-encryption)
 
   1. SELinux 
      * [Welche Ports sind freigegeben? (MariaDb startet damit)](#welche-ports-sind-freigegeben-mariadb-startet-damit)
@@ -245,12 +250,17 @@
   1. Documentation / Literature 
    
      * [MySQL - Peformance Blog](https://www.percona.com/blog/)
+     * [Server System Variables](https://mariadb.com/kb/en/server-system-variables/#bind_address)
+     * [Killing connection](https://mariadb.com/kb/en/kill/)
+     * [MariaDB - One Script Installation](https://mariadb.com/kb/en/mariadb-package-repository-setup-and-usage/)
+     * [MariaDB - Information Schema Tables](https://mariadb.com/kb/en/information-schema-tables/)
+     * [MariaDB - slow query log](https://mariadb.com/kb/en/slow-query-log-overview/)
+     * [MariaDB - sys - vor 10.6](https://github.com/FromDual/mariadb-sys)
+     * [Differences Community / Enterprise Version - nearly the same](https://fromdual.com/mariadb-enterprise-server-vs-mariadb-community-server)
+     * [Hardware Optimization](https://mariadb.com/kb/en/hardware-optimization/)
      * [Source-Code MariaDB](https://github.com/MariaDB/server)
      * [Effective MySQL](https://www.amazon.com/Effective-MySQL-Optimizing-Statements-Oracle/dp/0071782796)
      * [Last Training](https://github.com/jmetzger/training-mysql-developers-basics)
-     * [MariaDB Galera Cluster](http://schulung.t3isp.de/documents/pdfs/mariadb/mariadb-galera-cluster.pdf)
-     * [MySQL Galera Cluster](https://galeracluster.com/downloads/)
-     * [Releases List - Long Time / Stable](https://mariadb.com/kb/en/mariadb-server-release-dates/)
    
   1. Questions and Answers 
      * [Questions and Answers](#questions-and-answers)
@@ -357,6 +367,52 @@ How your data is stored
 
 ## Installation 
 
+### Installation (Ubuntu)
+
+
+### Setup repo and install
+
+ * https://downloads.mariadb.org/mariadb/repositories/
+
+```
+sudo apt-get install apt-transport-https curl
+sudo mkdir -p /etc/apt/keyrings
+sudo curl -o /etc/apt/keyrings/mariadb-keyring.pgp 'https://mariadb.org/mariadb_release_signing_key.pgp'
+```
+
+```
+nano /etc/apt/sources.list.d/mariadb.sources 
+```
+
+```
+## MariaDB 10.6 repository list - created 2023-09-18 08:26 UTC
+## https://mariadb.org/download/
+X-Repolib-Name: MariaDB
+Types: deb
+## deb.mariadb.org is a dynamic mirror if your preferred mirror goes offline. See https://mariadb.org/mirrorbits/ for details.
+## URIs: https://deb.mariadb.org/10.6/ubuntu
+URIs: https://ftp.agdsn.de/pub/mirrors/mariadb/repo/10.6/ubuntu
+Suites: jammy
+Components: main main/debug
+Signed-By: /etc/apt/keyrings/mariadb-keyring.pgp
+## added by trainer because of warning with i386
+Architectures: amd64
+```
+
+```
+sudo apt-get update
+sudo apt-get install mariadb-server
+```
+
+
+### Secure installation 
+
+```
+mariadb-secure-installation 
+## OR: if not present before 10.4 
+mysql_secure_installation 
+```
+
 ### Installation Centos/RockyLinux
 
 
@@ -375,7 +431,7 @@ dnf install -y mariadb-server
 
 #### Find Repo Settings 
 
-  * https://mariadb.org/download/?t=repo-config&d=Red+Hat+Enterprise+Linux+9&v=10.11&r_m=agdsn
+  * https://mariadb.org/download/?t=repo-config&d=Red+Hat+Enterprise+Linux+9&v=10.6&r_m=agdsn
 
 #### Setup Repo MariaDB - Server 10.6
 
@@ -385,21 +441,23 @@ dnf install -y mariadb-server
 ```
 
 ```
-## MariaDB 10.6 CentOS repository list - created 2022-09-20 09:46 UTC
+## MariaDB 10.6 RedHatEnterpriseLinux repository list - created 2023-09-21 11:52 UTC
 ## https://mariadb.org/download/
 [mariadb]
 name = MariaDB
-baseurl = https://mirror1.hs-esslingen.de/pub/Mirrors/mariadb/yum/10.6/centos8-amd64
-module_hotfixes=1
-gpgkey=https://mirror1.hs-esslingen.de/pub/Mirrors/mariadb/yum/RPM-GPG-KEY-MariaDB
-gpgcheck=1
+## rpm.mariadb.org is a dynamic mirror if your preferred mirror goes offline. See https://mariadb.org/mirrorbits/ for details.
+## baseurl = https://rpm.mariadb.org/10.6/rhel/$releasever/$basearch
+baseurl = https://ftp.agdsn.de/pub/mirrors/mariadb/yum/10.6/rhel/$releasever/$basearch
+## gpgkey = https://rpm.mariadb.org/RPM-GPG-KEY-MariaDB
+gpgkey = https://ftp.agdsn.de/pub/mirrors/mariadb/yum/RPM-GPG-KEY-MariaDB
+gpgcheck = 1
 ```
 
 ```
 ## Install
-sudo dnf install -y install MariaDB-server
-sudo systemctl start mysql # always works - systemd - alias 
-sudo systemctl status mysql # Findout real service - name
+sudo dnf install -y install MariaDB-server MariaDB-client
+sudo systemctl start mariadb # always works - systemd - alias 
+sudo systemctl status mariadb # Findout real service - name
 ## like Windows-Autostart
 sudo systemctl enable mariadb  
 sudo systemctl status mariadb 
@@ -471,6 +529,34 @@ netstat -an
 
 ```
 
+### How to fix (Ubuntu -> Mariadb Foundation) 
+
+```
+nano /etc/mysql/mariadb.conf.d/50-server.cnf
+```
+
+```
+## In Section [mysqld] 
+## Change bind-address to -> bind-address = 0.0.0.0
+[mysqld]
+bind-address = 0.0.0.0
+```
+
+```
+systemctl restart mariadb
+systemctl status mariadb
+lsof -i 
+```
+
+### Can I bind to multiple addresses  ?
+
+```
+## from 10.11 it is possible, before not, you have to use 0.0.0.0
+Starting with MariaDB 10.11, a comma-separated list of addresses to bind to can be given.
+```
+
+ * https://mariadb.com/kb/en/server-system-variables/#bind_address
+
 ## Configuration
 
 ### Adjust configuration and restart
@@ -539,7 +625,7 @@ MariaDB [information_schema]> select @@automatic_sp_privileges; select @@global.
 
 ## Administration / Troubleshooting
 
-### Create fresh datadir (Centos/Redhat)
+### Create fresh datadir
 
 
 ### Walkthrough (Centos/RHEL/Rocky) 
@@ -578,8 +664,8 @@ mv mysql mysql.bkup
 mysql_install_db --user=mysql
 
 ## not sure, but safe ! 
-chown mysql:mysql mysql
-chmod g+rx,o+rx mysql 
+chown -R mysql:mysql mysql
+chmod -R g+rx,o+rx mysql 
 
 ## Schritt 3: Start 
 systemctl start mariadb
@@ -634,6 +720,72 @@ grep -r datadir /etc
 ```
 
 ## Upgrade
+
+### MariaDB Upgrade 10.6. -> 10.11 (Debian/Ubuntu)
+
+
+### Step 1: Backup anlegen. 
+
+  * Eventually not necessary for slave, because we can set it up anyways (with mariabackup from master)
+  * Best Practice, start wih slave 
+
+
+### Step 2: Change Version .sources or .list - file 
+
+```
+## Change version in 
+## or where you have your repo definition
+## Change 10.6 -> 10.11 
+/etc/apt/sources.list
+## or 
+/etc/apt/sources.list.d/mariadb.soruces 
+```
+
+```
+apt update
+```
+
+```
+systemctl stop mariadb 
+```
+
+```
+apt list --installed | grep -i mariadb
+```
+
+```
+apt remove -y mariadb*10.6 libmariadb3
+apt autoremove -y 
+```
+
+```
+sudo apt install -y mariadb-server # Achtung muss 10.11 sein 
+apt list --installed | grep -i mariadb # ist wirklich 10.11 installiert. 
+```
+
+### Step 3: Check config and start 
+
+```
+cd /etc/mysql/mariadb.conf.d/
+ls -la 50-server.cnf*
+## e.g. 
+```
+
+```
+systemctl start mariadb 
+systemctl enable mariadb
+```
+
+### Step 4: Check if mysql_upgrade already was done ?  
+
+```
+## Only necessary, if mysql_upgrade_info is not 10.11.x in /var/lib/mysql  
+mysql_upgrade # After that mysql_upgrade_info will be present in /var/lib/mysql with version-info 
+```
+
+### Reference 
+
+  * https://mariadb.com/kb/en/upgrading-from-mariadb-10-6-to-mariadb-10-11/
 
 ### MariaDB Upgrade 10.6 -> 10.11 (RHEL)
 
@@ -817,13 +969,20 @@ mysql -e 'select 3.8/10 * 8'
 ### Schritt 3: innodb_buffer_pool_size in config setzten
 
 ```
+## Variante 1: Centos /  Redhat 
 cd /etc/my.cnf.d/
 nano server.cnf 
 ```
 
 ```
+## Variante 2:
+cd /etc/mysql/mariadb.conf.d
+nano 50-service.cnf 
+```
+
+```
 ## unter mysqld - sektion eintrage
-innodb-buffer-pool-size=2500M
+innodb-buffer-pool-size=2500M  # 3G
 ```
 
 ```
@@ -925,7 +1084,7 @@ Ideally O_DIRECT on Linux, but please test it, if it really works well.
 ### 	innodb_flush_log_at_trx_commit
 
 ```
-When is fliushing done from innodb_log_buffer to log.
+When is flushing done from innodb_log_buffer to log.
 Default: 1 : After every commit 
 -> best performance 2. -> once per second
 
@@ -1003,7 +1162,7 @@ cd mysql_example
 ```
 cd /usr/src
 wget https://downloads.mysql.com/docs/sakila-db.tar.gz
-tar xzvf sakila-db.tar.gz
+tar xvf sakila-db.tar.gz
 
 cd sakila-db 
 mysql < sakila-schema.sql 
@@ -1022,38 +1181,112 @@ mysql < sakila-data.sql
 create user training@localhost identified by 'deinpasswort';
 ```
 
-### Exercise create user 
+### Exercise 1: create user 
+
+#### In Session 1: (mysql - user - root) 
 
 ```
 ## Als root: 1. Nutzer training anlegen, der sich von lokal anmelden kann 
+create user training@localhost identified by 'deinpasswort';
+## Wir zeigen uns die Rechte an:
+SHOW GRANTS FOR training@localhost;
+```
 
+#### In Session 2: 
 
-## 2. ausloggen als root aus mysql -> exit
-
-
-## 3. anmelden mit nutzer training über mysql-client
+```
+## anmelden mit nutzer training über mysql-client
 ## Passwort eingeben 
 mysql -utraining -p
+```
 
+```
 ## 4. Anschauen, welchen Rechte wir als dieser Nutzer haben
 show grants; 
-
+show databases;
+use sakila; 
 ```
 
+### Exercise 1a: privileges anpassen / alle Rechte 
 
-### Drop user (=delete user) 
+### In Session 1: mysql -> root 
 
 ```
+GRANT ALL ON *.* TO training@localhost;
+show grants for training@localhost;
+```
+
+### In Session 2: mysql -> training 
+
+```
+## das geht noch nicht 
+create schema planung;
+exit;
+```
+
+```
+mysql -utraining -p
+```
+
+```
+## jetzt geht es
+create schema planung;
+```
+
+### Exercise 1b: privileges anpassen / nur SELECT  
+
+### In Session 1: mysql -> root 
+
+```
+REVOKE ALL ON *.* FROM training@localhost;
+show grants for training@localhost;
+
+GRANT SELECT ON *.* TO training@localhost;
+show grants for training@localhost;
+```
+
+### In Session 2: mysql -> training 
+
+```
+use sakila;
+## should not work but does work 
+update actor set first_name = 'johanna' where actor_id = 1;
+exit;
+```
+
+```
+mysql -utraining -p
+```
+
+```
+## jetzt geht es nicht mehr 
+update actor set first_name = 'johanna' where actor_id = 1;
+## aber das geht
+select * from actor where actor_id = 1;
+```
+
+### Exercise 1c: Drop user (=delete user) 
+
+```
+## as user root 
 drop user training@localhost 
 ```
 
-### Exercise create external user with privileges 
+### Exercise 2: create external user with privileges 
 
 #### Schritt 1 (auf Remote-Server):
 
 ```
+Variante 1:
 ## Auf dem Remote-System, auf dem der Server läuft (m[1-6].t3isp.de)
 ## Als root: 1. Nutzer ext anlegen der von überall aus zugreifen darf '%'
+
+```
+
+```
+Variante 2:
+create user ext@'192.168.56.%' identified by 'password';
+
 
 ```
 
@@ -1062,7 +1295,7 @@ drop user training@localhost
 ```
 ## von entfernten System aus, auf dem ein mysql-client existiert (bei uns server1)
 ## Verbindung aufbauen
-mysql -uext -p -h <ip-des-remote-servers-aus-schritt1> 
+mysql -uext -p -h <ip-des-remote-servers>
 ```
 
 ```
@@ -1073,127 +1306,20 @@ show grants;
 exit;
 ```
 
-#### Schritt 3 (auf Remote-Server) 
+#### Schritt 3: Remote-Server Set db rights for a user 
 
 ```
--- löschen des Benutzers
-drop user ext@'%';
-
--- neuen Benutzer anlegen mit der IP des lokalen Netzes (aus Schritt 2: status)
-## z.B.
-create user ext@'<ip-aus-status>' identified by 'meinsupergeheimespasswort'
+grant all on sakila.* to ext@'192.168.56.%';
 ```
 
-#### Schritt 4 (auf lokalen System) 
+#### Schritt 4: Local System 
 
 ```
-## von entfernten System aus, auf dem ein mysql-client existiert (bei uns server1)
-## Verbindung aufbauen
-mysql -uext -p -h <ip-des-remote-servers-aus-schritt1> 
-```
-
-```
--- hier erfahren unsere ip - addresse 
-status;
-show databases;
-show grants;
 exit;
-``` 
-
-#### Schritt 5 (auf dem RemoteServer): Nutzer alle Rechte aus grant privilegien geben
-
-```
-GRANT ALL ON *.* TO ext@'62.91.24.101';
-```
-
-#### Schritt 6 (auf dem lokalen System): neu verbinden, damit rechte greifen 
-
-```
-mysql -uext -p -h <ip-des-remote-servers-aus-schritt1> `
-show grants; 
-show schemas;
-create schema training2;
-drop schema training2;
-exit;
-```
-
-#### Schritt 7 (auf dem RemoteServer): Nutzer - Select - Rechte entziehen 
-
-```
-revoke select on *.* from ext@'62.81.24.101';
-```
-
-#### Schritt 8 (auf dem lokalen System): neu verbinden, damit rechte greifen 
-
-```
-mysql -uext -p -h <ip-des-remote-servers-aus-schritt1> `
-show grants; 
-use mysql;
--- should not work 
-select user,password from user; 
-exit;
-```
-
-### Change User (e.g. change authentication) 
-
-```
-## change pass
-alter user training@localhost identified by 'newpassword';
-```
-
-### Set global or db rights for a user 
-
-```
-grant all on *.* to training@localhost
-## only a specific db 
-grant all on mydb.* to training@localhost 
-```
-
-### Revoke global or revoke right from a user 
-
-```
-revoke select on *.* from training@localhost 
-## only from a specific db 
-revoke select on training.* from training@localhost 
-```
-### Exercise: Permission for a specific database 
-
-  * You need have sakila-db dumps on your local system
-  * See also documentation how to get them (in this document)
-
-```
-## on remote-server with root-user
-## 61.91.24.101 is the host you come from 
-create user extsakila@62.91.24.101 identified by 'deingeheimespw';
-## permissions on which databases (db does not to exist
-grant all on sakila.* to extsakila@62.91.24.101;
-create schema sakila;
-```
-
-```
 ## on local system test connection
-mysql -uextsakila -p -h<ip des remoteserver>
+mysql -uext -p -h<ip des remoteserver>
 show grants;
 show databases;
-exit;
-
-```
-
-```
-## on local system import to remote 
-cd /usr/src/sakila-db 
-mysql -uextsakila -p -h<ip des remoteservers> < sakila-schema.sql
-mysql -uextsakila -p -h<ip des remoteservers> < sakila-data.sql
-```
-
-```
-## on local system 
-## test if data is present on remote 
- mysql -uextsakila -p -h<ip des remoteservers> -e 'select * from actors' sakila 
-## oder ganz easy
-mysql -uextsakila -p -h<ip des remoteservers>
-use sakila;
-select * from actor;
 exit;
 ```
 
@@ -1770,7 +1896,6 @@ show grants;
 
   * PIT (Point-in-Time) - Recovery
   * Master/Slave - Replication 
-  * MariaDB Galera Cluster (meckert, wenn nicht aktiviert -> GUT !)
 
 ### Binlog aktivieren (Centos)
 
@@ -1791,12 +1916,9 @@ systemctl restart mariadb
 ### Rowbasiertes Logging aktivieren
 
 ```
-## Generell empfehlenswert da sicherer 
 ## /etc/my.cnf.d/server.cnf 
 [mysqld]
 log-bin 
-binlog-format=ROW 
-
 ## Server neu starten 
 systemctl restart mariadb 
 ```
@@ -1806,7 +1928,7 @@ systemctl restart mariadb
 ```
 cd /var/lib/mysql
 ## Zeigt auch mit Kommentar die SQL-Statements an die bei ROW-basierten binlog ausgeführt werden
-mysqlbinlog -vv rechnername1-bin.000001
+mysqlbinlog -vv mysqld-bin.000001
 ```
 
 ### Wie finde ich raus, welches binlog aktiv ist ? 
@@ -1815,6 +1937,11 @@ mysqlbinlog -vv rechnername1-bin.000001
 ## mysql -client starten
 mysql> show master status;
 ```
+
+### binlog_format
+
+
+![image](https://github.com/jmetzger/training-mariadb-komplettkurs/assets/1933318/0b2f5fe2-eaef-4f63-acae-e995d481b64d)
 
 ### Backup with mysqldump - best practices
 
@@ -1835,7 +1962,7 @@ mysqldump --all-databases --single-transaction --routines --events > /usr/src/al
 
 ## on local systems using socket, there are no huge benefits concerning --compress
 ## when you dump over the network use it for sure 
-mysqldump --all-databases --single-transaction --gtid --master-data=2 --routines --events --flush-logs  > /usr/src/all-databases.sql;
+mysqldump --all-databases --single-transaction --routines --events  --master-data=2 --flush-logs  > /usr/src/all-databases.sql;
 ```
 
 ### With PIT_Recovery you can use --delete-master-logs 
@@ -1988,6 +2115,11 @@ mysqldump --no-create-info sakila actor > /usr/src/sakila-actor-data.sql
 
   * https://mariadb.com/kb/en/flashback/
 
+### mysqldump-vs-mariabackup
+
+
+![image](https://github.com/jmetzger/training-mariadb-komplettkurs/assets/1933318/05327261-c8ae-45f9-b3ed-6e054c09d536)
+
 ### mariabackup
 
 
@@ -2014,26 +2146,45 @@ apt install -y mariadb-backup
 
 ### Walkthrough (Ubuntu/Debian)
 
+#### Schritt 1: Grundkonfiguration 
+
 ```
 ## user eintrag in /root/.my.cnf
 [mariabackup]
 user=root 
 ## pass is not needed here, because we have the user root with unix_socket - auth 
+## or generic 
+## /etc/mysql/mariadb.conf.d/mariabackup.cnf
+[mariabackup]
+user=root
+```
 
+### Schritt 2: Backup erstellen 
+
+```
 mkdir /backups 
 ## target-dir needs to be empty or not present 
-mariabackup --target-dir=/backups/20230321 --backup 
-## apply ib_logfile0 to tablespaces 
-## after that ib_logfile0 ->  0 bytes 
-mariabackup --target-dir=/backups/20230321 --prepare 
+mariabackup --target-dir=/backups/2023091901 --backup 
+```
 
-### Recover 
+### Schritt 3: Prepare durchführen 
+
+```
+## apply ib_logfile0 to tablespaces 
+## after that ib_logfile0 ->  0 bytes
+mariabackup --target-dir=/backups/2023091901 --prepare 
+```
+
+### Schritt 4: Recover 
+
+```
 systemctl stop mariadb 
 mv /var/lib/mysql /var/lib/mysql.bkup 
-mariabackup --target-dir=/backups/20230321 --copy-back 
+mariabackup --target-dir=/backups/2023091901 --copy-back 
 chown -R mysql:mysql /var/lib/mysql
-chmod 755 /var/lib/mysql # otherwice socket for unprivileged user does not work
-systemctl start mariadb 
+chmod -R 755 /var/lib/mysql # otherwice socket for unprivileged user does not work
+systemctl start mariadb
+systemctl status mariadb 
 ```
 
 ### Walkthrough (Redhat/Centos/Rocky Linux 8 mit mariadb for mariadb.org)
@@ -2096,12 +2247,29 @@ https://mariadb.com/kb/en/full-backup-and-restore-with-mariabackup/
 
   * https://mariadb.com/kb/en/incremental-backup-and-restore-with-mariabackup/
 
+### Delete binary logs
+
+
+### What ways do we have to delete binary logs (purge) 
+
+  * Global Variable or in config: expire_logs_days
+  * Global Variable or in config:
+    * binlog_expire_logs_seconds 
+    * https://mariadb.com/kb/en/replication-and-binary-log-system-variables/#binlog_expire_logs_seconds
+  * SQL-Kommando: PURGE BINARY LOGS TO
+  * Automatically with mysql -> param: --delete-master-logs
+
+### Best practice 
+
+  * Do it when performing backup, either with --delete-master-logs (PIT-Recovery), or in backup script with PURGE BINARY LOGS
+
+
 ## Logging
 
 ### General Log
 
 
-### Exercise 
+### Exercise Version 1: Enable in config  
 
 ```
 ## set in configuration
@@ -2130,18 +2298,292 @@ cd /var/lib/mysql
 cat server1.log
 ```
 
-### Disabled / Enable general_log during runtime 
+### Exercise Version 2: Enable/Disable general_log during runtime 
+
+#### Step 1: 
 
 ```
 ## if general_log is activated disable like so
 mysql
-set global general_log = 0
-
-## activate if not activated
 set global general_log = 1
-
-## this is not persistent will be reset to default or setting my.cnf.d/server.cnf - config
 ```
+
+#### Step 2: fill with data 
+
+```
+-- in mysql
+select @@general_log;
+show processlist;
+use sakila;
+select * from actor;
+exit
+```
+
+#### Step 3: See what's in general_log 
+
+```
+## depending on your server-name
+cd /var/lib/mysql
+## servename + log 
+cat server1.log
+```
+
+### Binary Logs - Activating in Ubuntu
+
+
+### How to activitate ? 
+
+```
+nano /etc/mysql/mariadb.conf.d/zz_config.cnf
+```
+
+```
+[mysqld]
+log-bin
+```
+
+```
+systemctl restart mariadb
+cd /var/lib/mysql
+## is binary log there ? mariadb-
+ls -la *mysqld-bin* 
+mysql
+```
+
+```
+-- is log-bin activated 
+show variables like '%log%bin';
+select @@log_bin;
+exit
+```
+
+### Exercise 
+
+```
+cd /var/lib/mysql
+## Das letzte nehmen, wenn mehrere da sind 
+mysqlbin -vv mysqld-bin.000001
+mysql
+```
+
+```
+create schema kurs;
+exit;
+```
+
+```
+## Das letzte nehmen, wenn mehrere da sind 
+mysqlbinlog -vv mysqld-bin.000001
+```
+
+### Search in binlog with Unix-Tools 
+
+```
+cd /var/lib/mysql
+mysqlbinlog mysqld-bin.000001 | grep -B 10 -A 10 kurs
+```
+
+### Binary Logs - Basics
+
+
+### Binlog - Wann ? 
+
+  * PIT (Point-in-Time) - Recovery
+  * Master/Slave - Replication 
+
+### Binlog aktivieren (Centos)
+
+```
+## /etc/my.cnf.d/server.cnf 
+[mysqld]
+log-bin 
+
+## Server neu starten 
+systemctl restart mariadb 
+```
+
+### Alte Logs automatisch löschen 
+
+  * https://mariadb.com/kb/en/replication-and-binary-log-system-variables/#expire_logs_days
+
+
+### Rowbasiertes Logging aktivieren
+
+```
+## /etc/my.cnf.d/server.cnf 
+[mysqld]
+log-bin 
+## Server neu starten 
+systemctl restart mariadb 
+```
+
+### binlog auslesen 
+
+```
+cd /var/lib/mysql
+## Zeigt auch mit Kommentar die SQL-Statements an die bei ROW-basierten binlog ausgeführt werden
+mysqlbinlog -vv mysqld-bin.000001
+```
+
+### Wie finde ich raus, welches binlog aktiv ist ? 
+
+```
+## mysql -client starten
+mysql> show master status;
+```
+
+### Error logging (Output of start / stop of mariadb
+
+
+### Was ist das ?
+
+  * Zeigt alle Ausgaben beim Starten und Stoppen des MariaDB - Dienstes
+  * Nicht nur Fehler, sondern alles
+
+### Error Log aktivieren in Datei -> Walkthrough (using log in filesystem)
+
+```
+## Ubuntu / Debian 
+nano /etc/mysql/mariadb.conf.d/50-server.cnf
+```
+
+```
+[mysqld]
+log-error=/var/log/mysql/mariadb-error.log
+```
+
+```
+systemctl restart mariadb
+```
+
+### Problem: Keine Ausgabe über journal 
+
+  * journalctl -u mariadb -> keine Ausgabe bzw. keine Einträge
+
+#### Lösung 
+
+```
+## Prüfen ob systemd-journal - dienst läuft bzw. einfach noch mal neu starten
+systemctl restart systemd-journald.services
+```
+    
+
+## Security
+
+### Table encryption
+
+
+### Step 1: Set up keys 
+```
+mkdir -p /etc/mysql/encryption;
+echo "1;"$(openssl rand -hex 32) > /etc/mysql/encryption/keyfile;
+
+openssl rand -hex 128 > /etc/mysql/encryption/keyfile.key;
+openssl enc -aes-256-cbc -md sha1 -pass file:/etc/mysql/encryption/keyfile.key -in /etc/mysql/encryption/keyfile -out /etc/mysql/encryption/keyfile.enc;
+
+rm -f /etc/mysql/encryption/keyfile;
+
+chown -R mysql:mysql /etc/mysql;
+chmod -R 500 /etc/mysql;
+
+
+```
+
+### Step 2: Verify data before encryption 
+
+```
+cd /var/lib/mysql/mysql
+strings gtid_slave_pos.ibd 
+
+```
+
+### Step 3: Setup configuration 
+
+```
+## debian / ubuntu 
+nano /etc/mysql/mariadb.conf.d/z_encryption.cnf
+```
+
+```
+## centos / rocky /redhat 
+nano /etc/my.cnf.d/z_encryption.cnf 
+```
+
+```
+[mysqld]
+plugin_load_add = file_key_management
+file_key_management_filename = /etc/mysql/encryption/keyfile.enc
+file_key_management_filekey = FILE:/etc/mysql/encryption/keyfile.key
+file_key_management_encryption_algorithm = AES_CTR
+
+innodb_encrypt_tables = FORCE
+innodb_encrypt_log = ON
+innodb_encrypt_temporary_tables = ON
+
+encrypt_tmp_disk_tables = ON
+encrypt_tmp_files = ON
+encrypt_binlog = ON
+aria_encrypt_tables = ON
+
+innodb_encryption_threads = 4
+innodb_encryption_rotation_iops = 2000
+
+
+```
+
+### Step 4: Restart server 
+
+```
+systemctl restart mariadb 
+```
+
+### Step 5: Verify encryption
+
+```
+cd /var/lib/mysql/mysql
+strings gtid_slave_pos;
+mysql;
+```
+
+```
+use information_schema;
+select * from innodb_tablespaces_encryption;
+SELECT CASE WHEN INSTR(NAME, '/') = 0 
+                   THEN '01-SYSTEM TABLESPACES'
+                   ELSE CONCAT('02-', SUBSTR(NAME, 1, INSTR(NAME, '/')-1)) END 
+                     AS "Schema Name",
+         SUM(CASE WHEN ENCRYPTION_SCHEME > 0 THEN 1 ELSE 0 END) "Tables Encrypted",
+         SUM(CASE WHEN ENCRYPTION_SCHEME = 0 THEN 1 ELSE 0 END) "Tables Not Encrypted"
+FROM information_schema.INNODB_TABLESPACES_ENCRYPTION
+GROUP BY CASE WHEN INSTR(NAME, '/') = 0 
+                   THEN '01-SYSTEM TABLESPACES'
+                   ELSE CONCAT('02-', SUBSTR(NAME, 1, INSTR(NAME, '/')-1)) END
+ORDER BY 1;
+```
+
+### Step 6: disable encryption runtime 
+
+```
+SET GLOBAL innodb_encrypt_tables = OFF;
+```
+
+```
+## Create a user that is not allowed to do so .... no set global 
+create user noroot@'localhost' identified by 'password';
+grant all on *.* to noroot@'localhost';
+revoke super on *.* from noroot@'localhost';
+```
+
+### working with mysqlbinlog and encryption 
+
+```
+mysqlbinlog -vv --read-from-remote-server --socket /run/mysqld/mysqld.sock mysqld-bin.000003 | less
+```
+
+
+### Ref:
+
+  * https://mariadb.com/de/resources/blog/mariadb-encryption-tde-using-mariadbs-file-key-management-encryption-plugin/
 
 ## Performance  
 
@@ -2522,7 +2964,7 @@ select count(distinct(vendor_city)) from contributions;
 ### What to monitor?
 
 
-### What to monitor 
+### What to monitor (stand-alone an cluster and replication as a basis)
 
 #### System 
 
@@ -2602,6 +3044,25 @@ mysqladmin status
 journalctl -u mariadb | grep -i Error
 ```
 
+### Replication 
+
+```
+show slaves status \G
+## These are important values for slaves 
+Slave_IO_Running: Yes
+Slave_SQL_Running: Yes
+Seconds_Behind_Master: 0
+```
+
+### Galera 
+
+  * see monitoring galera
+
+
+
+
+### External Tools 
+
 #### Monitoring with pmm (Percona Management Monitoring) 
 
 https://pmmdemo.percona.com
@@ -2627,9 +3088,17 @@ https://pmmdemo.percona.com
 ### Step 1: set server-id 1 and log-bin 
 
 ```
+## Variante Centos/Rocky 
 cd /etc/my.cnf.d
 nano z_settings.cnf
 ```
+
+```
+Variante Debian/Ubuntu
+cd /etc/mysql/mariadb.conf.d
+nano z_settings.cnf
+```
+
 
 ```
 [mysqld]
@@ -2646,8 +3115,17 @@ mysql -e "create schema foo;"
 ### Step 2a: Installation on ubuntu/debian (master)
 
 ```
+## Debian / Ubuntu 
 apt update
-apt install mariadb-backup 
+apt install mariadb-backup
+```
+
+```
+dnf install -y MariaDB-server MariaDB-client MariaDB-backup
+```
+
+
+```
 ## check if available
 mariabackup --version 
 ```
@@ -2675,17 +3153,66 @@ user=root
 ```
 mkdir -p /backups 
 ## target-dir needs to be empty or not present 
-mariabackup --target-dir=/backups/20210121 --backup 
+mariabackup --target-dir=/backups/2023092001 --backup 
 ## apply ib_logfile0 to tablespaces 
 ## after that ib_logfile0 ->  0 bytes 
-mariabackup --target-dir=/backups/20210121 --prepare 
+mariabackup --target-dir=/backups/2023092001 --prepare 
 ```
+
+### Step 4.5: Setup slave-server 
+
+```
+## Debian / Ubuntu 
+## start server 
+apt update
+apt install mariadb-server
+```
+
+```
+## Redhat / Rocky
+dnf install -y MariaDB-server MariaDB-client MariaDB-backup
+```
+
+```
+## Ubuntu
+cd /etc/mysql/mariadb.conf.d/
+```
+
+```
+## Redhat / Rocky
+cd /etc/my.cnf.d/ 
+```
+
+```
+## use the same config-settings as on master
+## Why ? Get the same performance
+nano z_settings.cnf
+```
+
+```
+## Example
+
+[mysqld]
+
+server-id=2 # slave please do not use server-id=1 -> must be unique
+log-bin
+
+bind-address=0.0.0.0
+
+innodb-buffer-pool-size = 2500MB
+innodb-log-file-size=320M
+```
+
+```
+systemctl restart mariadb
+```
+
 
 ### Step 5: Transfer to new slave (from master) 
 
 ```
 ## root@master:
-rsync -e ssh -avP /backups/20210121 11trainingdo@10.135.0.x:/home/11trainingdo
+rsync -e ssh -avP /backups/2023092001 kurs@192.168.56.104:/home/kurs
 ```
 
 ### Step 6: Setup replication user on master 
@@ -2693,8 +3220,8 @@ rsync -e ssh -avP /backups/20210121 11trainingdo@10.135.0.x:/home/11trainingdo
 ```
 ## as root@master 
 ##mysql>
-CREATE USER repl@'10.135.0.%' IDENTIFIED BY 'password';
-GRANT REPLICATION SLAVE ON *.*  TO 'repl'@'10.135.0.%';
+CREATE USER repl@'192.168.56.%' IDENTIFIED BY 'password';
+GRANT REPLICATION SLAVE ON *.*  TO 'repl'@'192.168.56.%';
 ```
 
 ### Step 7 (Optional): Test repl user (connect) from slave 
@@ -2702,7 +3229,7 @@ GRANT REPLICATION SLAVE ON *.*  TO 'repl'@'10.135.0.%';
 ```
 ## as root@slave 
 ## you be able to connect to 
-mysql -urepl -p -h10.135.0.x
+mysql -urepl -p -h192.168.56.102
 ## test if grants are o.k. 
 show grants;
 ```
@@ -2719,7 +3246,7 @@ nano z_settings.cnf
 server-id              = 2
 ## activate master bin log, if this slave might be a master later 
 log-bin
-log-slave-update
+log-slave-updates
 ```
 
 ```
@@ -2729,12 +3256,24 @@ systemctl restart mariadb
 ### Step 9: Restore Data on slave 
 
 ```
+## Debian / Ubuntu 
+## Install mariaback if not present
+apt install -y mariadb-backup
+```
+
+```
+## Rocky / Redhat
+dnf install -y MariaDB-backup 
+```
+
+```
 systemctl stop mariadb 
 mv /var/lib/mysql /var/lib/mysql.bkup
-mariabackup --target-dir=/home/11trainingdo/20210121 --copy-back 
+mariabackup --target-dir=/home/kurs/2023092001 --copy-back 
 chown -R mysql:mysql /var/lib/mysql
 chmod -R 755 /var/lib/mysql
-restorecon -vr /var/lib/mysql
+## only redhat 
+## restorecon -vr /var/lib/mysql
 systemctl start mariadb
 ```
 
@@ -2743,12 +3282,13 @@ systemctl start mariadb
 ```
 ## root@slave
 ## $ cat xtrabackup_binlog_info
-cd /home/11trainingdo/20210121
+cd /home/kurs/2023092001
 cat xtrabackup_binlog_info 
 ## mariadb-bin.000096 568 0-1-2
 ```
 
 ```
+sudo su -
 nano /root/master.txt
 ```
 
@@ -2757,7 +3297,7 @@ SET GLOBAL gtid_slave_pos = "0-1-2";
 ## /root/master.txt 
 ## get information from master-databases.sql dump 
 CHANGE MASTER TO 
-   MASTER_HOST="10.135.0.x", 
+   MASTER_HOST="192.168.56.102", 
    MASTER_PORT=3306, 
    MASTER_USER="repl",  
    MASTER_PASSWORD="password", 
@@ -2772,7 +3312,7 @@ mysql
 ```
 -- in mysql 
 start slave
-show slave status 
+show slave status \G
 -- # Looking for
 -- Slave_IO_Running: Yes
 -- Slave_SQL_Running: Yes
@@ -2799,6 +3339,416 @@ mariadb-bin.000003
 ## Schritt 2: logs bis dahin löschen auf master
 mysql -e "purge logs to 'mariadb-bin.000003'"
 ```
+
+## Replication / Galera
+
+### FAQ
+
+
+### Wie gehe ich vor, wenn der Slave steht ? 
+
+  * aufgrund eines SQL_Thread - Fehlers
+  * d.h. SQL Befehl konnte aufgrund eines Fehlers auf dem Slave nicht ausgeführt werden
+  * typisches Beispiel: Duplicate Key 
+
+  * ** Neu aufsetzen **
+  * Alles andere wäre brandgefährliches Gefrickel.
+
+```
+Sobald der Slave nicht mehr ordnungsgemäß arbeitet
+(d.h. der sql_thread steht wg. z.B. Fehlermeldung (Duplicate key), MUSS (best practice) der Slave neu aufgesetzt werden 
+
+Schnellster Weg ist immer mariabackup (non-blocking) 
+wenn ihr ausschliesslich innodb-tabellen einsetzt. 
+```
+
+## Galera 
+
+### How does Galera transfer data IST/SST
+
+
+### How it works ?
+
+ 1.  On one node in the cluster, a state change occurs on the database.
+ 2.  In the database, the wsrep hooks translate the changes to the write-set.
+ 3.  dlopen() makes the wsrep provider functions available to the wsrep hooks.
+ 4.  The Galera Replication plugin handles write-set certification and replication to the cluster
+
+### SST / IST
+
+#### State Snaphost Transfer (SST)
+
+  *  Full Transfer is done
+  *  Methods: mariabackup, mysqldump, rsync
+  *  Some are blocking (mysqldump, rsync), some are not (mariabackup) 
+     * Means: it can not be written to the donor node in the meantime 
+  *  Please do not use !!! xtrabackup or xtrabackup_v2 for mariadb because of encryption 
+
+#### Incremental State Transfer (IST)
+
+*  A node only receives the missing write sets.
+*  Is only done, when
+    * The missing write-sets are in the gcache of the donor
+    * Otherwice SST is done
+
+### Installation and Configuration (Centos/Redhat 8)
+
+
+### Setting up 1st - node
+
+```
+## Schritt 1: Create config 
+
+/etc/my.cnf.d/z_galera.cnf 
+[mysqld]
+binlog_format=ROW
+default-storage-engine=innodb
+innodb_autoinc_lock_mode=2
+bind-address=0.0.0.0
+## Set to 1 sec instead of per transaction
+## for better performance // Attention: You might loose data on power
+innodb_flush_log_at_trx_commit=0
+## Galera Provider Configuration
+wsrep_on=ON
+## centos7 (x86_64)
+wsrep_provider=/usr/lib64/galera-4/libgalera_smm.so
+## Galera Cluster Configuration
+wsrep_cluster_name="test_cluster"
+wsrep_cluster_address="gcomm://192.168.56.103,192.168.56.104,192.168.56.105"
+wsrep_node_address=192.168.56.103
+## Galera Synchronization Configuration
+wsrep_sst_method=rsync
+```
+
+### Stop the server and bootstrap cluster 
+
+```
+## setup first node in cluster 
+systemctl stop mariadb 
+galera_new_cluster # statt systemctl start mariadb 
+```
+
+### Check if cluster is running 
+
+```
+mysql> show status like 'wsrep%'\G
+*************************** 38. row ***************************
+Variable_name: wsrep_local_state_comment
+        Value: Synced
+*************************** 56. row ***************************
+Variable_name: wsrep_cluster_size
+        Value: 1
+*************************** 57. row ***************************
+Variable_name: wsrep_cluster_state_uuid
+        Value: 562e5455-a40f-11eb-b8c9-1f32a94e106e
+*************************** 58. row ***************************
+Variable_name: wsrep_cluster_status
+        Value: Primary
+*************************** 59. row ***************************
+Variable_name: wsrep_connected
+        Value: ON
+
+```
+
+#### Setup firwealld for galera 
+
+```
+firewall-cmd --add-port=3306/tcp --permanent
+firewall-cmd --add-port=4567/tcp --permanent
+firewall-cmd --add-port=4568/tcp --permanent
+firewall-cmd --add-port=4444/tcp --permanent
+firewall-cmd --reload 
+
+firewall-cmd --add-port=3306/tcp --permanent; firewall-cmd --add-port=4567/tcp --permanent; firewall-cmd --add-port=4568/tcp --permanent; firewall-cmd --add-port=4444/tcp --permanent; firewall-cmd --reload 
+
+
+```
+
+### Installation and Configuration (Ubuntu)
+
+### Installation and Configuration with mariabackup as sst (Ubuntu)
+
+
+### Setup Node 1: 
+
+```
+apt update 
+apt install -y mariadb-server mariadb-backup 
+```
+
+```
+nano /etc/mysql/mariadb.conf.d/z_settings.cnf
+```
+
+```
+[mysqld]
+binlog_format=ROW
+default-storage-engine=innodb
+innodb_autoinc_lock_mode=2 
+bind-address=0.0.0.0
+
+## for better performance // Attention: You might loose data on power outage
+innodb_flush_log_at_trx_commit=2
+
+## Galera Provider Configuration
+wsrep_on=ON
+wsrep_provider=/usr/lib/galera/libgalera_smm.so
+
+## Galera Cluster Configuration
+wsrep_cluster_name="test_cluster-<your shortcut e.g. r1>"
+wsrep_cluster_address="gcomm://10.135.0.3,10.135.0.4,10.135.0.5"
+wsrep_node_address=10.135.0.3 
+
+## Galera Synchronization Configuration
+wsrep_sst_method=mariabackup
+wsrep_sst_auth = mariabackup:mypassword
+```
+
+```
+mysql
+```
+
+```
+CREATE USER 'mariabackup'@'localhost' IDENTIFIED BY 'mypassword';
+GRANT RELOAD, PROCESS, LOCK TABLES, REPLICATION CLIENT ON *.* TO 'mariabackup'@'localhost';
+quit
+```
+
+```
+systemctl stop mariadb
+galera_new_cluster
+mysql
+```
+
+```
+show status like 'wsrep%';
+quit
+```
+
+### Setup Node 2:
+
+```
+apt update 
+apt install -y mariadb-server mariadb-backup 
+```
+
+```
+nano /etc/mysql/mariadb.conf.d/z_settings.cnf
+```
+
+```
+[mysqld]
+binlog_format=ROW
+default-storage-engine=innodb
+innodb_autoinc_lock_mode=2 
+bind-address=0.0.0.0
+
+## for better performance // Attention: You might loose data on power outage
+innodb_flush_log_at_trx_commit=2
+
+## Galera Provider Configuration
+wsrep_on=ON
+wsrep_provider=/usr/lib/galera/libgalera_smm.so
+
+## Galera Cluster Configuration
+wsrep_cluster_name="test_cluster-<your shortcut e.g. r1>"
+wsrep_cluster_address="gcomm://10.135.0.3,10.135.0.4,10.135.0.5"
+wsrep_node_address=10.135.0.4
+
+## Galera Synchronization Configuration
+wsrep_sst_method=mariabackup
+wsrep_sst_auth = mariabackup:mypassword
+```
+
+```
+systemctl restart mariadb
+```
+
+### Setup Node 3:
+
+```
+apt update 
+apt install -y mariadb-server mariadb-backup 
+```
+
+```
+nano /etc/mysql/mariadb.conf.d/z_settings.cnf
+```
+
+```
+[mysqld]
+binlog_format=ROW
+default-storage-engine=innodb
+innodb_autoinc_lock_mode=2 
+bind-address=0.0.0.0
+
+## for better performance // Attention: You might loose data on power outage
+innodb_flush_log_at_trx_commit=2
+
+## Galera Provider Configuration
+wsrep_on=ON
+wsrep_provider=/usr/lib/galera/libgalera_smm.so
+
+## Galera Cluster Configuration
+wsrep_cluster_name="test_cluster-<your shortcut e.g. r1>"
+wsrep_cluster_address="gcomm://10.135.0.3,10.135.0.4,10.135.0.5"
+wsrep_node_address=10.135.0.5
+
+## Galera Synchronization Configuration
+wsrep_sst_method=mariabackup
+wsrep_sst_auth = mariabackup:mypassword
+```
+
+```
+systemctl restart mariadb
+```
+
+
+
+### 1. Node started nicht nach Crash, z.B. Stromausfall
+
+
+### Warum startet nicht ? 
+
+```
+## node ist in einem nicht-geordneten Zustand.
+## und hat Angst ;o), dass die anderen Nodes u.U. weiter sind 
+## Ziel sollte sein, die letzte Node als 1. zu starten mit -> galera_new_cluster 
+```
+
+### Wie beheben ? 
+
+```
+## Nach Informationen im Status gucken 
+systemctl status mariadb 
+
+## Nach Informationen in den Logs schauen 
+journalctl -u mariadb 
+## Speziell kann ich rausfiltern
+journalctl -u mariadb | grep -i error
+
+## In der Regel steht safe_to_bootstrap auf 0 
+ä Fixend 
+/var/lib/grastate.dat 
+safe_to_bootstrap = 1 # setzen 
+
+## Immer nur ausführen, wenn es nur eine Node 1 !! git 
+galera-new-cluster
+
+```
+
+### Upgrade Minor/Major
+
+
+### Minor z.B. 10.3.1 -> 10.3.2
+
+  * Always do a deinstallation of old version first, before installing new version 
+  * https://mariadb.com/kb/en/upgrading-between-minor-versions-with-galera-cluster/
+
+### Major 10.3 -> 10.4 
+
+  * https://mariadb.com/kb/en/upgrading-from-mariadb-103-to-mariadb-104-with-galera-cluster/
+
+### Determine rights size of gcache - e.g. for maintenance
+
+
+### Exercise 
+
+```
+## SSH-Session 1 to node 1:
+sudo su -
+cd /usr/src
+wget https://downloads.mysql.com/docs/sakila-db.tar.gz
+tar xzvf sakila-db.tar.gz 
+cd sakila-db 
+```
+
+```
+-- # SSH-Session 2 on node 1:
+-- mysql> 
+set @start := (select sum(VARIABLE_VALUE/1024/1024) from information_schema.global_status where VARIABLE_NAME like 'WSREP%bytes'); do sleep(60); set @end := (select sum(VARIABLE_VALUE/1024/1024) from information_schema.global_status where VARIABLE_NAME like 'WSREP%bytes'); set @gcache := (select SUBSTRING_INDEX(SUBSTRING_INDEX(@@GLOBAL.wsrep_provider_options,'gcache.size = ',-1), 'M', 1)); select round((@end - @start),2) as `MB/min`, round((@end - @start),2) * 60 as `MB/hour`, @gcache as `gcache Size(MB)`, round(@gcache/round((@end - @start),2),2) as `Time to full(minutes)`;
+```
+
+```
+## SSH-Session 1 on node 1:
+mysql < sakila-schema.sql; mysql < sakila-data.sql 
+```
+
+```
+## See the result in session 2
+```
+
+
+
+
+### How long can we be down ? 
+
+```
+set @start := (select sum(VARIABLE_VALUE/1024/1024) from information_schema.global_status where VARIABLE_NAME like 'WSREP%bytes'); do sleep(60); set @end := (select sum(VARIABLE_VALUE/1024/1024) from information_schema.global_status where VARIABLE_NAME like 'WSREP%bytes'); set @gcache := (select SUBSTRING_INDEX(SUBSTRING_INDEX(@@GLOBAL.wsrep_provider_options,'gcache.size = ',-1), 'M', 1)); select round((@end - @start),2) as `MB/min`, round((@end - @start),2) * 60 as `MB/hour`, @gcache as `gcache Size(MB)`, round(@gcache/round((@end - @start),2),2) as `Time to full(minutes)`;
+```
+
+### Explanation ? 
+
+Yes, we can calculate it upside down  ;o) 
+How much downtime can i afford ? 
+
+
+Reference:
+https://fromdual.com/gcache_size_in_galera_cluster
+
+```
+##my.cnf
+[mysqld]
+wsrep_provider_options="gcache.size=256M"
+```
+
+```
+Hold time = GCache size / Replication Rate.
+Where:
+		Replication Rate = Amount of replicated data / time. (ime in seconds)
+		Amount of replicated data = (wsrep_replicated_bytes + wsrep_received_bytes) after the maintenance window - (wsrep_replicated_bytes + wsrep_received_bytes) before the maintenance window.
+The amount of replicated data for the customer's case = 7200MB.
+Now, we can find out how much GCache (default 128M) can handle for the customer's case:
+Hold time = 128MB / (7200MB / 4h) = 128MB / 0.5 MB = 256s.
+Then, we can calculate the right GCache size value to handle the maintenance window by the following formula: GCache = Maintenance window * Replication Rate = 14400s * 0.5 MB. GCache = 7200MB.
+In other words, the right GCache size should be equivalent to (or not less than) the amount of replicated data.
+```
+
+### Reference:
+
+  * https://severalnines.com/blog/how-avoid-sst-when-adding-new-node-mysql-galera-cluster/
+
+### Monitoring Galera - What to monitor
+
+
+### What to monitor ? 
+
+  * Single nodes 
+  * wsrep_local_state_comment -> synced # should be synced (but problem if it will not be on synced for a longer time)
+  * wsrep_cluster_status # Primary // Non-Primary is BAD !! 
+  * Does the node run
+  * Necessary ports available 
+
+### set threads in galera according to cert_deps 
+
+```
+Sequentially in Parallel
+
+Last, you might monitor wsrep_cert_deps_distance. It will tell you the average distance between the lowest and highest sequence number, values a node can potentially apply in parallel.
+
+Basically, this is the optimal value to set wsrep_slave_threads or wsrep_applier_threads, since it’s pointless to assign more slave threads than the number of transactions that can be applied in parallel.
+```
+
+### What to monitor 
+
+  * https://galeracluster.com/library/training/tutorials/galera-monitoring.html
+
+
+### pmmdemo (Percona Management und Monitoring Tool) 
+
+
+  * https://pmmdemo.percona.com/graph/d/pmm-home/home-dashboard?orgId=1&refresh=1m&var-interval=$__auto_interval_interval&var-environment=All&var-node_name=pxc-80-2&var-service_name=All&var-cluster=All&var-replication_set=All&var-database=All&var-node_type=All&var-service_type=All&var-username=All&var-schema=All
+  * https://www.percona.com/doc/percona-monitoring-and-management/deploy/server/docker.html
 
 ## Tipps & Tricks 
 
@@ -2852,8 +3802,8 @@ mv mysql mysql.bkup
 mysql_install_db --user=mysql
 
 ## not sure, but safe ! 
-chown mysql:mysql mysql
-chmod g+rx,o+rx mysql 
+chown -R mysql:mysql mysql
+chmod -R g+rx,o+rx mysql 
 
 ## Schritt 3: Start 
 systemctl start mariadb
@@ -3415,47 +4365,15 @@ select count(distinct(vendor_city)) from contributions;
 
   * https://mariadb.com/kb/en/mariadb-server-release-dates/
 
-## Dokumentation 
+## Dokumentation (Galera)
 
-### MySQL - Performance - PDF
+### MariaDB Galera Cluster
 
-  * http://schulung.t3isp.de/documents/pdfs/mysql/mysql-performance.pdf
+  * http://schulung.t3isp.de/documents/pdfs/mariadb/mariadb-galera-cluster.pdf
 
-### Server System Variables
+### MySQL Galera Cluster
 
-  * https://mariadb.com/kb/en/server-system-variables/#bind_address
-
-### Killing connection
-
-  * https://mariadb.com/kb/en/kill/
-
-### MariaDB - One Script Installation
-
-  * https://mariadb.com/kb/en/mariadb-package-repository-setup-and-usage/
-
-### MariaDB - Information Schema Tables
-
-  * https://mariadb.com/kb/en/information-schema-tables/
-
-### MariaDB - slow query log
-
-  * https://mariadb.com/kb/en/slow-query-log-overview/
-
-### MariaDB - sys - vor 10.6
-
-  * https://github.com/FromDual/mariadb-sys
-
-### mysql performance blog
-
-  * https://www.percona.com/blog/innodb-performance-optimization-basics-updated/
-
-### Differences Community / Enterprise Version - nearly the same
-
-  * https://fromdual.com/mariadb-enterprise-server-vs-mariadb-community-server
-
-### Hardware Optimization
-
-  * https://mariadb.com/kb/en/hardware-optimization/
+  * https://galeracluster.com/downloads/
 
 ## Misc
 
@@ -4271,31 +5189,6 @@ https://mariadb.com/de/resources/blog/flexible-mariadb-server-query-cache/
 
   * https://downloads.mariadb.org/mariadb/repositories/#distro=SLES&distro_release=sles15-amd64--sles15&mirror=timo&version=10.5
 
-### Installation (Ubuntu)
-
-
-### Setup repo and install
-
- * https://downloads.mariadb.org/mariadb/repositories/
-
-```
-### repo 
-sudo apt-get install software-properties-common
-sudo apt-key adv --fetch-keys 'https://mariadb.org/mariadb_release_signing_key.asc'
-## does an apt update after setting repo - automatically 
-sudo add-apt-repository 'deb [arch=amd64,arm64,ppc64el] https://mirror.dogado.de/mariadb/repo/10.5/ubuntu focal main'
-sudo apt install mariadb-server 
-
-```
-
-### Secure installation 
-
-```
-mariadb-secure-installation 
-## OR: if not present before 10.4 
-mysql_secure_installation 
-```
-
 ### Does mariadb listen to the outside world
 
 
@@ -4311,6 +5204,34 @@ netstat -tupel
 netstat -an 
 
 ```
+
+### How to fix (Ubuntu -> Mariadb Foundation) 
+
+```
+nano /etc/mysql/mariadb.conf.d/50-server.cnf
+```
+
+```
+## In Section [mysqld] 
+## Change bind-address to -> bind-address = 0.0.0.0
+[mysqld]
+bind-address = 0.0.0.0
+```
+
+```
+systemctl restart mariadb
+systemctl status mariadb
+lsof -i 
+```
+
+### Can I bind to multiple addresses  ?
+
+```
+## from 10.11 it is possible, before not, you have to use 0.0.0.0
+Starting with MariaDB 10.11, a comma-separated list of addresses to bind to can be given.
+```
+
+ * https://mariadb.com/kb/en/server-system-variables/#bind_address
 
 ## Backup 
 
@@ -4343,125 +5264,6 @@ do
   mysqldump $i > /usr/src/dump_$i.sql
 done
 ```
-
-## Galera 
-
-### Installation and Configuration (Centos/Redhat 8)
-
-
-### Setting up 1st - node
-
-```
-## Schritt 1: Create config 
-
-/etc/my.cnf.d/z_galera.cnf 
-[mysqld]
-binlog_format=ROW
-default-storage-engine=innodb
-innodb_autoinc_lock_mode=2
-bind-address=0.0.0.0
-## Set to 1 sec instead of per transaction
-## for better performance // Attention: You might loose data on power
-innodb_flush_log_at_trx_commit=0
-## Galera Provider Configuration
-wsrep_on=ON
-## centos7 (x86_64)
-wsrep_provider=/usr/lib64/galera-4/libgalera_smm.so
-## Galera Cluster Configuration
-wsrep_cluster_name="test_cluster"
-wsrep_cluster_address="gcomm://192.168.56.103,192.168.56.104,192.168.56.105"
-wsrep_node_address=192.168.56.103
-## Galera Synchronization Configuration
-wsrep_sst_method=rsync
-```
-
-### Stop the server and bootstrap cluster 
-
-```
-## setup first node in cluster 
-systemctl stop mariadb 
-galera_new_cluster # statt systemctl start mariadb 
-```
-
-### Check if cluster is running 
-
-```
-mysql> show status like 'wsrep%'\G
-*************************** 38. row ***************************
-Variable_name: wsrep_local_state_comment
-        Value: Synced
-*************************** 56. row ***************************
-Variable_name: wsrep_cluster_size
-        Value: 1
-*************************** 57. row ***************************
-Variable_name: wsrep_cluster_state_uuid
-        Value: 562e5455-a40f-11eb-b8c9-1f32a94e106e
-*************************** 58. row ***************************
-Variable_name: wsrep_cluster_status
-        Value: Primary
-*************************** 59. row ***************************
-Variable_name: wsrep_connected
-        Value: ON
-
-```
-
-#### Setup firwealld for galera 
-
-```
-firewall-cmd --add-port=3306/tcp --permanent
-firewall-cmd --add-port=4567/tcp --permanent
-firewall-cmd --add-port=4568/tcp --permanent
-firewall-cmd --add-port=4444/tcp --permanent
-firewall-cmd --reload 
-
-firewall-cmd --add-port=3306/tcp --permanent; firewall-cmd --add-port=4567/tcp --permanent; firewall-cmd --add-port=4568/tcp --permanent; firewall-cmd --add-port=4444/tcp --permanent; firewall-cmd --reload 
-
-
-```
-
-### 1. Node started nicht nach Crash, z.B. Stromausfall
-
-
-### Warum startet nicht ? 
-
-```
-## node ist in einem nicht-geordneten Zustand.
-## und hat Angst ;o), dass die anderen Nodes u.U. weiter sind 
-## Ziel sollte sein, die letzte Node als 1. zu starten mit -> galera_new_cluster 
-```
-
-### Wie beheben ? 
-
-```
-## Nach Informationen im Status gucken 
-systemctl status mariadb 
-
-## Nach Informationen in den Logs schauen 
-journalctl -u mariadb 
-## Speziell kann ich rausfiltern
-journalctl -u mariadb | grep -i error
-
-## In der Regel steht safe_to_bootstrap auf 0 
-ä Fixend 
-/var/lib/grastate.dat 
-safe_to_bootstrap = 1 # setzen 
-
-## Immer nur ausführen, wenn es nur eine Node 1 !! git 
-galera-new-cluster
-
-```
-
-### Upgrade Minor/Major
-
-
-### Minor z.B. 10.3.1 -> 10.3.2
-
-  * Always do a deinstallation of old version first, before installing new version 
-  * https://mariadb.com/kb/en/upgrading-between-minor-versions-with-galera-cluster/
-
-### Major 10.3 -> 10.4 
-
-  * https://mariadb.com/kb/en/upgrading-from-mariadb-103-to-mariadb-104-with-galera-cluster/
 
 ## Information Schema / Status / Processes
 
@@ -4999,216 +5801,6 @@ CREATE USER 'maria'@'247.150.130.0/255.255.255.0';
 mysql -uextern -p -h 192.168.56.104 
 mysql>show databases;
 ```
-
-### Table encryption
-
-
-### Step 1: Set up keys 
-```
-mkdir -p /etc/mysql/encryption;
-echo "1;"$(openssl rand -hex 32) > /etc/mysql/encryption/keyfile;
-
-openssl rand -hex 128 > /etc/mysql/encryption/keyfile.key;
-openssl enc -aes-256-cbc -md sha1 -pass file:/etc/mysql/encryption/keyfile.key -in /etc/mysql/encryption/keyfile -out /etc/mysql/encryption/keyfile.enc;
-
-rm -f /etc/mysql/encryption/keyfile;
-
-chown -R mysql:mysql /etc/mysql;
-chmod -R 500 /etc/mysql;
-
-
-```
-
-### Step 2: Verify data before encryption 
-
-```
-cd /var/lib/mysql/mysql
-strings gtid_slave_pos.ibd 
-
-```
-
-### Step 3: Setup configuration 
-
-```
-## vi /etc/my.cnf.d/z_encryption.cnf 
-
-[mysqld]
-plugin_load_add = file_key_management
-file_key_management_filename = /etc/mysql/encryption/keyfile.enc
-file_key_management_filekey = FILE:/etc/mysql/encryption/keyfile.key
-file_key_management_encryption_algorithm = AES_CTR
-
-innodb_encrypt_tables = FORCE
-innodb_encrypt_log = ON
-innodb_encrypt_temporary_tables = ON
-
-encrypt_tmp_disk_tables = ON
-encrypt_tmp_files = ON
-encrypt_binlog = ON
-aria_encrypt_tables = ON
-
-innodb_encryption_threads = 4
-innodb_encryption_rotation_iops = 2000
-
-
-```
-
-### Step 4: Restart server 
-
-```
-systemctl restart mariadb 
-```
-
-### Step 5: Verify encryption
-
-```
-cd /var/lib/mysql/mysql
-strings gtid_slave_pos;
-
-use information_schema;
-select * from innodb_tablespaces_encryption;
-SELECT CASE WHEN INSTR(NAME, '/') = 0 
-                   THEN '01-SYSTEM TABLESPACES'
-                   ELSE CONCAT('02-', SUBSTR(NAME, 1, INSTR(NAME, '/')-1)) END 
-                     AS "Schema Name",
-         SUM(CASE WHEN ENCRYPTION_SCHEME > 0 THEN 1 ELSE 0 END) "Tables Encrypted",
-         SUM(CASE WHEN ENCRYPTION_SCHEME = 0 THEN 1 ELSE 0 END) "Tables Not Encrypted"
-FROM information_schema.INNODB_TABLESPACES_ENCRYPTION
-GROUP BY CASE WHEN INSTR(NAME, '/') = 0 
-                   THEN '01-SYSTEM TABLESPACES'
-                   ELSE CONCAT('02-', SUBSTR(NAME, 1, INSTR(NAME, '/')-1)) END
-ORDER BY 1;
-```
-
-### Step 6: disable encryption runtime 
-
-```
-SET GLOBAL innodb_encrypt_tables = OFF;
-```
-
-```
-## Create a user that is not allowed to do so .... no set global 
-create user noroot@'localhost' identified by 'password';
-grant all on *.* to noroot@'localhost';
-revoke super on *.* from noroot@'localhost';
-```
-
-### working with mysqlbinlog and encryption 
-
-```
-mysqlbinlog -vv --read-from-remote-server --socket /run/mysqld/mysqld.sock mysqld-bin.000003 | less
-```
-
-
-### Ref:
-
-  * https://mariadb.com/de/resources/blog/mariadb-encryption-tde-using-mariadbs-file-key-management-encryption-plugin/
-
-## Security
-
-### Table encryption
-
-
-### Step 1: Set up keys 
-```
-mkdir -p /etc/mysql/encryption;
-echo "1;"$(openssl rand -hex 32) > /etc/mysql/encryption/keyfile;
-
-openssl rand -hex 128 > /etc/mysql/encryption/keyfile.key;
-openssl enc -aes-256-cbc -md sha1 -pass file:/etc/mysql/encryption/keyfile.key -in /etc/mysql/encryption/keyfile -out /etc/mysql/encryption/keyfile.enc;
-
-rm -f /etc/mysql/encryption/keyfile;
-
-chown -R mysql:mysql /etc/mysql;
-chmod -R 500 /etc/mysql;
-
-
-```
-
-### Step 2: Verify data before encryption 
-
-```
-cd /var/lib/mysql/mysql
-strings gtid_slave_pos.ibd 
-
-```
-
-### Step 3: Setup configuration 
-
-```
-## vi /etc/my.cnf.d/z_encryption.cnf 
-
-[mysqld]
-plugin_load_add = file_key_management
-file_key_management_filename = /etc/mysql/encryption/keyfile.enc
-file_key_management_filekey = FILE:/etc/mysql/encryption/keyfile.key
-file_key_management_encryption_algorithm = AES_CTR
-
-innodb_encrypt_tables = FORCE
-innodb_encrypt_log = ON
-innodb_encrypt_temporary_tables = ON
-
-encrypt_tmp_disk_tables = ON
-encrypt_tmp_files = ON
-encrypt_binlog = ON
-aria_encrypt_tables = ON
-
-innodb_encryption_threads = 4
-innodb_encryption_rotation_iops = 2000
-
-
-```
-
-### Step 4: Restart server 
-
-```
-systemctl restart mariadb 
-```
-
-### Step 5: Verify encryption
-
-```
-cd /var/lib/mysql/mysql
-strings gtid_slave_pos;
-
-use information_schema;
-select * from innodb_tablespaces_encryption;
-SELECT CASE WHEN INSTR(NAME, '/') = 0 
-                   THEN '01-SYSTEM TABLESPACES'
-                   ELSE CONCAT('02-', SUBSTR(NAME, 1, INSTR(NAME, '/')-1)) END 
-                     AS "Schema Name",
-         SUM(CASE WHEN ENCRYPTION_SCHEME > 0 THEN 1 ELSE 0 END) "Tables Encrypted",
-         SUM(CASE WHEN ENCRYPTION_SCHEME = 0 THEN 1 ELSE 0 END) "Tables Not Encrypted"
-FROM information_schema.INNODB_TABLESPACES_ENCRYPTION
-GROUP BY CASE WHEN INSTR(NAME, '/') = 0 
-                   THEN '01-SYSTEM TABLESPACES'
-                   ELSE CONCAT('02-', SUBSTR(NAME, 1, INSTR(NAME, '/')-1)) END
-ORDER BY 1;
-```
-
-### Step 6: disable encryption runtime 
-
-```
-SET GLOBAL innodb_encrypt_tables = OFF;
-```
-
-```
-## Create a user that is not allowed to do so .... no set global 
-create user noroot@'localhost' identified by 'password';
-grant all on *.* to noroot@'localhost';
-revoke super on *.* from noroot@'localhost';
-```
-
-### working with mysqlbinlog and encryption 
-
-```
-mysqlbinlog -vv --read-from-remote-server --socket /run/mysqld/mysqld.sock mysqld-bin.000003 | less
-```
-
-
-### Ref:
-
-  * https://mariadb.com/de/resources/blog/mariadb-encryption-tde-using-mariadbs-file-key-management-encryption-plugin/
 
 ## SELinux 
 
@@ -6357,6 +6949,10 @@ START SLAVE;
 *  Each release transitions in about max 4 years to GPL 
 
 
+### Current version 
+
+  * Current Version is maxscale 6 (05/2023)
+
 ### The MaxScale load-balancer and its components
 
 *  Routers 
@@ -6369,15 +6965,14 @@ START SLAVE;
 *  Logging Filters
 *  Statement rewriting filters
 *  Result set manipulation filters 
-*  Firewill filter
 *  Pipeline control filters
     * e.g. tee and send to a second server
 
-*  Ref: https://mariadb.com/kb/en/mariadb-maxscale-25-regex-filter/
+*  Ref: https://mariadb.com/kb/en/mariadb-maxscale-6-regex-filter/
 
 ### Documentation - maxctrl 
 
-  * https://mariadb.com/kb/en/mariadb-maxscale-25-maxctrl/
+  * https://mariadb.com/kb/en/mariadb-maxscale-6-maxctrl/
 
 
 ### Installation and Setup
@@ -6386,7 +6981,7 @@ START SLAVE;
 	
 ```
 apt update
-apt install apt-transport-https curl 
+apt install apt-transport-https
 
 ## Setting up the repos 
 curl -sS https://downloads.mariadb.com/MariaDB/mariadb_repo_setup | sudo bash
@@ -6397,7 +6992,7 @@ apt install maxscale
 #### Setup (Part 1: MaxScale db-user)
 
   * Do this on one of the galera nodes 
-  * Adjust IP !! 
+  * Adjust IP !! // best-> private ip from maxscale  -> e.g. 10.135.0.30
 
 ```bash
 ## IP FROM MAXSCALE
@@ -6405,30 +7000,23 @@ apt install maxscale
 ## It is sufficient to set it on one node, because 
 ## it will be synced to all the other nodes
 ## on node 1 
-CREATE USER 'maxscale'@'10.10.11.139' IDENTIFIED BY 'P@ssw0rd';
+CREATE USER 'maxscale'@'10.135.0.x' IDENTIFIED BY 'P@ssw0rd';
 ##
-GRANT SELECT ON mysql.db TO 'maxscale'@'10.10.11.139';
-GRANT SELECT ON mysql.user TO 'maxscale'@'10.10.11.139';
-GRANT SELECT ON mysql.tables_priv TO 'maxscale'@'10.10.11.139';
+GRANT SELECT ON mysql.db TO 'maxscale'@'10.135.0.x';
+GRANT SELECT ON mysql.user TO 'maxscale'@'10.135.0.x';
+GRANT SELECT ON mysql.tables_priv TO 'maxscale'@'10.135.0.x';
 ##
-GRANT SELECT ON mysql.columns_priv TO 'maxscale'@'10.10.11.139';
-GRANT SELECT ON mysql.proxies_priv TO 'maxscale'@'10.10.11.139';
+GRANT SELECT ON mysql.columns_priv TO 'maxscale'@'10.135.0.x';
+GRANT SELECT ON mysql.proxies_priv TO 'maxscale'@'10.135.0.x';
 ##
-GRANT SHOW DATABASES ON *.* TO 'maxscale'@'10.10.11.139';
+GRANT SHOW DATABASES ON *.* TO 'maxscale'@'10.135.0.x';
 ## Needed for maxscale 
-GRANT SELECT ON mysql.procs_priv TO 'maxscale'@'10.10.11.139';
-GRANT SELECT ON mysql.roles_mapping TO 'maxscale'@'10.10.11.139';
-
-## Additionally for cluster operations (rejoin,switchover,failover for master/slave replications 
-## these permissions are needed 
-GRANT super, reload, process, show databases, event on *.* to 'maxscale'@'10.10.11.139';
-## GRANT select on mysql.user to 'maxscale'@'10.10.11.139';
-
-
-
+GRANT SELECT ON mysql.procs_priv TO 'maxscale'@'10.135.0.x';
+GRANT SELECT ON mysql.roles_mapping TO 'maxscale'@'10.135.0.x';
 ```
 
 ```
+#### Testing if user works 
 ## On maxscale - server 
 apt update 
 apt install mariadb-client 
@@ -6453,14 +7041,17 @@ log_notice=1
 log_info=0
 log_debug=0
 
-[TheMonitor]
+[Galera-Monitor]
+
 type=monitor
-module=mariadbmon
+module=galeramon
 servers=server1,server2,server3
 user=maxscale
 password=P@ssw0rd
-auto_rejoin=true
-auto_failover=true
+monitor_interval=2000ms
+disable_master_failback=1
+## Needs to be false, when block sst-method like rsync is used
+available_when_donor=false 
 
 [RW-Split-Router]
 type=service
@@ -6468,7 +7059,6 @@ router=readwritesplit
 servers=server1,server2,server3
 user=maxscale
 password=P@ssw0rd
-max_slave_connections=100%
 
 
 [RW-Split-Listener]
@@ -6513,9 +7103,42 @@ systemctl start maxscale
 
 ```
 maxctrl list servers
+maxctrl set server server1 maintenance
+maxctrl clear server server1 maintenance
 maxctrl show server server1
 maxctrl list services 
 maxctrl show service ReadWrite-Split-Router 
+```
+
+### Exercise 
+
+```
+## Create user for client and maxscale on one of the galera nodes 
+## IP-Adresse from MaxScale 
+create database if not exists training; 
+create user joe@'10.135.0.45' identified by 'password';
+grant all on training.* to joe@'10.135.0.45'; 
+```
+
+```
+## Create same user for client 
+## adjust x in ip by ip - part of client 
+create database if not exists training; 
+create user joe@'10.135.0.x' identified by 'password';
+grant all on training.* to joe@'10.135.0.x'; 
+
+```
+
+```
+## Fire Up client-server (used only for mysql-client 
+## there
+## simply take the one from the repo 
+apt install mariadb-client 
+## then connect 
+mysql -ujoe -p -h<ip-of-maxscale>
+mysql>create database training; use training; create table trainee (id int,name varchar(50), primary key(id)); insert into trainee (id, name) values (1,'Jochen'); select @@hostname;
+mysql>use training; select * from trainee; select @@hostname;
+## These should be different servers 
 ```
 
 ### Reference: MaxScale-Proxy mit Monitoring
@@ -6752,7 +7375,7 @@ create user someuser@somehost identified by @mypass;
 ```
 cd /usr/src
 wget https://downloads.mysql.com/docs/sakila-db.tar.gz
-tar xzvf sakila-db.tar.gz
+tar xvf sakila-db.tar.gz
 
 cd sakila-db 
 mysql < sakila-schema.sql 
@@ -6955,6 +7578,38 @@ total_memory_allocated: 0 bytes
 
   * https://www.percona.com/blog/
 
+### Server System Variables
+
+  * https://mariadb.com/kb/en/server-system-variables/#bind_address
+
+### Killing connection
+
+  * https://mariadb.com/kb/en/kill/
+
+### MariaDB - One Script Installation
+
+  * https://mariadb.com/kb/en/mariadb-package-repository-setup-and-usage/
+
+### MariaDB - Information Schema Tables
+
+  * https://mariadb.com/kb/en/information-schema-tables/
+
+### MariaDB - slow query log
+
+  * https://mariadb.com/kb/en/slow-query-log-overview/
+
+### MariaDB - sys - vor 10.6
+
+  * https://github.com/FromDual/mariadb-sys
+
+### Differences Community / Enterprise Version - nearly the same
+
+  * https://fromdual.com/mariadb-enterprise-server-vs-mariadb-community-server
+
+### Hardware Optimization
+
+  * https://mariadb.com/kb/en/hardware-optimization/
+
 ### Source-Code MariaDB
 
   * https://github.com/MariaDB/server
@@ -6966,18 +7621,6 @@ total_memory_allocated: 0 bytes
 ### Last Training
 
   * https://github.com/jmetzger/training-mysql-developers-basics
-
-### MariaDB Galera Cluster
-
-  * http://schulung.t3isp.de/documents/pdfs/mariadb/mariadb-galera-cluster.pdf
-
-### MySQL Galera Cluster
-
-  * https://galeracluster.com/downloads/
-
-### Releases List - Long Time / Stable
-
-  * https://mariadb.com/kb/en/mariadb-server-release-dates/
 
 ## Questions and Answers 
 
