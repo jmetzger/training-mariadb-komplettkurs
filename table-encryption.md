@@ -26,9 +26,17 @@ strings gtid_slave_pos.ibd
 
 ## Step 3: Setup configuration 
 
+````
+# debian / ubuntu 
+nano /etc/mysql/mariadb.conf.d/z_encryption.cnf
 ```
-# vi /etc/my.cnf.d/z_encryption.cnf 
 
+```
+# centos / rocky /redhat 
+nano /etc/my.cnf.d/z_encryption.cnf 
+```
+
+```
 [mysqld]
 plugin_load_add = file_key_management
 file_key_management_filename = /etc/mysql/encryption/keyfile.enc
