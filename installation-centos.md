@@ -25,21 +25,23 @@ dnf install -y mariadb-server
 ```
 
 ```
-# MariaDB 10.6 CentOS repository list - created 2022-09-20 09:46 UTC
+# MariaDB 10.6 RedHatEnterpriseLinux repository list - created 2023-09-21 11:52 UTC
 # https://mariadb.org/download/
 [mariadb]
 name = MariaDB
-baseurl = https://mirror1.hs-esslingen.de/pub/Mirrors/mariadb/yum/10.6/centos8-amd64
-module_hotfixes=1
-gpgkey=https://mirror1.hs-esslingen.de/pub/Mirrors/mariadb/yum/RPM-GPG-KEY-MariaDB
-gpgcheck=1
+# rpm.mariadb.org is a dynamic mirror if your preferred mirror goes offline. See https://mariadb.org/mirrorbits/ for details.
+# baseurl = https://rpm.mariadb.org/10.6/rhel/$releasever/$basearch
+baseurl = https://ftp.agdsn.de/pub/mirrors/mariadb/yum/10.6/rhel/$releasever/$basearch
+# gpgkey = https://rpm.mariadb.org/RPM-GPG-KEY-MariaDB
+gpgkey = https://ftp.agdsn.de/pub/mirrors/mariadb/yum/RPM-GPG-KEY-MariaDB
+gpgcheck = 1
 ```
 
 ```
 # Install
-sudo dnf install -y install MariaDB-server
-sudo systemctl start mysql # always works - systemd - alias 
-sudo systemctl status mysql # Findout real service - name
+sudo dnf install -y install MariaDB-server MariaDB-client
+sudo systemctl start mariadb # always works - systemd - alias 
+sudo systemctl status mariadb # Findout real service - name
 # like Windows-Autostart
 sudo systemctl enable mariadb  
 sudo systemctl status mariadb 
