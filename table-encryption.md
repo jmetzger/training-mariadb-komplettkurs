@@ -26,7 +26,7 @@ strings gtid_slave_pos.ibd
 
 ## Step 3: Setup configuration 
 
-````
+```
 # debian / ubuntu 
 nano /etc/mysql/mariadb.conf.d/z_encryption.cnf
 ```
