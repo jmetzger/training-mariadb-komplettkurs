@@ -171,10 +171,15 @@ systemctl restart mariadb
 ## Step 9: Restore Data on slave 
 
 ```
+# Debian / Ubuntu 
 # Install mariaback if not present
 apt install -y mariadb-backup
 ```
 
+```
+# Rocky / Redhat
+dnf install -y MariaDB-backup 
+```
 
 ```
 systemctl stop mariadb 
