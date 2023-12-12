@@ -10,7 +10,7 @@ systemctl restart mariadb.service
 systemctl status mariadb.service 
 
 # no findings -> step 2:
-journalctl -xe
+journalctl -xeu
 
 # no findings -> step 3:
 journalctl -u mariadb.service 
