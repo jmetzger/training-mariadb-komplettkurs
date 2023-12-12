@@ -7,7 +7,7 @@
 dnf search mariadb
 # find version 
 dnf info mariadb-server 
-dnf install -y mariadb-server 
+dnf install -y mariadb-server mariadb
 ```
 
 
