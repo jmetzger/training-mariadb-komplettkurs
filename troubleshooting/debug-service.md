@@ -17,6 +17,8 @@ journalctl -xeu mariadb.service
 # and eventually need to increase the log level
 # e.g. with mariadb (find through internet research)
 less /var/log/mysql/error.log 
+# or
+less /var/log/mariadb/mariadb.log 
 
 # Nicht fündig -> Schritt 4
 # Allgemeines Log
