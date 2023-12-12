@@ -13,16 +13,12 @@ systemctl status mariadb.service
 journalctl -xeu mariadb.service
 
 # no findings -> step 3:
-journalctl -u mariadb.service 
-# or journalctl -u mariadb 
-
-# no findings -> step 4:
 # search specific log for service 
 # and eventually need to increase the log level
 # e.g. with mariadb (find through internet research)
 less /var/log/mysql/error.log 
 
-# Nicht fündig -> Schritt 5
+# Nicht fündig -> Schritt 4
 # Allgemeines Log
 # Debian/Ubuntu 
 /var/log/syslog
