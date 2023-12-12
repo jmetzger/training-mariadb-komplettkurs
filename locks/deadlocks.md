@@ -64,6 +64,17 @@ kill 50;
 
 ```
 
+## There is more (activate: do not only show last deadlock)
+
+```
+innodb_print_all_deadlocks = ON
+```
+
+
+## Refs:
+
+  * https://fromdual.com/mariadb-deadlocks
+
 ## Refs ( 3 important tables )  
 
   * https://mariadb.com/kb/en/information-schema-innodb_lock_waits-table/ (most important one) 
