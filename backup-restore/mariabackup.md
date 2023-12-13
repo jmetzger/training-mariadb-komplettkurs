@@ -36,7 +36,7 @@ user=root
 user=root
 ```
 
-## Schritt 2: Backup erstellen 
+### Schritt 2: Backup erstellen 
 
 ```
 mkdir /backups 
@@ -44,7 +44,7 @@ mkdir /backups
 mariabackup --target-dir=/backups/2023091901 --backup 
 ```
 
-## Schritt 3: Prepare durchführen 
+### Schritt 3: Prepare durchführen 
 
 ```
 # apply ib_logfile0 to tablespaces 
@@ -52,7 +52,7 @@ mariabackup --target-dir=/backups/2023091901 --backup
 mariabackup --target-dir=/backups/2023091901 --prepare 
 ```
 
-## Schritt 4: Recover 
+### Schritt 4: Recover 
 
 ```
 systemctl stop mariadb 
