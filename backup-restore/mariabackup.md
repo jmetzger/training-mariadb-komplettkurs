@@ -84,7 +84,7 @@ user=root
 ```
 mkdir /backups 
 # target-dir needs to be empty or not present 
-mariabackup --target-dir=/backups/20230823 --backup 
+mariabackup --target-dir=/backups/2023091901 --backup 
 ```
 
 ## Schritt 3: Prepare durchführen 
@@ -92,7 +92,7 @@ mariabackup --target-dir=/backups/20230823 --backup
 ```
 # apply ib_logfile0 to tablespaces 
 # after that ib_logfile0 ->  0 bytes
-mariabackup --target-dir=/backups/20230823 --prepare 
+mariabackup --target-dir=/backups/2023091901 --prepare 
 ```
 
 ## Schritt 4: Recover
@@ -100,7 +100,7 @@ mariabackup --target-dir=/backups/20230823 --prepare
 ```
 systemctl stop mariadb 
 mv /var/lib/mysql /var/lib/mysql.bkup 
-mariabackup --target-dir=/backups/20230823 --copy-back 
+mariabackup --target-dir=/backups/2023091901 --copy-back 
 chown -R mysql:mysql /var/lib/mysql
 chmod -R 755 /var/lib/mysql # otherwice socket for unprivileged user does not work
 # Does not work !!! Because of selinux // does not start
