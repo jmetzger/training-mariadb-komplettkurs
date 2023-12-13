@@ -64,7 +64,7 @@ systemctl start mariadb
 systemctl status mariadb 
 ```
 
-## Walkthrough (Redhat/Centos/Rocky Linux 8 mit mariadb for mariadb.org)
+## Walkthrough (Redhat/Centos/Rocky Linux)
 
 ### Schritt 1: Grundkonfiguration 
 
