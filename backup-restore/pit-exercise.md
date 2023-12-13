@@ -6,6 +6,10 @@
 # Step 1 : Create full backup (assuming 24:00 o'clock)
 mysqldump --all-databases --single-transaction --master-data=2 --routines --events --flush-logs --delete-master-logs > /usr/src/all-databases.sql;
 
+# Step 1.5: look into data
+mysql>use sakila;
+mysql>select * from actor;
+
 # Step 2: Working on data 
 mysql>use sakila; 
 mysql>insert into actor (first_name,last_name) values ('john','The Rock');
