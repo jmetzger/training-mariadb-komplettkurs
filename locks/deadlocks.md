@@ -68,6 +68,7 @@ kill 50;
 
 ```
 innodb_print_all_deadlocks = ON
+show engine innodb status \G
 ```
 
 
