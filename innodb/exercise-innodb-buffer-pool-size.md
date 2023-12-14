@@ -4,6 +4,10 @@
 
 ```
 mysql
+```
+
+```
+# in mysql
 select @@innodb_buffer_pool_size;
 show variables like 'innodb%buffer%';
 exit
