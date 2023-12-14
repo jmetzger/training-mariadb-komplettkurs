@@ -102,7 +102,7 @@ https://www.percona.com/blog/2008/11/21/how-to-calculate-a-good-innodb-log-file-
 
 ```
 # work only with ip's - better for performance 
-/etc/my.cnf 
+/etc/my.cnf.d/mariadb-server.cnf  
 skip-name-resolve
 ```
 
