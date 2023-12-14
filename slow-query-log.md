@@ -8,7 +8,13 @@
 # or: debian /etc/mysql/mariadb.conf.d/50-server.cnf 
 [mysqld]
 slow-query-log 
+```
 
+```
+systemctl restart mariadb
+```
+
+```
 # ODER
 # Alternative: Step 1a
 mysql>SET GLOBAL slow_query_log = 1 
