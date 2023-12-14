@@ -38,7 +38,7 @@
      * [InnoDB - Storage Engine - Structure](/innodb/innodb-structure.md)
      * [InnoDB Buffer Pool Size bestimmen und setzen inkl. free buffers](/innodb/exercise-innodb-buffer-pool-size.md)
      * [Important InnoDB - configuration - options to optimized performance](/innodb/innodb.md) 
-     * [Calculate innodb logfile size](calculate-innodb-logfile-size.md)
+     * [Calculate innodb logfile size](/innodb/calculate-innodb-logfile-size.md)
 
   1. Training Data 
      * [Setup training data "contributions"](/indexes/setup-training-data-contributions.md)
