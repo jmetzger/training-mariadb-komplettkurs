@@ -67,7 +67,8 @@ kill 50;
 ## There is more (activate: do not only show last deadlock)
 
 ```
-innodb_print_all_deadlocks = ON
+# by setting this, deadlocks are written to error log 
+set global innodb_print_all_deadlocks = ON
 show engine innodb status \G
 ```
 
