@@ -23,8 +23,10 @@ mysql>SET slow_query_log = 1
 
 ```
 # Step 2: 
-# Zeit festlegen, ab wann eine query langsam ist 
+# Zeit festlegen, ab wann eine query langsam ist
+# global für den Server (greift erst bei der nächsten Session) 
 mysql>SET GLOBAL long_query_time = 0.000001;
+# und für die aktuelle Session
 mysql>SET long_query_time = 0.000001
 ```
 
