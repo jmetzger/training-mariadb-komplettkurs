@@ -146,6 +146,9 @@
      * [MariaDB Galera Cluster](http://schulung.t3isp.de/documents/pdfs/mariadb/mariadb-galera-cluster.pdf)
      * [MySQL Galera Cluster](https://galeracluster.com/downloads/)   
 
+  1. Dokumentation (functions)
+     * [Built-In Functions](https://mariadb.com/kb/en/built-in-functions/)
+
   1. Misc
      * [Bis zu welcher Größe taugt mariadb](/basics/limitations-mariadb.md)
     
