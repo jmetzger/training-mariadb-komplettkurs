@@ -9,17 +9,24 @@
 [mysqld]
 slow-query-log 
 
-# Step 2
+# ODER
+# Alternative: Step 1a
 mysql>SET GLOBAL slow_query_log = 1 
 mysql>SET slow_query_log = 1 
+```
+
+```
+# Step 2: 
+# Zeit festlegen, ab wann eine query langsam ist 
 mysql>SET GLOBAL long_query_time = 0.000001;
 mysql>SET long_query_time = 0.000001
+```
 
+```
 # Step 3
 # run some time / data
 # and look into your slow-query-log 
 /var/lib/mysql/hostname-slow.log 
-
 ```
 
 ## Exercise (mariadb 10.6 from mariadb.org) 
