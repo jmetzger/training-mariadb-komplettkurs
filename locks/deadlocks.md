@@ -64,7 +64,7 @@ kill 50;
 
 ```
 
-## With this command you can also pending locks 
+## With this command you can also see pending locks 
 
 ```
 show engine innodb status \G
