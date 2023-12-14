@@ -64,12 +64,18 @@ kill 50;
 
 ```
 
+## With this command you can also pending locks 
+
+```
+show engine innodb status \G
+```
+
+
 ## There is more (activate: do not only show last deadlock)
 
 ```
 # by setting this, deadlocks are written to error log 
 set global innodb_print_all_deadlocks = ON
-show engine innodb status \G
 ```
 
 
