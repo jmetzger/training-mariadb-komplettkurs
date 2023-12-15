@@ -63,12 +63,13 @@ quit
 ## Setup Node 2:
 
 ```
-apt update 
-apt install -y mariadb-server mariadb-backup 
+ dnf install -y mariadb-server mariadb-backup mariadb-server-galera
 ```
 
 ```
-nano /etc/mysql/mariadb.conf.d/z_settings.cnf
+# Default datei löschen oder umbenennen
+rm /etc/my.cnf.d/galera.cnf 
+nano /etc/my.cnf.de/z_galera.cnf
 ```
 
 ```
@@ -83,7 +84,7 @@ innodb_flush_log_at_trx_commit=2
 
 # Galera Provider Configuration
 wsrep_on=ON
-wsrep_provider=/usr/lib/galera/libgalera_smm.so
+wsrep_provider=/usr/lib64/galera/libgalera_smm.so
 
 # Galera Cluster Configuration
 wsrep_cluster_name="test_cluster-<your shortcut e.g. r1>"
