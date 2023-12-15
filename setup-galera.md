@@ -52,6 +52,10 @@ quit
 ```
 
 ```
+mysql
+```
+
+```
 show status like 'wsrep%';
 quit
 ```
