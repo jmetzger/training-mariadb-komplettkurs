@@ -64,6 +64,7 @@
      * [binlog aktivieren und auslesen](#binlog-aktivieren-und-auslesen)
      * [binlog_format](#binlog_format)
      * [Backup with mysqldump - best practices](#backup-with-mysqldump---best-practices)
+     * [backup user with mysqldump](#backup-user-with-mysqldump)
      * [PIT - Point in time Recovery - Exercise](#pit---point-in-time-recovery---exercise)
      * [Backup Single Database, Structure and only data](#backup-single-database-structure-and-only-data)
      * [Flashback](#flashback)
@@ -109,7 +110,7 @@
     
   1. Galera 
      * [How does Galera transfer data IST/SST](#how-does-galera-transfer-data-istsst)
-     * [Installation and Configuration (Centos/Redhat 8)](#installation-and-configuration-centosredhat-8)
+     * [Installation and Configuration (Centos/Redhat 8) with mariabackup as sst](#installation-and-configuration-centosredhat-8-with-mariabackup-as-sst)
      * [Installation and Configuration (Ubuntu)](#installation-and-configuration-ubuntu)
      * [Installation and Configuration with mariabackup as sst (Ubuntu)](#installation-and-configuration-with-mariabackup-as-sst-ubuntu)
      * [1. Node started nicht nach Crash, z.B. Stromausfall](#1-node-started-nicht-nach-crash-zb-stromausfall)
@@ -144,6 +145,9 @@
   1. Dokumentation (Galera)
      * [MariaDB Galera Cluster](http://schulung.t3isp.de/documents/pdfs/mariadb/mariadb-galera-cluster.pdf)
      * [MySQL Galera Cluster](https://galeracluster.com/downloads/)
+
+  1. Dokumentation (functions)
+     * [Built-In Functions](https://mariadb.com/kb/en/built-in-functions/)
 
   1. Misc
      * [Bis zu welcher Größe taugt mariadb](#bis-zu-welcher-größe-taugt-mariadb)
@@ -423,7 +427,7 @@ mysql_secure_installation
 dnf search mariadb
 ## find version 
 dnf info mariadb-server 
-dnf install -y mariadb-server 
+dnf install -y mariadb-server mariadb
 ```
 
 
@@ -684,19 +688,17 @@ systemctl restart mariadb.service
 systemctl status mariadb.service 
 
 ## no findings -> step 2:
-journalctl -xe
+journalctl -xeu mariadb.service
 
 ## no findings -> step 3:
-journalctl -u mariadb.service 
-## or journalctl -u mariadb 
-
-## no findings -> step 4:
 ## search specific log for service 
 ## and eventually need to increase the log level
 ## e.g. with mariadb (find through internet research)
 less /var/log/mysql/error.log 
+## or
+less /var/log/mariadb/mariadb.log 
 
-## Nicht fündig -> Schritt 5
+## Nicht fündig -> Schritt 4
 ## Allgemeines Log
 ## Debian/Ubuntu 
 /var/log/syslog
@@ -945,6 +947,10 @@ MariaDB [training]> show create table mitarbeiter;
 
 ```
 mysql
+```
+
+```
+## in mysql
 select @@innodb_buffer_pool_size;
 show variables like 'innodb%buffer%';
 exit
@@ -1113,7 +1119,7 @@ https://www.percona.com/blog/2008/11/21/how-to-calculate-a-good-innodb-log-file-
 
 ```
 ## work only with ip's - better for performance 
-/etc/my.cnf 
+/etc/my.cnf.d/mariadb-server.cnf  
 skip-name-resolve
 ```
 
@@ -1134,6 +1140,98 @@ ERROR 1227 (42000): Access denied; you need (at least one of) the PROCESS privil
 ```
 
 ### Calculate innodb logfile size
+
+
+
+### Exercise (simple) 
+
+```
+pager grep sequence;
+show engine innodb status; 
+select sleep(60);
+show engine innodb status;
+```
+
+```
+mysql> select (3838334638 - 3836410803) / 1024 / 1024 as MB_per_min;
++------------+
+| MB_per_min |
++------------+
+| 1.83471203 | 
++------------+
+```
+
+  * https://www.percona.com/blog/how-to-calculate-a-good-innodb-log-file-size/
+
+### Exercise 2: with sakila 
+
+```
+Open 2 sessions
+Session 1: mysql to measure
+Session 2: import sakila 
+```
+
+#### Step 1: In Session 1 (measure) 
+
+```
+mysql
+```
+
+```
+pager grep sequence;
+show engine innodb status;
+select sleep(120);
+show engine innodb status;
+
+```
+
+#### Step 2: In Session 2 (import sakila) 
+
+```
+cd /usr/src/sakila-db
+mysql < sakila-schema.sql; mysql < sakila-data.sql;
+```
+
+#### Step 3: In Session 1 (measure) - Calculate values 
+
+```
+-- Calculate values 
+-- second-value-from-step1 - first-value-from-step1
+-- select (second_value - first_value) / 1024 / 1024 as MB_per_2min
+
+
+pager;
+## eg. 312MB 
+select (3838334638 - 3836410803) / 1024 / 1024 as MB_per_2min;
+exit 
+```
+
+#### Step 4: Adjust config accordingly 
+
+```
+## Ubuntu / Debian
+cd /etc/mysql/mariadb.conf.d/
+nano 50-server.cnf
+```
+
+```
+## mysqld section
+[mysqld]
+## other settings
+innodb-log-file-size=312M
+```
+
+```
+systemctl restart mariadb
+mysql
+```
+
+```
+select @@innodb_log_file_size
+## oder
+show variables like '%log_file%';
+exit
+```
 
 ## Training Data 
 
@@ -2016,6 +2114,25 @@ echo "create database mynewdb" | mysql
 mysql mynewdb < sakila-all.sql 
 ```
 
+### backup user with mysqldump
+
+
+### General 
+
+  * What are the minimum rights, needed (single-transaction not lock-tables (default))
+
+### Walktrough 
+
+```
+CREATE USER backup@localhost identified by 'yoursupersecretepassword';
+GRANT SELECT, SHOW VIEW, EVENT, TRIGGER ON sakila.* TO backup@localhost:
+```
+
+```
+## how to use it
+mysqldump -ubackup -p  --single-transaction --routines --events sakila > /usr/src/sakila-db.sql
+```
+
 ### PIT - Point in time Recovery - Exercise
 
 
@@ -2024,6 +2141,10 @@ mysql mynewdb < sakila-all.sql
 ```
 ## Step 1 : Create full backup (assuming 24:00 o'clock)
 mysqldump --all-databases --single-transaction --master-data=2 --routines --events --flush-logs --delete-master-logs > /usr/src/all-databases.sql;
+
+## Step 1.5: look into data
+mysql>use sakila;
+mysql>select * from actor;
 
 ## Step 2: Working on data 
 mysql>use sakila; 
@@ -2159,7 +2280,7 @@ user=root
 user=root
 ```
 
-### Schritt 2: Backup erstellen 
+#### Schritt 2: Backup erstellen 
 
 ```
 mkdir /backups 
@@ -2167,7 +2288,7 @@ mkdir /backups
 mariabackup --target-dir=/backups/2023091901 --backup 
 ```
 
-### Schritt 3: Prepare durchführen 
+#### Schritt 3: Prepare durchführen 
 
 ```
 ## apply ib_logfile0 to tablespaces 
@@ -2175,7 +2296,7 @@ mariabackup --target-dir=/backups/2023091901 --backup
 mariabackup --target-dir=/backups/2023091901 --prepare 
 ```
 
-### Schritt 4: Recover 
+#### Schritt 4: Recover 
 
 ```
 systemctl stop mariadb 
@@ -2187,7 +2308,7 @@ systemctl start mariadb
 systemctl status mariadb 
 ```
 
-### Walkthrough (Redhat/Centos/Rocky Linux 8 mit mariadb for mariadb.org)
+### Walkthrough (Redhat/Centos/Rocky Linux)
 
 #### Schritt 1: Grundkonfiguration 
 
@@ -2207,7 +2328,7 @@ user=root
 ```
 mkdir /backups 
 ## target-dir needs to be empty or not present 
-mariabackup --target-dir=/backups/20230823 --backup 
+mariabackup --target-dir=/backups/2023091901 --backup 
 ```
 
 ### Schritt 3: Prepare durchführen 
@@ -2215,7 +2336,7 @@ mariabackup --target-dir=/backups/20230823 --backup
 ```
 ## apply ib_logfile0 to tablespaces 
 ## after that ib_logfile0 ->  0 bytes
-mariabackup --target-dir=/backups/20230823 --prepare 
+mariabackup --target-dir=/backups/2023091901 --prepare 
 ```
 
 ### Schritt 4: Recover
@@ -2223,7 +2344,7 @@ mariabackup --target-dir=/backups/20230823 --prepare
 ```
 systemctl stop mariadb 
 mv /var/lib/mysql /var/lib/mysql.bkup 
-mariabackup --target-dir=/backups/20230823 --copy-back 
+mariabackup --target-dir=/backups/2023091901 --copy-back 
 chown -R mysql:mysql /var/lib/mysql
 chmod -R 755 /var/lib/mysql # otherwice socket for unprivileged user does not work
 ## Does not work !!! Because of selinux // does not start
@@ -2598,18 +2719,33 @@ mysqlbinlog -vv --read-from-remote-server --socket /run/mysqld/mysqld.sock mysql
 ## or: debian /etc/mysql/mariadb.conf.d/50-server.cnf 
 [mysqld]
 slow-query-log 
+```
 
-## Step 2
+```
+systemctl restart mariadb
+```
+
+```
+## ODER
+## Alternative: Step 1a
 mysql>SET GLOBAL slow_query_log = 1 
 mysql>SET slow_query_log = 1 
-mysql>SET GLOBAL long_query_time = 0.000001;
-mysql>SET long_query_time = 0.000001
+```
 
+```
+## Step 2: 
+## Zeit festlegen, ab wann eine query langsam ist
+## global für den Server (greift erst bei der nächsten Session) 
+mysql>SET GLOBAL long_query_time = 0.000001;
+## und für die aktuelle Session
+mysql>SET long_query_time = 0.000001
+```
+
+```
 ## Step 3
 ## run some time / data
 ## and look into your slow-query-log 
 /var/lib/mysql/hostname-slow.log 
-
 ```
 
 ### Exercise (mariadb 10.6 from mariadb.org) 
@@ -3391,10 +3527,147 @@ wenn ihr ausschliesslich innodb-tabellen einsetzt.
     * The missing write-sets are in the gcache of the donor
     * Otherwice SST is done
 
-### Installation and Configuration (Centos/Redhat 8)
+### Installation and Configuration (Centos/Redhat 8) with mariabackup as sst
 
+
+### Preparation: Install mariadb 
+
+```
+## On all nodes install mariadb and mariadb-server
+dnf install -y mariadb mariadb-server mariadb-server-galera 
+```
 
 ### Setting up 1st - node
+
+```
+nano /etc/my.cnf.d/z_galera.cnf 
+```
+
+```
+[mysqld]
+binlog_format=ROW
+default-storage-engine=innodb
+innodb_autoinc_lock_mode=2 
+bind-address=0.0.0.0
+
+## for better performance 
+innodb_flush_log_at_trx_commit=2
+
+## Galera Provider Configuration
+wsrep_on=ON
+wsrep_provider=/usr/lib64/galera/libgalera_smm.so
+
+## Galera Cluster Configuration
+wsrep_cluster_name="test_cluster-<your shortcut e.g. r1>"
+wsrep_cluster_address="gcomm://10.135.0.3,10.135.0.4,10.135.0.5"
+wsrep_node_address=10.135.0.3 
+
+## Galera Synchronization Configuration
+wsrep_sst_method=mariabackup
+wsrep_sst_auth = mariabackup:mypassword
+```
+
+
+
+```
+systemctl stop mariadb
+galera_new_cluster
+mysql
+```
+
+```
+CREATE USER 'mariabackup'@'localhost' IDENTIFIED BY 'mypassword';
+GRANT RELOAD, PROCESS, LOCK TABLES, REPLICATION CLIENT ON *.* TO 'mariabackup'@'localhost';
+quit
+```
+
+```
+mysql
+```
+
+```
+show status like 'wsrep%';
+quit
+```
+
+### Setup Node 2:
+
+```
+ dnf install -y mariadb-server mariadb-backup mariadb-server-galera
+```
+
+```
+## Default datei löschen oder umbenennen
+rm /etc/my.cnf.d/galera.cnf 
+nano /etc/my.cnf.de/z_galera.cnf
+```
+
+```
+[mysqld]
+binlog_format=ROW
+default-storage-engine=innodb
+innodb_autoinc_lock_mode=2 
+bind-address=0.0.0.0
+
+## for better performance // Attention: You might loose data on power outage
+innodb_flush_log_at_trx_commit=2
+
+## Galera Provider Configuration
+wsrep_on=ON
+wsrep_provider=/usr/lib64/galera/libgalera_smm.so
+
+## Galera Cluster Configuration
+wsrep_cluster_name="test_cluster-<your shortcut e.g. r1>"
+wsrep_cluster_address="gcomm://10.135.0.3,10.135.0.4,10.135.0.5"
+wsrep_node_address=10.135.0.4
+
+## Galera Synchronization Configuration
+wsrep_sst_method=mariabackup
+wsrep_sst_auth = mariabackup:mypassword
+```
+
+```
+systemctl restart mariadb
+```
+
+### Setup Node 3:
+
+```
+apt update 
+apt install -y mariadb-server mariadb-backup 
+```
+
+```
+nano /etc/mysql/mariadb.conf.d/z_settings.cnf
+```
+
+```
+[mysqld]
+binlog_format=ROW
+default-storage-engine=innodb
+innodb_autoinc_lock_mode=2 
+bind-address=0.0.0.0
+
+## for better performance // Attention: You might loose data on power outage
+innodb_flush_log_at_trx_commit=2
+
+## Galera Provider Configuration
+wsrep_on=ON
+wsrep_provider=/usr/lib/galera/libgalera_smm.so
+
+## Galera Cluster Configuration
+wsrep_cluster_name="test_cluster-<your shortcut e.g. r1>"
+wsrep_cluster_address="gcomm://10.135.0.3,10.135.0.4,10.135.0.5"
+wsrep_node_address=10.135.0.5
+
+## Galera Synchronization Configuration
+wsrep_sst_method=mariabackup
+wsrep_sst_auth = mariabackup:mypassword
+```
+
+```
+systemctl restart mariadb
+```
 
 ```
 ## Schritt 1: Create config 
@@ -4067,6 +4340,25 @@ kill 50;
 
 ```
 
+### With this command you can also see pending locks 
+
+```
+show engine innodb status \G
+```
+
+
+### There is more (activate: do not only show last deadlock)
+
+```
+## by setting this, deadlocks are written to error log 
+set global innodb_print_all_deadlocks = ON
+```
+
+
+### Refs:
+
+  * https://fromdual.com/mariadb-deadlocks
+
 ### Refs ( 3 important tables )  
 
   * https://mariadb.com/kb/en/information-schema-innodb_lock_waits-table/ (most important one) 
@@ -4374,6 +4666,12 @@ select count(distinct(vendor_city)) from contributions;
 ### MySQL Galera Cluster
 
   * https://galeracluster.com/downloads/
+
+## Dokumentation (functions)
+
+### Built-In Functions
+
+  * https://mariadb.com/kb/en/built-in-functions/
 
 ## Misc
 
@@ -6649,18 +6947,33 @@ Step 2: Lookup data, but a lot lookups needed
 ## or: debian /etc/mysql/mariadb.conf.d/50-server.cnf 
 [mysqld]
 slow-query-log 
+```
 
-## Step 2
+```
+systemctl restart mariadb
+```
+
+```
+## ODER
+## Alternative: Step 1a
 mysql>SET GLOBAL slow_query_log = 1 
 mysql>SET slow_query_log = 1 
-mysql>SET GLOBAL long_query_time = 0.000001;
-mysql>SET long_query_time = 0.000001
+```
 
+```
+## Step 2: 
+## Zeit festlegen, ab wann eine query langsam ist
+## global für den Server (greift erst bei der nächsten Session) 
+mysql>SET GLOBAL long_query_time = 0.000001;
+## und für die aktuelle Session
+mysql>SET long_query_time = 0.000001
+```
+
+```
 ## Step 3
 ## run some time / data
 ## and look into your slow-query-log 
 /var/lib/mysql/hostname-slow.log 
-
 ```
 
 ### Exercise (mariadb 10.6 from mariadb.org) 
