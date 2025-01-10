@@ -13,8 +13,8 @@ SHOW CREATE VIEW
      * simple rewrites (translates the query)  
    * temptable 
      * Creates a temptable to retrieve information
-     * In this case no indexes can be used 
-   * Shows up explain with derived
+     * (In this case no indexes can be used - was the case in older versions) 
+   * Shows up in explain with derived
    * undefined 
      * MySQL chooses, if to use merge or temptable 
      * prefers merge over temptable if possible 
