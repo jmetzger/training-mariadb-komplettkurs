@@ -148,6 +148,9 @@
 
   1. Dokumentation (functions)
      * [Built-In Functions](https://mariadb.com/kb/en/built-in-functions/)
+    
+  1. Dokumentation (Summary Tables)
+     * [Summary Tables](https://mysql.rjweb.org/doc.php/summarytables)
 
   1. Misc
      * [Bis zu welcher Größe taugt mariadb](/basics/limitations-mariadb.md)
