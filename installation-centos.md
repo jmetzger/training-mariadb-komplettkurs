@@ -39,7 +39,7 @@ gpgcheck = 1
 
 ```
 # Install
-sudo dnf install -y install MariaDB-server MariaDB-client
+sudo dnf install -y MariaDB-server MariaDB-client
 sudo systemctl start mariadb # always works - systemd - alias 
 sudo systemctl status mariadb # Findout real service - name
 # like Windows-Autostart
