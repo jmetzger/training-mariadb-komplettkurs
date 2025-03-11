@@ -21,17 +21,17 @@ dnf install -y mariadb-server mariadb
 
 ```
 # Setup repo 
-# nano /etc/yum.repos.d/MariaDB.repo
+nano /etc/yum.repos.d/MariaDB.repo
 ```
 
 ```
-# MariaDB 10.6 RedHatEnterpriseLinux repository list - created 2023-09-21 11:52 UTC
+# MariaDB 11.4 RedHatEnterpriseLinux repository list - created 2025-03-11 09:58 UTC
 # https://mariadb.org/download/
 [mariadb]
 name = MariaDB
 # rpm.mariadb.org is a dynamic mirror if your preferred mirror goes offline. See https://mariadb.org/mirrorbits/ for details.
-# baseurl = https://rpm.mariadb.org/10.6/rhel/$releasever/$basearch
-baseurl = https://ftp.agdsn.de/pub/mirrors/mariadb/yum/10.6/rhel/$releasever/$basearch
+# baseurl = https://rpm.mariadb.org/11.4/rhel/$releasever/$basearch
+baseurl = https://ftp.agdsn.de/pub/mirrors/mariadb/yum/11.4/rhel/$releasever/$basearch
 # gpgkey = https://rpm.mariadb.org/RPM-GPG-KEY-MariaDB
 gpgkey = https://ftp.agdsn.de/pub/mirrors/mariadb/yum/RPM-GPG-KEY-MariaDB
 gpgcheck = 1
