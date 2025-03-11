@@ -33,6 +33,10 @@ sudo apt search mariadb
 sudo apt-get install mariadb-server
 ```
 
+```
+systemctl status mariadb
+```
+
 
 ## Secure installation 
 
