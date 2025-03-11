@@ -140,7 +140,7 @@
      * [Find out cardinality without index](/indexes/cardinality.md)
 
   1. Dokumentation (Releases)
-     * [Identify Long-Term Support Releases](https://mariadb.com/kb/en/mariadb-server-release-dates/) 
+     * [Identify Long-Time Support Releases](https://mariadb.com/kb/en/mariadb-server-release-dates/) 
 
   1. Dokumentation (Galera)
      * [MariaDB Galera Cluster](http://schulung.t3isp.de/documents/pdfs/mariadb/mariadb-galera-cluster.pdf)
