@@ -151,6 +151,9 @@
     
   1. Dokumentation (Summary Tables)
      * [Summary Tables](https://mysql.rjweb.org/doc.php/summarytables)
+    
+  1. Dokumentation / Library
+     * [Server System Variables](https://mariadb.com/kb/en/server-system-variables/#bind_address)
 
   1. Misc
      * [Bis zu welcher Größe taugt mariadb](/basics/limitations-mariadb.md)
@@ -257,7 +260,6 @@
   1. Documentation / Literature 
    
      * [MySQL - Peformance Blog](https://www.percona.com/blog/)
-     * [Server System Variables](https://mariadb.com/kb/en/server-system-variables/#bind_address)
      * [Killing connection](https://mariadb.com/kb/en/kill/)
      * [MariaDB - One Script Installation](https://mariadb.com/kb/en/mariadb-package-repository-setup-and-usage/)
      * [MariaDB - Information Schema Tables](https://mariadb.com/kb/en/information-schema-tables/)
