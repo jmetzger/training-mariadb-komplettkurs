@@ -20,6 +20,7 @@
   1. Administration / Troubleshooting
      * [Create fresh datadir](create-fresh-datadir-centos.md)
      * [Debug not starting service](troubleshooting/debug-service.md)
+     * [Debugging not starting service on Windows](troubleshooting/debug-dienst-windows.md)
     
   1. Upgrade
      * [MariaDB Upgrade 10.6. -> 10.11 (Debian/Ubuntu)](mariadb-upgrade-10-06-10-11-debian.md)
