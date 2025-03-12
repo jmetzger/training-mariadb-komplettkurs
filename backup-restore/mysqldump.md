@@ -33,6 +33,11 @@ mysqldump --all-databases --single-transaction --routines --events  --master-dat
 mysqldump --all-databases --single-transaction --gtid --master-data=2 --routines --events --flush-logs --delete-master-logs > /usr/src/all-databases.sql;
 ```
 
+```
+# from mariadb 11.4
+mariadb-dump --all-databases --single-transaction --gtid --master-data=2 --routines --events --flush-logs --delete-master-logs > /usr/src/all-databases.sql;
+```
+
 ## Flush binary logs from mysql 
 
 ```
