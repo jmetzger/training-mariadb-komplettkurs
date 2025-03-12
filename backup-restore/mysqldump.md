@@ -9,6 +9,12 @@ mysqldump --all-databases --single-transaction > /usr/src/all-databases.sql
 mysqldump --all-databases --single-transaction --routines --events > /usr/src/all-databases.sql
 ```
 
+### Windows-Version 
+
+```
+mysqldump -uroot -p --all-databases --single-transaction --routines --events > C:\Users\Administrator\Desktop\all-databases.sql
+```
+
 ## Useful options for PIT 
 
 ```
