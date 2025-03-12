@@ -1,5 +1,10 @@
 # PIT (Point-In-Time - Recovery - Exercise) 
 
+## Planning 
+
+![image](https://github.com/user-attachments/assets/f757d7f7-13d1-449f-88f8-b43cd4c8123e)
+
+
 ## Problem coming up  
 
 ```
