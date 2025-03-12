@@ -70,3 +70,8 @@ show engine innodb status \G
 -- verwendete = freie seiten * 16 * 1024
 ```
 
+## Schritt 4v2: (Variante: Freie Buffer ausfindig machen) 
+
+```
+show engine innodb status \G
+```
