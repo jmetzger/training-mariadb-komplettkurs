@@ -24,7 +24,7 @@ less /var/log/mariadb/mariadb.log
 # Allgemeines Log
 # Debian/Ubuntu 
 /var/log/syslog
-# REdhat/Centos 
+# Redhat/Centos 
 /var/log/messages 
 ```
 
