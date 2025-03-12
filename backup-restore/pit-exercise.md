@@ -41,25 +41,29 @@ cd /var/lib/mysql
 mysqlbinlog -vv --stop-position=857 mysqld-bin.000005 > /usr/src/recover.sql
 # in case of multiple binlog like so:
 # mysqlbinlog -vv --stop-position=857 mysqld-bin.000005 mysqld-bin.000006 > /usr/src/recover.sql
+```
 
+```
 # Step 1: Apply full backup 
 cd /usr/src/
 mysql < all-databases.sql 
-
 ```
 
 ```
+-- Step 2: Testing in client 
 -- im mysql-client durch eingeben des Befehls 'mysql'
--- should be 200 or 202
+-- not more than 200 
 use sakila; select * from actor;
 ```
 
 ```
+# Step 3: now apply recover.sql 
 # auf der Kommandozeile 
 mysql < recover.sql 
 ```
 
 ```
+-- Step 4: now check 
 -- im mysql client 
 -- now it should have all actors before deletion 
 use sakila; select * from actor;
