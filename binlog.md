@@ -3,7 +3,8 @@
 ## Binlog - Wann ? 
 
   * PIT (Point-in-Time) - Recovery
-  * Master/Slave - Replication 
+  * Master/Slave - Replication
+  * Galera Cluster (MariaDB Cluster)
 
 ## Binlog aktivieren (Centos)
 
