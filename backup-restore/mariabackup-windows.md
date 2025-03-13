@@ -24,13 +24,11 @@ mariabackup -uroot -p<password-hier-rein> --target-dir=C:\Users\Administrator\De
 ### Schritt 4: Recover 
 
 ```
-systemctl stop mariadb 
-mv /var/lib/mysql /var/lib/mysql.bkup 
-mariabackup --target-dir=/backups/2023091901 --copy-back 
-chown -R mysql:mysql /var/lib/mysql
-chmod -R 755 /var/lib/mysql # otherwice socket for unprivileged user does not work
-systemctl start mariadb
-systemctl status mariadb 
+# 1. mariadb-dienst stoppen
+# 2. Umbenennen des Ordner data -> data.bkup  
+mariabackup -uroot -p<password-hier-rein> --target-dir=C:\Users\Administrator\Desktop\backups\2025031301 --prepare
+# 3. Rechte anpassen 
+# 4. Dienst starten 
 ```
 
 ## Ref. 
