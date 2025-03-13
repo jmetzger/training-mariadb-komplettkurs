@@ -71,6 +71,7 @@
      * [Flashback](/backup-restore/flashback.md)
      * [mysqldump-vs-mariabackup](backup-restore/mariabackup-vs-mysqldump.md)
      * [mariabackup](backup-restore/mariabackup.md)
+     * [mariabackup mit windows](backup-restore/mariabackup.md)
      * [incrementelles backup mit mariadb](https://mariadb.com/kb/en/incremental-backup-and-restore-with-mariabackup/)
      * [Delete binary logs](binary_logs_delete.md)
 
