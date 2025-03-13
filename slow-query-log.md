@@ -26,7 +26,11 @@ SET log_slow_query_time=0.000001;
 -- Achtung, steht nach nächstem Neustart wieder auf 10 Sekunden (Default)
 ```
 
-
+```
+-- prüfen
+select @@GLOBAL.log_slow_query_time;
+select @@log_slow_query_time;
+```
 
 ## Walkthrough (before 10.11) 
 
