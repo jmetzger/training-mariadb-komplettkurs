@@ -59,7 +59,9 @@ systemctl stop mariadb
 mv /var/lib/mysql /var/lib/mysql.bkup 
 mariabackup --target-dir=/backups/2023091901 --copy-back 
 chown -R mysql:mysql /var/lib/mysql
-chmod -R 755 /var/lib/mysql # otherwice socket for unprivileged user does not work
+# only relevant if socket is created in data - folder
+#
+# chmod -R 755 /var/lib/mysql # otherwice socket for unprivileged user does not work
 systemctl start mariadb
 systemctl status mariadb 
 ```
