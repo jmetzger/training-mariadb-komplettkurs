@@ -23,7 +23,7 @@ apt install -y mariadb-backup
 
 ## Walkthrough (Ubuntu/Debian)
 
-### Schritt 1: Grundkonfiguration 
+### Schritt 1: Grundkonfiguration (vor MariaDB 11.4) 
 
 ```
 # user eintrag in /root/.my.cnf
