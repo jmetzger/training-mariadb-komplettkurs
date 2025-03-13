@@ -114,12 +114,6 @@ ls -la server1-slow.log
 less server1-slow.log 
 ```
 
-## Show queries that do not use indexes 
-
-```
-SET GLOBAL log_queries_not_using_indexes=ON;
-```
-
 ## Geschwätzigkeit (Verbosity) erhöhen 
 
 ```
