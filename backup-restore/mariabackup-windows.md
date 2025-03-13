@@ -26,7 +26,7 @@ mariabackup -uroot -p<password-hier-rein> --target-dir=C:\Users\Administrator\De
 ```
 # 1. mariadb-dienst stoppen
 # 2. Umbenennen des Ordner data -> data.bkup  
-mariabackup -uroot -p<password-hier-rein> --target-dir=C:\Users\Administrator\Desktop\backups\2025031301 --prepare
+mariabackup -uroot -p<password-hier-rein> --target-dir=C:\Users\Administrator\Desktop\backups\2025031301 --copy-back
 # 3. Rechte anpassen 
 # 4. Dienst starten 
 ```
