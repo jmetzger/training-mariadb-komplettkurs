@@ -8,7 +8,7 @@
 
 ```
 CREATE USER backup@localhost identified by 'yoursupersecretepassword';
-GRANT SELECT, SHOW VIEW, EVENT, TRIGGER ON sakila.* TO backup@localhost:
+GRANT SELECT, SHOW VIEW, EVENT, TRIGGER ON sakila.* TO backup@localhost;
 ```
 
 ```
