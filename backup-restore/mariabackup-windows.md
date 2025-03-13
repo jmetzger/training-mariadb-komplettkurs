@@ -18,7 +18,7 @@ mariabackup -uroot -p<password-hier-rein> --target-dir=C:\Users\Administrator\De
 ```
 # apply ib_logfile0 to tablespaces 
 # after that ib_logfile0 ->  0 bytes
-mariabackup --target-dir=/backups/2023091901 --prepare 
+mariabackup -uroot -p<password-hier-rein> --target-dir=C:\Users\Administrator\Desktop\backups\2025031301 --prepare 
 ```
 
 ### Schritt 4: Recover 
