@@ -20,9 +20,9 @@ mariadb
 
 ```
 -- kleinst mögliche Zeit 0.000001 Sekunden
-SET GLOBAL log_slow_query_time=0.000001
+SET GLOBAL log_slow_query_time=0.000001;
 -- in der session setzen, damit das sofort funktioniert
-SET log_slow_query_time=0.000001
+SET log_slow_query_time=0.000001;
 -- Achtung, steht nach nächstem Neustart wieder auf 10 Sekunden (Default)
 ```
 
