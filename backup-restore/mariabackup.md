@@ -52,7 +52,7 @@ mariabackup --target-dir=/backups/2023091901 --backup
 mariabackup --target-dir=/backups/2023091901 --prepare 
 ```
 
-### Schritt 4: Recover 
+### Schritt 4: recover 
 
 ```
 systemctl stop mariadb 
@@ -97,7 +97,7 @@ mariabackup --target-dir=/backups/2023091901 --backup
 mariabackup --target-dir=/backups/2023091901 --prepare 
 ```
 
-## Schritt 4: Recover
+### Schritt 4: Recover 
 
 ```
 systemctl stop mariadb 
@@ -110,7 +110,7 @@ chmod -R 755 /var/lib/mysql # otherwice socket for unprivileged user does not wo
 systemctl start mariadb 
 
 ## important for selinux if it does not work
-## mariadb 10.6 from mariadb does not have problems here !
+## mariadb 11.4 from mariadb does not have problems here !
 ## does not start
 restorecon -vr /var/lib/mysql 
 systemctl start mariadb
