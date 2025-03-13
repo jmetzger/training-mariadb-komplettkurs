@@ -116,8 +116,17 @@ less server1-slow.log
 
 ## Geschwätzigkeit (Verbosity) erhöhen 
 
+### Before 10.6.16, 10.11.6 
+
 ```
 SET GLOBAL log_slow_verbosity='query_plan,explain'
+```
+
+### Best option from 10.6.16 and 10.11.6 
+
+```
+-- Enable all possible options
+SET GLOBAL log_slow_verbosity='full'
 ```
 
 ## Queries die keine Indizes verwenden 
