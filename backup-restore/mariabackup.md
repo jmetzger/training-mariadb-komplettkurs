@@ -66,7 +66,7 @@ systemctl status mariadb
 
 ## Walkthrough (Redhat/Centos/Rocky Linux)
 
-### Schritt 1: Grundkonfiguration 
+### Schritt 1: Grundkonfiguration (vor 11.4) 
 
 ```
 # user eintrag in /root/.my.cnf
