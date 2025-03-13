@@ -16,6 +16,15 @@ https://github.com/StrawberryPerl/Perl-Dist-Strawberry/releases/download/SP_5400
 ```
 
 ```
+# Open this page 
+https://www.percona.com/get/pt-query-digest
+# Save as -> txt filetype -> pt-query-digest.pl in the mariadb/bin folder
+```
+
+
+
+
+```
 Installed strawberry perl on my windows computer
 Saved percona.com/get/pt-query-digest to a .pl file on my laptop
 In the run part I typed cmd
