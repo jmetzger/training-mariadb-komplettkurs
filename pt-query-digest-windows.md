@@ -21,6 +21,11 @@ https://www.percona.com/get/pt-query-digest
 # Save as -> txt filetype -> pt-query-digest.pl in the mariadb/bin folder
 ```
 
+![image](https://github.com/user-attachments/assets/ac6af0ee-61fe-4930-8371-6a76fec41db9)
+
+```
+# Please confirm with o.k.
+```
 
 
 
