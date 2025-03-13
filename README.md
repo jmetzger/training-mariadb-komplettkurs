@@ -92,6 +92,7 @@
   1. Performance  
      * [Slow Query Log](slow-query-log.md)
      * [Percona-toolkit-Installation - Rocky/Redhat und Ubuntu](/tools/percona-toolkit-centos.md)
+     * [pt-query-digest under Windows](pt-query-digest-windows.md)
      * [pt-query-digest exercise (Hitliste von slow-query-log erstellen)](/tools/exercise-pt-query-digest-rhel.md)
      * [Umgang mit grossen Datenbeständen](strategie/umgang-mit-grossen-datenbestaenden.md)
     
@@ -232,7 +233,6 @@
 
   1. Tools & Tricks
      * [Percona-toolkit-Installation - Ubuntu](/tools/percona-toolkit.md) 
-     * [pt-query-digest under Windows](pt-query-digest-windows.md)
      * [pt-query-digest - analyze slow logs](/tools/pt-query-digest.md) 
      * [pt-online-schema-change howto](/tools/pt-online-schema-change.md)
      * [Ubuntu-with-Vagrant](/tools/ubuntu-with-vagrant.md)
@@ -240,7 +240,6 @@
      * [Schweizer Such-Taschenmesser grep -r](grep-r.md)
      * [Set timezone in Centos 7/8](set-timezone-centos.md) 
      * [Ist die Netzwerkkarte eingerichtet - nmtui](nmtui.md)
- 
      * [User anlegen und passwort vergeben (Centos/Redhat)](useradd-passwd.md)
      * [Scripts for deploying galera-cluster to Ubuntu 20.04](https://github.com/jmetzger/ansible-galera-cluster-maxscale)
   
