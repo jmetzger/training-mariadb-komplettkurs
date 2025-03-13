@@ -12,6 +12,10 @@ percona-release enable tools release
 dnf install -y percona-toolkit
 ```
 
+```
+pt- <tab><tab>
+```
+
 ## Debian / Ubuntu 
 
 ```
