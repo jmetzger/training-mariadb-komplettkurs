@@ -13,7 +13,7 @@ dnf install -y percona-toolkit
 ```
 
 ```
-pt- <tab><tab>
+pt-<tab><tab>
 ```
 
 ## Debian / Ubuntu 
