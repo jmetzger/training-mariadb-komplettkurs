@@ -42,5 +42,25 @@ mariabackup -uroot -p<password-hier-rein> --target-dir=C:\Users\Administrator\De
 # 4. Dienst starten 
 ```
 
+## mariabackup ohne Passwort - Eingabe verwenden 
+
+### Variante 1: Umgebungvariable verwenden
+
+
+1. **Umgebungsvariable setzen:**
+   Du kannst die Umgebungsvariable `MYSQL_PWD` verwenden, um das Passwort für die MariaDB-Verbindung anzugeben.
+
+   - Öffne die Eingabeaufforderung (CMD) und setze die Umgebungsvariable temporär:
+     ```cmd
+     set MYSQL_PWD=deinpasswort
+     ```
+
+1. **`mariadb-backup` ausführen:**
+   Nachdem du die Umgebungsvariable gesetzt hast, kannst du `mariadb-backup` ausführen, ohne das Passwort anzugeben:
+   ```cmd
+   mariadb-backup --user=deinbenutzername --host=deinhost --backup-dir=C:\Pfad\zum\Sicherungsordner
+   ```
+
+
 ## Ref. 
 https://mariadb.com/kb/en/full-backup-and-restore-with-mariabackup/
