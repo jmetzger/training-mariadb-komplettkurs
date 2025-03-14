@@ -73,7 +73,7 @@ Falls du die globale Konfigurationsdatei nicht bearbeiten möchtest, kannst du e
    password=deinpasswort
 ```
 
-1. **`mariadb-backup` mit `--defaults-extra-file` ausführen: **Verwende die Option --defaults-extra-file, um auf deine benutzerdefinierte Konfigurationsdatei zu verweisen:
+1. **`mariadb-backup` mit `--defaults-extra-file` ausführen:** Verwende die Option --defaults-extra-file, um auf deine benutzerdefinierte Konfigurationsdatei zu verweisen:
 
 ```
 mariadb-backup --defaults-extra-file=C:\Pfad\zur\backup.cnf --backup-dir=C:\Pfad\zum\Sicherungsordner
