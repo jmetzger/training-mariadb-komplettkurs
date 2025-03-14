@@ -104,6 +104,9 @@
      * [Index and Likes](/indexes/like-index-not-index.md)   
      * [Find out cardinality without index](/indexes/cardinality.md)
 
+  1. Joins
+     * [Overview Joins](joins/overview.md)
+
   1. Monitoring 
      * [What to monitor?](/monitoring/monitoring.md) 
      * [Percona Management and Monitoring](/monitoring/pmm.md)
