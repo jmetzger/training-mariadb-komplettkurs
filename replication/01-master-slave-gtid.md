@@ -49,7 +49,9 @@ mariabackup --version
 ## Step 2b: Installation on centos/rocky/rhel (master)
 
 ```
-dnf install -y mariadb-backup 
+# When using mariadb from repo rhel/rocky 
+dnf install -y mariadb-backup
+# When using mariadb from foundation mariadb.org
 # check if available
 mariabackup --version 
 ```
