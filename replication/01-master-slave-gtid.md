@@ -56,7 +56,7 @@ dnf install -y mariadb-backup
 mariabackup --version 
 ```
 
-## Step 3: Setup mariabackup 
+## Step 3: Setup mariabackup (before 11.4) 
 
 ```
 # prepare for mariabackup if you use it with root and with unix_socket 
