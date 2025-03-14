@@ -154,6 +154,9 @@
      * [MariaDB Galera Cluster](http://schulung.t3isp.de/documents/pdfs/mariadb/mariadb-galera-cluster.pdf)
      * [MySQL Galera Cluster](https://galeracluster.com/downloads/)   
 
+  1. Dokumentation (Sandbox mode)
+     * [mariadb-client Sandbox-mode and mariadb-dump (in newer versions)](https://mariadb.org/mariadb-dump-file-compatibility-change/)
+
   1. Dokumentation (functions)
      * [Built-In Functions](https://mariadb.com/kb/en/built-in-functions/)
     
