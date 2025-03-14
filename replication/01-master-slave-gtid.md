@@ -145,7 +145,7 @@ GRANT REPLICATION SLAVE ON *.*  TO 'repl'@'192.168.56.%';
 
 ```
 # as root@slave 
-# you be able to connect to 
+# you be able to connect to the master
 mysql --skip-ssl -urepl -p -h192.168.56.102
 # test if grants are o.k. 
 show grants;
