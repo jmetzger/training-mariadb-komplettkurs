@@ -21,6 +21,7 @@
      * [Create fresh datadir](create-fresh-datadir-centos.md)
      * [Debug not starting service](troubleshooting/debug-service.md)
      * [Debugging not starting service on Windows](troubleshooting/debug-dienst-windows.md)
+     * [Langlaufende Queries identifizieren (die noch laufen)](identify-queries-still-running-long.md)
     
   1. Information Schema / Status / Processes
      * [Show server/session status](show-server-status.md)
