@@ -44,7 +44,7 @@ mariabackup -uroot -p<password-hier-rein> --target-dir=C:\Users\Administrator\De
 
 ## mariabackup ohne Passwort - Eingabe verwenden 
 
-### Variante 1: **Umgebungvariable verwenden**
+### Variante 1: **Umgebungsvariable verwenden**
 
 
 1. **Umgebungsvariable setzen:**
