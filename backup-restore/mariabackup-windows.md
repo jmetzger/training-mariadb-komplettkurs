@@ -44,7 +44,7 @@ mariabackup -uroot -p<password-hier-rein> --target-dir=C:\Users\Administrator\De
 
 ## mariabackup ohne Passwort - Eingabe verwenden 
 
-### Variante 1: Umgebungvariable verwenden
+### Variante 1: **Umgebungvariable verwenden**
 
 
 1. **Umgebungsvariable setzen:**
@@ -61,6 +61,23 @@ mariabackup -uroot -p<password-hier-rein> --target-dir=C:\Users\Administrator\De
    mariadb-backup --user=deinbenutzername --host=deinhost --backup-dir=C:\Pfad\zum\Sicherungsordner
    ```
 
+### Variante 2: **Verwendung der `--defaults-extra-file` Option**
+
+Falls du die globale Konfigurationsdatei nicht bearbeiten möchtest, kannst du eine benutzerdefinierte Konfigurationsdatei erstellen und die Option `--defaults-extra-file` verwenden.
+
+1. **Erstellen einer benutzerdefinierten Konfigurationsdatei (z.B. `backup.cnf`):**
+   Erstelle eine neue `.cnf` oder `.ini` Datei (z.B. `C:\Pfad\zur\backup.cnf`) mit folgendem Inhalt:
+   ```ini
+   [client]
+   user=deinbenutzername
+   password=deinpasswort
+```
+
+1. **`mariadb-backup` mit `--defaults-extra-file` ausführen: **Verwende die Option --defaults-extra-file, um auf deine benutzerdefinierte Konfigurationsdatei zu verweisen:
+
+```
+mariadb-backup --defaults-extra-file=C:\Pfad\zur\backup.cnf --backup-dir=C:\Pfad\zum\Sicherungsordner
+```
 
 ## Ref. 
 https://mariadb.com/kb/en/full-backup-and-restore-with-mariabackup/
