@@ -1,6 +1,6 @@
 # Setting up new slave with master-slave replication 
 
-## Step 1: set server-id 1 and log-bin 
+## Step 1: Master: set server-id 1 and log-bin 
 
 ```
 # Variante Centos/Rocky 
