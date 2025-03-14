@@ -71,7 +71,6 @@ Falls du die globale Konfigurationsdatei nicht bearbeiten möchtest, kannst du e
    [client]
    user=deinbenutzername
    password=deinpasswort
-```
 
 1. **`mariadb-backup` mit `--defaults-extra-file` ausführen:** Verwende die Option --defaults-extra-file, um auf deine benutzerdefinierte Konfigurationsdatei zu verweisen:
 
