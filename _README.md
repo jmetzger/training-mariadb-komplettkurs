@@ -20,6 +20,13 @@
   1. Administration / Troubleshooting
      * [Create fresh datadir](#create-fresh-datadir)
      * [Debug not starting service](#debug-not-starting-service)
+     * [Debugging not starting service on Windows](#debugging-not-starting-service-on-windows)
+     * [Langlaufende Queries identifizieren (die noch laufen)](#langlaufende-queries-identifizieren-die-noch-laufen)
+    
+  1. Information Schema / Status / Processes
+     * [Show server/session status](#show-serversession-status)
+     * [Kill long running process](#kill-long-running-process)
+     * [Kill (kickout user) and stop server](#kill-kickout-user-and-stop-server)
     
   1. Upgrade
      * [MariaDB Upgrade 10.6. -> 10.11 (Debian/Ubuntu)](#mariadb-upgrade-106-->-1011-debianubuntu)
@@ -70,6 +77,7 @@
      * [Flashback](#flashback)
      * [mysqldump-vs-mariabackup](#mysqldump-vs-mariabackup)
      * [mariabackup](#mariabackup)
+     * [mariabackup mit windows](#mariabackup-mit-windows)
      * [incrementelles backup mit mariadb](https://mariadb.com/kb/en/incremental-backup-and-restore-with-mariabackup/)
      * [Delete binary logs](#delete-binary-logs)
 
@@ -84,7 +92,8 @@
    
   1. Performance  
      * [Slow Query Log](#slow-query-log)
-     * [Percona-toolkit-Installation - Centos](#percona-toolkit-installation---centos)
+     * [Percona-toolkit-Installation - Rocky/Redhat und Ubuntu](#percona-toolkit-installation---rockyredhat-und-ubuntu)
+     * [pt-query-digest under Windows](#pt-query-digest-under-windows)
      * [pt-query-digest exercise (Hitliste von slow-query-log erstellen)](#pt-query-digest-exercise-hitliste-von-slow-query-log-erstellen)
      * [Umgang mit grossen Datenbeständen](#umgang-mit-grossen-datenbeständen)
     
@@ -94,6 +103,9 @@
      * [Index and Functions](#index-and-functions)
      * [Index and Likes](#index-and-likes)
      * [Find out cardinality without index](#find-out-cardinality-without-index)
+
+  1. Joins
+     * [Overview Joins](#overview-joins)
 
   1. Monitoring 
      * [What to monitor?](#what-to-monitor)
@@ -146,8 +158,20 @@
      * [MariaDB Galera Cluster](http://schulung.t3isp.de/documents/pdfs/mariadb/mariadb-galera-cluster.pdf)
      * [MySQL Galera Cluster](https://galeracluster.com/downloads/)
 
+  1. Dokumentation (Sandbox mode)
+     * [mariadb-client Sandbox-mode and mariadb-dump (in newer versions)](https://mariadb.org/mariadb-dump-file-compatibility-change/)
+
   1. Dokumentation (functions)
      * [Built-In Functions](https://mariadb.com/kb/en/built-in-functions/)
+    
+  1. Dokumentation (Summary Tables)
+     * [Summary Tables](https://mysql.rjweb.org/doc.php/summarytables)
+    
+  1. Dokumentation / Library
+     * [Server System Variables](https://mariadb.com/kb/en/server-system-variables/#bind_address)
+
+  1. Dokumenation / multi-server
+     * [Multiple instances Linux with systemd](https://mariadb.com/kb/en/systemd/#interacting-with-multiple-mariadb-server-processes)
 
   1. Misc
      * [Bis zu welcher Größe taugt mariadb](#bis-zu-welcher-größe-taugt-mariadb)
@@ -219,7 +243,6 @@
 
   1. Tools & Tricks
      * [Percona-toolkit-Installation - Ubuntu](#percona-toolkit-installation---ubuntu)
-     * [pt-query-digest under Windows](#pt-query-digest-under-windows)
      * [pt-query-digest - analyze slow logs](#pt-query-digest---analyze-slow-logs)
      * [pt-online-schema-change howto](#pt-online-schema-change-howto)
      * [Ubuntu-with-Vagrant](#ubuntu-with-vagrant)
@@ -227,7 +250,6 @@
      * [Schweizer Such-Taschenmesser grep -r](#schweizer-such-taschenmesser-grep--r)
      * [Set timezone in Centos 7/8](#set-timezone-in-centos-78)
      * [Ist die Netzwerkkarte eingerichtet - nmtui](#ist-die-netzwerkkarte-eingerichtet---nmtui)
- 
      * [User anlegen und passwort vergeben (Centos/Redhat)](#user-anlegen-und-passwort-vergeben-centosredhat)
      * [Scripts for deploying galera-cluster to Ubuntu 20.04](https://github.com/jmetzger/ansible-galera-cluster-maxscale)
   
@@ -254,7 +276,6 @@
   1. Documentation / Literature 
    
      * [MySQL - Peformance Blog](https://www.percona.com/blog/)
-     * [Server System Variables](https://mariadb.com/kb/en/server-system-variables/#bind_address)
      * [Killing connection](https://mariadb.com/kb/en/kill/)
      * [MariaDB - One Script Installation](https://mariadb.com/kb/en/mariadb-package-repository-setup-and-usage/)
      * [MariaDB - Information Schema Tables](https://mariadb.com/kb/en/information-schema-tables/)
@@ -389,23 +410,26 @@ nano /etc/apt/sources.list.d/mariadb.sources
 ```
 
 ```
-## MariaDB 10.6 repository list - created 2023-09-18 08:26 UTC
+## MariaDB 11.4 repository list - created 2025-03-11 10:13 UTC
 ## https://mariadb.org/download/
 X-Repolib-Name: MariaDB
 Types: deb
 ## deb.mariadb.org is a dynamic mirror if your preferred mirror goes offline. See https://mariadb.org/mirrorbits/ for details.
-## URIs: https://deb.mariadb.org/10.6/ubuntu
-URIs: https://ftp.agdsn.de/pub/mirrors/mariadb/repo/10.6/ubuntu
-Suites: jammy
+## URIs: https://deb.mariadb.org/11.4/ubuntu
+URIs: https://mirror1.hs-esslingen.de/pub/Mirrors/mariadb/repo/11.4/ubuntu
+Suites: noble
 Components: main main/debug
 Signed-By: /etc/apt/keyrings/mariadb-keyring.pgp
-## added by trainer because of warning with i386
-Architectures: amd64
 ```
 
 ```
 sudo apt-get update
+sudo apt search mariadb 
 sudo apt-get install mariadb-server
+```
+
+```
+systemctl status mariadb
 ```
 
 
@@ -435,23 +459,23 @@ dnf install -y mariadb-server mariadb
 
 #### Find Repo Settings 
 
-  * https://mariadb.org/download/?t=repo-config&d=Red+Hat+Enterprise+Linux+9&v=10.6&r_m=agdsn
+  * [https://mariadb.org/download/?t=repo-config&d=Red+Hat+Enterprise+Linux+9&v=10.6&r_m=agdsn](https://mariadb.org/download/?t=repo-config&d=Red+Hat+Enterprise+Linux+9&v=11.4&r_m=agdsn)
 
-#### Setup Repo MariaDB - Server 10.6
+#### Setup Repo MariaDB - Server 11.4
 
 ```
 ## Setup repo 
-## nano /etc/yum.repos.d/MariaDB.repo
+nano /etc/yum.repos.d/MariaDB.repo
 ```
 
 ```
-## MariaDB 10.6 RedHatEnterpriseLinux repository list - created 2023-09-21 11:52 UTC
+## MariaDB 11.4 RedHatEnterpriseLinux repository list - created 2025-03-11 09:58 UTC
 ## https://mariadb.org/download/
 [mariadb]
 name = MariaDB
 ## rpm.mariadb.org is a dynamic mirror if your preferred mirror goes offline. See https://mariadb.org/mirrorbits/ for details.
-## baseurl = https://rpm.mariadb.org/10.6/rhel/$releasever/$basearch
-baseurl = https://ftp.agdsn.de/pub/mirrors/mariadb/yum/10.6/rhel/$releasever/$basearch
+## baseurl = https://rpm.mariadb.org/11.4/rhel/$releasever/$basearch
+baseurl = https://ftp.agdsn.de/pub/mirrors/mariadb/yum/11.4/rhel/$releasever/$basearch
 ## gpgkey = https://rpm.mariadb.org/RPM-GPG-KEY-MariaDB
 gpgkey = https://ftp.agdsn.de/pub/mirrors/mariadb/yum/RPM-GPG-KEY-MariaDB
 gpgcheck = 1
@@ -459,7 +483,7 @@ gpgcheck = 1
 
 ```
 ## Install
-sudo dnf install -y install MariaDB-server MariaDB-client
+sudo dnf install -y MariaDB-server MariaDB-client
 sudo systemctl start mariadb # always works - systemd - alias 
 sudo systemctl status mariadb # Findout real service - name
 ## like Windows-Autostart
@@ -702,7 +726,7 @@ less /var/log/mariadb/mariadb.log
 ## Allgemeines Log
 ## Debian/Ubuntu 
 /var/log/syslog
-## REdhat/Centos 
+## Redhat/Centos 
 /var/log/messages 
 ```
 
@@ -719,6 +743,121 @@ cat error.log | grep -i error
 ```
 grep -r datadir /etc 
 
+```
+
+### Debugging not starting service on Windows
+
+
+### Step 1: Restart des Dienstes 
+
+![image](https://github.com/user-attachments/assets/3c496eff-7a02-424e-a912-97b37c18facf)
+
+### Step 2: Analyse des MariaDB-Logs 
+
+  * (keine Einträge, weil nicht gestartet werden konnte)
+
+![image](https://github.com/user-attachments/assets/1e659547-96b6-448b-8ee9-77868b4026e3)
+
+### Step 3: Lösung: Ereignisanzeige anschauen 
+
+![image](https://github.com/user-attachments/assets/994a77ba-848a-4b85-8040-a22967c7f742)
+
+  * Ereignisanzeige(Local) -> Windowsprotokolle -> Anwendung 
+
+![image](https://github.com/user-attachments/assets/eda6b1d4-789f-40e2-999f-39f5143aa6d0)
+
+
+### Langlaufende Queries identifizieren (die noch laufen)
+
+
+
+```
+SELECT ID FROM information_schema.processlist WHERE Command = 'Query' AND Time > 60;
+```
+
+### Ref: 
+
+  * https://releem.com/blog/managing-long-running-queries-in-mysql#rec746614581
+
+## Information Schema / Status / Processes
+
+### Show server/session status
+
+
+### Through mysql
+
+```
+## in mysql interface (client)
+mysql
+status;
+```
+
+### With mysqladmin 
+
+```
+mysqladmin status
+## or if you want to know more 
+mysqladmin extended status 
+```
+
+### with mysql -> show status 
+
+```
+## Status within session (status - counters)
+mysql> show status;
+## Status global (since last reboot/start of mariadb server) 
+mysql> show global status;
+mysql> -- reset session status 
+mysql> flush status; 
+## Show session status 
+mysql> show session status;
+```
+
+### Kill long running process
+
+
+```
+## Session 1
+## sleep for 120 seconds 
+select sleep(120)
+
+## Session 2
+show processlist 
+## kill process you have identified for sleep(120) 
+MariaDB [(none)]> show processlist;
++----+------+-----------+----------+---------+------+------------+-------------------+----------+
+| Id | User | Host      | db       | Command | Time | State      | Info              | Progress |
++----+------+-----------+----------+---------+------+------------+-------------------+----------+
+| 36 | root | localhost | NULL     | Query   |    0 | starting   | show processlist  |    0.000 |
+| 37 | root | localhost | training | Query   |    4 | User sleep | select sleep(120) |    0.000 |
++----+------+-----------+----------+---------+------+------------+-------------------+----------+
+2 rows in set (0.000 sec)
+## take 37 
+kill 37 
+
+## Session 1: query terminates 
+ERROR 2013 (HY000): Lost connection to MySQL server during query
+
+```
+
+### Kill (kickout user) and stop server
+
+
+```
+MariaDB [mysql]> show processlist;
++----+----------+-----------+----------+---------+------+----------+------------------+----------+
+| Id | User     | Host      | db       | Command | Time | State    | Info             | Progress |
++----+----------+-----------+----------+---------+------+----------+------------------+----------+
+| 30 | root     | localhost | mysql    | Sleep   |   10 |          | NULL             |    0.000 |
+| 34 | root     | localhost | mysql    | Query   |    0 | starting | show processlist |    0.000 |
+| 43 | training | localhost | training | Sleep   |    5 |          | NULL             |    0.000 |
++----+----------+-----------+----------+---------+------+----------+------------------+----------+
+3 rows in set (0.000 sec)
+
+MariaDB [mysql]> quit
+Bye
+root@its-lu20s04:~# mysql -e 'kill 43' && systemctl stop mariadb
+root@its-lu20s04:~#
 ```
 
 ## Upgrade
@@ -1993,7 +2132,8 @@ show grants;
 ### Binlog - Wann ? 
 
   * PIT (Point-in-Time) - Recovery
-  * Master/Slave - Replication 
+  * Master/Slave - Replication
+  * Galera Cluster (MariaDB Cluster)
 
 ### Binlog aktivieren (Centos)
 
@@ -2039,7 +2179,15 @@ mysql> show master status;
 ### binlog_format
 
 
+### Wirkweise 
+
 ![image](https://github.com/jmetzger/training-mariadb-komplettkurs/assets/1933318/0b2f5fe2-eaef-4f63-acae-e995d481b64d)
+
+### Format herausfinden, welches eingestellt ist
+
+```
+select @@binlog_format;
+```
 
 ### Backup with mysqldump - best practices
 
@@ -2051,6 +2199,12 @@ mysqldump --all-databases --single-transaction > /usr/src/all-databases.sql
 ## if you want to include procedures use --routines 
 ## with event - scheduled tasks 
 mysqldump --all-databases --single-transaction --routines --events > /usr/src/all-databases.sql
+```
+
+#### Windows-Version 
+
+```
+mysqldump -uroot -p --all-databases --single-transaction --routines --events > C:\Users\Administrator\Desktop\all-databases.sql
 ```
 
 ### Useful options for PIT 
@@ -2069,6 +2223,11 @@ mysqldump --all-databases --single-transaction --routines --events  --master-dat
   
 ```
 mysqldump --all-databases --single-transaction --gtid --master-data=2 --routines --events --flush-logs --delete-master-logs > /usr/src/all-databases.sql;
+```
+
+```
+## from mariadb 11.4
+mariadb-dump --all-databases --single-transaction --gtid --master-data=2 --routines --events --flush-logs --delete-master-logs > /usr/src/all-databases.sql;
 ```
 
 ### Flush binary logs from mysql 
@@ -2125,7 +2284,7 @@ mysql mynewdb < sakila-all.sql
 
 ```
 CREATE USER backup@localhost identified by 'yoursupersecretepassword';
-GRANT SELECT, SHOW VIEW, EVENT, TRIGGER ON sakila.* TO backup@localhost:
+GRANT SELECT, SHOW VIEW, EVENT, TRIGGER ON sakila.* TO backup@localhost;
 ```
 
 ```
@@ -2134,6 +2293,11 @@ mysqldump -ubackup -p  --single-transaction --routines --events sakila > /usr/sr
 ```
 
 ### PIT - Point in time Recovery - Exercise
+
+
+### Planning 
+
+![image](https://github.com/user-attachments/assets/f757d7f7-13d1-449f-88f8-b43cd4c8123e)
 
 
 ### Problem coming up  
@@ -2177,25 +2341,29 @@ cd /var/lib/mysql
 mysqlbinlog -vv --stop-position=857 mysqld-bin.000005 > /usr/src/recover.sql
 ## in case of multiple binlog like so:
 ## mysqlbinlog -vv --stop-position=857 mysqld-bin.000005 mysqld-bin.000006 > /usr/src/recover.sql
+```
 
+```
 ## Step 1: Apply full backup 
 cd /usr/src/
 mysql < all-databases.sql 
-
 ```
 
 ```
+-- Step 2: Testing in client 
 -- im mysql-client durch eingeben des Befehls 'mysql'
--- should be 200 or 202
+-- not more than 200 
 use sakila; select * from actor;
 ```
 
 ```
+## Step 3: now apply recover.sql 
 ## auf der Kommandozeile 
 mysql < recover.sql 
 ```
 
 ```
+-- Step 4: now check 
 -- im mysql client 
 -- now it should have all actors before deletion 
 use sakila; select * from actor;
@@ -2267,7 +2435,7 @@ apt install -y mariadb-backup
 
 ### Walkthrough (Ubuntu/Debian)
 
-#### Schritt 1: Grundkonfiguration 
+#### Schritt 1: Grundkonfiguration (vor MariaDB 11.4) 
 
 ```
 ## user eintrag in /root/.my.cnf
@@ -2296,21 +2464,23 @@ mariabackup --target-dir=/backups/2023091901 --backup
 mariabackup --target-dir=/backups/2023091901 --prepare 
 ```
 
-#### Schritt 4: Recover 
+#### Schritt 4: recover 
 
 ```
 systemctl stop mariadb 
 mv /var/lib/mysql /var/lib/mysql.bkup 
 mariabackup --target-dir=/backups/2023091901 --copy-back 
 chown -R mysql:mysql /var/lib/mysql
-chmod -R 755 /var/lib/mysql # otherwice socket for unprivileged user does not work
+## only relevant if socket is created in data - folder
+##
+## chmod -R 755 /var/lib/mysql # otherwice socket for unprivileged user does not work
 systemctl start mariadb
 systemctl status mariadb 
 ```
 
 ### Walkthrough (Redhat/Centos/Rocky Linux)
 
-#### Schritt 1: Grundkonfiguration 
+#### Schritt 1: Grundkonfiguration (vor 11.4) 
 
 ```
 ## user eintrag in /root/.my.cnf
@@ -2339,7 +2509,7 @@ mariabackup --target-dir=/backups/2023091901 --backup
 mariabackup --target-dir=/backups/2023091901 --prepare 
 ```
 
-### Schritt 4: Recover
+#### Schritt 4: Recover 
 
 ```
 systemctl stop mariadb 
@@ -2352,7 +2522,7 @@ chmod -R 755 /var/lib/mysql # otherwice socket for unprivileged user does not wo
 systemctl start mariadb 
 
 ### important for selinux if it does not work
-### mariadb 10.6 from mariadb does not have problems here !
+### mariadb 11.4 from mariadb does not have problems here !
 ### does not start
 restorecon -vr /var/lib/mysql 
 systemctl start mariadb
@@ -2360,6 +2530,90 @@ systemctl start mariadb
 ### Cleanup if everything works 
 rm -fR /var/lib/mysql/mysql.bkup 
 ```
+
+### Ref. 
+https://mariadb.com/kb/en/full-backup-and-restore-with-mariabackup/
+
+### mariabackup mit windows
+
+
+### Prerequisites 
+
+ * On Windows Mariabackup is already installed by default installer
+
+### Walkthrough (Windows)
+
+#### Schritt 2: Backup erstellen 
+
+```
+## Auf dem Desktop bspw. backups - Ordner anlegen 
+mariabackup -uroot -p<password-hier-rein> --target-dir=C:\Users\Administrator\Desktop\backups\2025031301 --backup
+```
+
+#### Schritt 3: Prepare durchführen 
+
+```
+## apply ib_logfile0 to tablespaces 
+## after that ib_logfile0 ->  0 bytes
+mariabackup -uroot -p<password-hier-rein> --target-dir=C:\Users\Administrator\Desktop\backups\2025031301 --prepare 
+```
+
+#### Schritt 4: Recover 
+
+```
+## 1. mariadb-dienst stoppen
+## 2. Umbenennen des Ordner data -> data.bkup  
+mariabackup -uroot -p<password-hier-rein> --target-dir=C:\Users\Administrator\Desktop\backups\2025031301 --copy-back
+## 3. my.ini aus data.bkup nach data kopieren
+## RECHTE: 4. Benutzer NT Service\MariaDB mit Vollzugriff (!!) unter Sicherheit hinterlegen für data - Verzeichnis
+(gleicher Benutzer wie beim Dienst -> MariaDB --> kann auch von dort kopiert werden)
+```
+
+![image](https://github.com/user-attachments/assets/6954c268-6b18-4bb1-a270-45c42abec69b)
+
+![image](https://github.com/user-attachments/assets/7eb4499c-a21d-4f29-b083-5b94bad4d2e8)
+
+![image](https://github.com/user-attachments/assets/3f47f9b6-bff0-4e8b-9349-865de916e04f)
+
+```
+## 4. Dienst starten 
+```
+
+### mariabackup ohne Passwort - Eingabe verwenden 
+
+#### Variante 1: **Umgebungsvariable verwenden**
+
+
+1. **Umgebungsvariable setzen:**
+   Du kannst die Umgebungsvariable `MYSQL_PWD` verwenden, um das Passwort für die MariaDB-Verbindung anzugeben.
+
+   - Öffne die Eingabeaufforderung (CMD) und setze die Umgebungsvariable temporär:
+     ```cmd
+     set MYSQL_PWD=deinpasswort
+     ```
+
+1. **`mariadb-backup` ausführen:**
+   Nachdem du die Umgebungsvariable gesetzt hast, kannst du `mariadb-backup` ausführen, ohne das Passwort anzugeben:
+   ```cmd
+   mariadb-backup --user=deinbenutzername --host=deinhost --backup-dir=C:\Pfad\zum\Sicherungsordner
+   ```
+
+#### Variante 2: **Verwendung der `--defaults-extra-file` Option**
+
+Falls du die globale Konfigurationsdatei nicht bearbeiten möchtest, kannst du eine benutzerdefinierte Konfigurationsdatei erstellen und die Option `--defaults-extra-file` verwenden.
+
+1. **Erstellen einer benutzerdefinierten Konfigurationsdatei (z.B. `backup.cnf`):**
+   Erstelle eine neue `.cnf` oder `.ini` Datei (z.B. `C:\Pfad\zur\backup.cnf`) mit folgendem Inhalt:
+   ```ini
+   [client]
+   user=deinbenutzername
+   password=deinpasswort
+
+1. **`mariadb-backup` mit `--defaults-extra-file` ausführen:** Verwende die Option --defaults-extra-file, um auf deine 
+   benutzerdefinierte Konfigurationsdatei zu verweisen:
+
+   ```cmd
+   mariadb-backup --defaults-extra-file=C:\Pfad\zur\backup.cnf --backup-dir=C:\Pfad\zum\Sicherungsordner
 
 ### Ref. 
 https://mariadb.com/kb/en/full-backup-and-restore-with-mariabackup/
@@ -2510,7 +2764,8 @@ mysqlbinlog mysqld-bin.000001 | grep -B 10 -A 10 kurs
 ### Binlog - Wann ? 
 
   * PIT (Point-in-Time) - Recovery
-  * Master/Slave - Replication 
+  * Master/Slave - Replication
+  * Galera Cluster (MariaDB Cluster)
 
 ### Binlog aktivieren (Centos)
 
@@ -2711,7 +2966,39 @@ mysqlbinlog -vv --read-from-remote-server --socket /run/mysqld/mysqld.sock mysql
 ### Slow Query Log
 
 
-### Walkthrough 
+### Walkthrough (MariaDB from 10.11) 
+
+```
+## Step 1
+## /etc/my.cnf.d/mariadb-server.cnf 
+## or: debian /etc/mysql/mariadb.conf.d/50-server.cnf 
+[mysqld]
+slow-query-log 
+```
+
+```
+systemctl restart mariadb
+```
+
+```
+mariadb 
+```
+
+```
+-- kleinst mögliche Zeit 0.000001 Sekunden
+SET GLOBAL log_slow_query_time=0.000001;
+-- in der session setzen, damit das sofort funktioniert
+SET log_slow_query_time=0.000001;
+-- Achtung, steht nach nächstem Neustart wieder auf 10 Sekunden (Default)
+```
+
+```
+-- prüfen
+select @@GLOBAL.log_slow_query_time;
+select @@log_slow_query_time;
+```
+
+### Walkthrough (before 10.11) 
 
 ```
 ## Step 1
@@ -2793,16 +3080,19 @@ ls -la server1-slow.log
 less server1-slow.log 
 ```
 
-### Show queries that do not use indexes 
-
-```
-SET GLOBAL log_queries_not_using_indexes=ON;
-```
-
 ### Geschwätzigkeit (Verbosity) erhöhen 
+
+#### Before 10.6.16, 10.11.6 
 
 ```
 SET GLOBAL log_slow_verbosity='query_plan,explain'
+```
+
+#### Best option from 10.6.16 and 10.11.6 
+
+```
+-- Enable all possible options
+SET GLOBAL log_slow_verbosity='full'
 ```
 
 ### Queries die keine Indizes verwenden 
@@ -2817,7 +3107,7 @@ SET GLOBAL log_queries_not_using_indexes=ON;
   * https://mariadb.com/kb/en/slow-query-log-overview/
 
 
-### Percona-toolkit-Installation - Centos
+### Percona-toolkit-Installation - Rocky/Redhat und Ubuntu
 
 
 ### Walkthrough (Centos / Redhat) 
@@ -2827,7 +3117,13 @@ SET GLOBAL log_queries_not_using_indexes=ON;
 ## https://www.percona.com/doc/percona-toolkit/LATEST/installation.html
 
 ## Step 1: repo installieren mit rpm -paket 
-dnf install -y https://repo.percona.com/yum/percona-release-latest.noarch.rpm; dnf install -y percona-toolkit
+dnf install -y https://repo.percona.com/yum/percona-release-latest.noarch.rpm
+percona-release enable tools release
+dnf install -y percona-toolkit
+```
+
+```
+pt-<tab><tab>
 ```
 
 ### Debian / Ubuntu 
@@ -2840,6 +3136,50 @@ apt install percona-toolkit
 
 
 ```
+
+### pt-query-digest under Windows
+
+
+### Attention about download 
+
+```
+url is wrong in Reference document, us:
+https://www.percona.com/get/pt-query-digest
+```
+
+### Walkthrough 
+
+```
+## Download and install msi-package - newest version
+https://strawberryperl.com/
+https://github.com/StrawberryPerl/Perl-Dist-Strawberry/releases/download/SP_54001_64bit_UCRT/strawberry-perl-5.40.0.1-64bit.msi
+```
+
+```
+## Open this page 
+https://www.percona.com/get/pt-query-digest
+## Save as -> txt filetype -> pt-query-digest.pl in the mariadb/bin folder
+```
+
+![image](https://github.com/user-attachments/assets/ac6af0ee-61fe-4930-8371-6a76fec41db9)
+
+```
+## Please confirm with o.k.
+```
+
+
+
+```
+Installed strawberry perl on my windows computer
+Saved percona.com/get/pt-query-digest to a .pl file on my laptop
+In the run part I typed cmd
+In the new command window, I typed pt-query-digest.pl slow.log > digest.txt
+```
+
+
+### Reference 
+
+  * http://www.jonathanlevin.co.uk/2012/01/query-digest-on-windows.html
 
 ### pt-query-digest exercise (Hitliste von slow-query-log erstellen)
 
@@ -3095,6 +3435,195 @@ select count(distinct(vendor_city)) from contributions;
 1 row in set (4.97 sec)
 ```
 
+## Joins
+
+### Overview Joins
+
+
+```
+
+ * combines rows from two or more tables
+ * based on a related column between them.
+
+
+```
+
+### MariaDB (Inner) Join 
+
+
+![image](https://github.com/user-attachments/assets/b0c54d02-95b6-4593-bd5d-d290d42a5729)
+
+
+### MariaDB (Inner) Join (explained) 
+
+```
+  * Inner Join and Join are the same
+  * Returns records that have matching values in both tables
+  * Inner Join, Cross Join and Join 
+    * are the same in MySQL
+ ```
+
+ 
+### MariaDB Left Join
+
+![image](https://github.com/user-attachments/assets/c486eb59-bf64-44e7-abce-7ac1c4e18731)
+
+
+
+### MySQL Left (outer) Join (explained) ==== 
+
+  * Return all records from the left table
+  * _AND_ the matched records from the right table
+  * The result is NULL on the right side
+    * if there are no matched columns on the right 
+  * Left Join and Left Outer Join are the same
+
+### MySQL Right Join
+
+
+![image](https://github.com/user-attachments/assets/69935a67-78fb-44d2-86ea-cdefe3060734)
+
+### MySQL Right Join (explained)
+
+  * Return all records from the right table
+    * _AND_ the matched records from the left table
+  * Right Join and Right Outer Join are the same
+
+### MySQL Straight Join 
+
+  * MySQL (inner) Join and Straight Join are the same
+  * **Difference:**
+    * The left column is always read first
+  * **Downside:**
+    * Bad optimization through mysql (query optimizer) 
+  * **Recommendation:**
+    * Avoid straight join if possible 
+    * use join instead 
+
+### Type of Joins
+
+  * [inner] join
+    * **inner join** and **join** are the same  
+  * left [outer] join 
+  * right [outer] join
+  * full [outer] join
+  * straight join < equals > join
+  * cross join = join (in mysql)
+  * natural join <= equals => join (but syntax is different)
+
+### In Detail: [INNER] JOIN 
+
+  * Return rows when there 
+    * is a match in both tables 
+  * Example 
+
+```
+SELECT actor.first_name, actor.last_name, film.title 
+FROM film_actor 
+INNER JOIN actor ON film_actor.actor_id = actor.actor_id 
+INNER JOIN film ON film_actor.film_id = film.film_id;
+```
+
+### In Detail: Joining without JOIN - Keyword
+
+  * Explanation: Will have the same query execution plan as [INNER] JOIN
+
+```
+SELECT actor.first_name, actor.last_name, film.title 
+FROM film_actor,actor,film 
+where film_actor.actor_id = actor.actor_id 
+and film_actor.film_id = film.film_id;
+```
+
+### In Detail: Left Join
+
+  * Return all rows from the left side
+    * even if there is not result on the right side
+  * Example
+
+```
+SELECT 
+	c.customer_id, 
+    c.first_name, 
+    c.last_name,
+    a.actor_id,
+    a.first_name,
+    a.last_name
+FROM customer c
+LEFT JOIN actor a 
+ON c.last_name = a.last_name
+ORDER BY c.last_name;
+```
+
+### In Detail: Right Join
+
+  * Return all rows from the right side
+    * even if there are no results on the left side
+  * Example 
+
+```
+SELECT 
+    c.customer_id, 
+    c.first_name, 
+    c.last_name,
+    a.actor_id,
+    a.first_name,
+    a.last_name
+FROM customer c
+RIGHT JOIN actor a 
+ON c.last_name = a.last_name
+ORDER BY a.last_name;
+```
+
+### In Detail: Having
+
+  * Simple: WHERE for GroupBy (because where does not work here)
+  * Example
+
+```
+SELECT last_name, COUNT(*) 
+FROM sakila.actor
+GROUP BY last_name
+HAVING count(last_name) > 2
+```
+ 
+### Internal (type of joins)  - NLJ 
+
+  * NLJ - (Nested Loop Join)
+
+```
+for each row in t1 matching range {
+  for each row in t2 matching reference key {
+    for each row in t3 {
+      if row satisfies join conditions, send to client
+    }
+  }
+}
+```
+
+### Internal (type of joins) - BNL 
+ 
+  * BNL - (Block Nested Loop) 
+    * in explain: -> using join buffer 
+    * columns of interest to a join are stored in join buffer
+      * --> not whole rows.
+    * join_buffer_size system variable 
+      * -> determines the size of each join buffer used to process a query. 
+  * https://dev.mysql.com/doc/refman/5.7/en/nested-loop-joins.html
+
+### BNL - Who can I see, if it is used ?
+
+  * Can be seen in explain 
+
+![image](https://github.com/user-attachments/assets/06380456-a4e2-4213-9b71-b2621bfdb91c)
+
+  
+```
+  * explain select * from t1, t2 where t1.col < 10 and t2.col < 'bar';
+```
+
+
+
 ## Monitoring 
 
 ### What to monitor?
@@ -3221,7 +3750,7 @@ https://pmmdemo.percona.com
 ### Slave einrichten - gtid (mit mariabackup)
 
 
-### Step 1: set server-id 1 and log-bin 
+### Step 1: Master: set server-id 1 and log-bin 
 
 ```
 ## Variante Centos/Rocky 
@@ -3270,12 +3799,14 @@ mariabackup --version
 ### Step 2b: Installation on centos/rocky/rhel (master)
 
 ```
-dnf install -y mariadb-backup 
+## When using mariadb from repo rhel/rocky 
+dnf install -y mariadb-backup
+## When using mariadb from foundation mariadb.org
 ## check if available
 mariabackup --version 
 ```
 
-### Step 3: Setup mariabackup 
+### Step 3: Setup mariabackup (before 11.4) 
 
 ```
 ## prepare for mariabackup if you use it with root and with unix_socket 
@@ -3364,8 +3895,8 @@ GRANT REPLICATION SLAVE ON *.*  TO 'repl'@'192.168.56.%';
 
 ```
 ## as root@slave 
-## you be able to connect to 
-mysql -urepl -p -h192.168.56.102
+## you be able to connect to the master
+mysql --skip-ssl -urepl -p -h192.168.56.102
 ## test if grants are o.k. 
 show grants;
 ```
@@ -4667,11 +5198,35 @@ select count(distinct(vendor_city)) from contributions;
 
   * https://galeracluster.com/downloads/
 
+## Dokumentation (Sandbox mode)
+
+### mariadb-client Sandbox-mode and mariadb-dump (in newer versions)
+
+  * https://mariadb.org/mariadb-dump-file-compatibility-change/
+
 ## Dokumentation (functions)
 
 ### Built-In Functions
 
   * https://mariadb.com/kb/en/built-in-functions/
+
+## Dokumentation (Summary Tables)
+
+### Summary Tables
+
+  * https://mysql.rjweb.org/doc.php/summarytables
+
+## Dokumentation / Library
+
+### Server System Variables
+
+  * https://mariadb.com/kb/en/server-system-variables/#bind_address
+
+## Dokumenation / multi-server
+
+### Multiple instances Linux with systemd
+
+  * https://mariadb.com/kb/en/systemd/#interacting-with-multiple-mariadb-server-processes
 
 ## Misc
 
@@ -6720,8 +7275,8 @@ SHOW CREATE VIEW
      * simple rewrites (translates the query)  
    * temptable 
      * Creates a temptable to retrieve information
-     * In this case no indexes can be used 
-   * Shows up explain with derived
+     * (In this case no indexes can be used - was the case in older versions) 
+   * Shows up in explain with derived
    * undefined 
      * MySQL chooses, if to use merge or temptable 
      * prefers merge over temptable if possible 
@@ -6939,7 +7494,39 @@ Step 2: Lookup data, but a lot lookups needed
 ### Slow Query Log
 
 
-### Walkthrough 
+### Walkthrough (MariaDB from 10.11) 
+
+```
+## Step 1
+## /etc/my.cnf.d/mariadb-server.cnf 
+## or: debian /etc/mysql/mariadb.conf.d/50-server.cnf 
+[mysqld]
+slow-query-log 
+```
+
+```
+systemctl restart mariadb
+```
+
+```
+mariadb 
+```
+
+```
+-- kleinst mögliche Zeit 0.000001 Sekunden
+SET GLOBAL log_slow_query_time=0.000001;
+-- in der session setzen, damit das sofort funktioniert
+SET log_slow_query_time=0.000001;
+-- Achtung, steht nach nächstem Neustart wieder auf 10 Sekunden (Default)
+```
+
+```
+-- prüfen
+select @@GLOBAL.log_slow_query_time;
+select @@log_slow_query_time;
+```
+
+### Walkthrough (before 10.11) 
 
 ```
 ## Step 1
@@ -7021,16 +7608,19 @@ ls -la server1-slow.log
 less server1-slow.log 
 ```
 
-### Show queries that do not use indexes 
-
-```
-SET GLOBAL log_queries_not_using_indexes=ON;
-```
-
 ### Geschwätzigkeit (Verbosity) erhöhen 
+
+#### Before 10.6.16, 10.11.6 
 
 ```
 SET GLOBAL log_slow_verbosity='query_plan,explain'
+```
+
+#### Best option from 10.6.16 and 10.11.6 
+
+```
+-- Enable all possible options
+SET GLOBAL log_slow_verbosity='full'
 ```
 
 ### Queries die keine Indizes verwenden 
@@ -7486,19 +8076,6 @@ apt update;
 apt install -y percona-toolkit; 
 ```
 
-### pt-query-digest under Windows
-
-
-### Attention about download 
-
-```
-url is wrong in Reference document, us:
-https://www.percona.com/get/pt-query-digest
-```
-### Reference 
-
-  * http://www.jonathanlevin.co.uk/2012/01/query-digest-on-windows.html
-
 ### pt-query-digest - analyze slow logs
 
 
@@ -7890,10 +8467,6 @@ total_memory_allocated: 0 bytes
 ### MySQL - Peformance Blog
 
   * https://www.percona.com/blog/
-
-### Server System Variables
-
-  * https://mariadb.com/kb/en/server-system-variables/#bind_address
 
 ### Killing connection
 
