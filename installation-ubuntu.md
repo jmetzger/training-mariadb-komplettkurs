@@ -15,7 +15,7 @@ sudo curl -o /etc/apt/keyrings/mariadb-keyring.pgp 'https://mariadb.org/mariadb_
 ```
 
 ```
-nano /etc/apt/sources.list.d/mariadb.sources 
+sudo nano /etc/apt/sources.list.d/mariadb.sources 
 ```
 
 ```
