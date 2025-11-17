@@ -2,6 +2,10 @@
 
 ## Setup repo and install
 
+>[!NOTES]
+>2025-11-17 MariaDB 11.8 is the latest MariaDB LTS Version.
+>Previous version was 11.4 
+
  * https://downloads.mariadb.org/mariadb/repositories/
 
 ```
