@@ -32,9 +32,9 @@ Signed-By: /etc/apt/keyrings/mariadb-keyring.pgp
 ```
 
 ```
-sudo apt-get update
+sudo apt update
 sudo apt search mariadb 
-sudo apt-get install mariadb-server
+sudo apt install mariadb-server
 ```
 
 ```
