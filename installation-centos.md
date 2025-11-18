@@ -20,7 +20,8 @@ dnf install -y mariadb-server mariadb
 ### Setup Repo MariaDB - Server 11.4
 
 ```
-# Setup repo 
+# Setup repo
+sudo su -
 nano /etc/yum.repos.d/MariaDB.repo
 ```
 
