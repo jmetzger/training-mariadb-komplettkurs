@@ -13,16 +13,16 @@ netstat -an
 
 ```
 
-## How to fix (Ubuntu -> Mariadb Foundation) 
+## How to fix (Ubuntu -> Mariadb Foundation -> 11.4 ) 
 
 ```
-nano /etc/mysql/mariadb.conf.d/50-server.cnf
+nano /etc/mysql/mariadb.conf.d/99-server.cnf 
 ```
 
 ```
 # In Section [mysqld] 
 # Change bind-address to -> bind-address = 0.0.0.0
-[mysqld]
+[mariadbd]
 bind-address = 0.0.0.0
 ```
 
