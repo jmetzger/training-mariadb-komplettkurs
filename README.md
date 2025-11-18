@@ -168,7 +168,7 @@
      * [Summary Tables](https://mysql.rjweb.org/doc.php/summarytables)
     
   1. Dokumentation / Library
-     * [Server System Variables](https://mariadb.com/kb/en/server-system-variables/#bind_address)
+     * [Server System Variables](https://mariadb.com/docs/server/server-management/variables-and-modes/server-system-variables#list-of-server-system-variables)
 
   1. Dokumenation / multi-server
      * [Multiple instances Linux with systemd](https://mariadb.com/kb/en/systemd/#interacting-with-multiple-mariadb-server-processes)
