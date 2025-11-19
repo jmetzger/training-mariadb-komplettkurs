@@ -20,6 +20,7 @@ mysql>select * from actor;
 mysql>use sakila; 
 mysql>insert into actor (first_name,last_name) values ('john','The Rock');
 mysql>insert into actor (first_name,last_name) values ('johanne','Johannson');
+mysql> exit;
 
 # Optional: Step 3: Looking into binary to see this data 
 cd /var/lib/mysql 
@@ -31,6 +32,7 @@ mariadb
 mysql>use sakila; delete from actor where actor_id > 200;
 # now only 200 datasets 
 mysql>use sakila; select * from actor;
+mysql>exit;
 
 ```
   
