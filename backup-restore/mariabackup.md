@@ -17,6 +17,7 @@ dnf install mariadb-backup
 ### Installation deb (Ubuntu/Debian) 
 
 ```
+apt update
 apt search mariadb-backup 
 apt install -y mariadb-backup 
 ```
