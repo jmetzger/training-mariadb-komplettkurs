@@ -142,7 +142,6 @@ grant all on sakila.* to ext@'192.168.56.%';
 ### Schritt 4: Local System 
 
 ```
-exit;
 # on local system test connection
 mysql -uext -p -h<ip des remoteserver>
 show grants;
