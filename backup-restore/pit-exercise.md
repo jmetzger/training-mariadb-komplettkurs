@@ -9,9 +9,10 @@
 
 ```
 # Step 1 : Create full backup (assuming 24:00 o'clock)
-mysqldump --all-databases --single-transaction --master-data=2 --routines --events --flush-logs --delete-master-logs > /usr/src/all-databases.sql;
+mariadb-dump --all-databases --single-transaction --master-data=2 --routines --events --flush-logs --delete-master-logs > /usr/src/all-databases.sql;
 
 # Step 1.5: look into data
+mariadb
 mysql>use sakila;
 mysql>select * from actor;
 
@@ -23,9 +24,10 @@ mysql>insert into actor (first_name,last_name) values ('johanne','Johannson');
 # Optional: Step 3: Looking into binary to see this data 
 cd /var/lib/mysql 
 # last binlog 
-mysqlbinlog -vv mariadb-bin.000005
+mariadb-binlog -vv mariadb-bin.000005
 
-# Step 4: Some how a guy deletes data 
+# Step 4: Some how a guy deletes data
+mariadb
 mysql>use sakila; delete from actor where actor_id > 200;
 # now only 200 datasets 
 mysql>use sakila; select * from actor;
