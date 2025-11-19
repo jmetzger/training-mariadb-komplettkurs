@@ -31,8 +31,8 @@ exit
 ```
 cd /var/lib/mysql
 # Das letzte nehmen, wenn mehrere da sind 
-mysqlbin -vv mysqld-bin.000001
-mysql
+mariadb-binlog -vv mariadb-bin.000001
+mariadb
 ```
 
 ```
@@ -42,7 +42,7 @@ exit;
 
 ```
 # Das letzte nehmen, wenn mehrere da sind 
-mysqlbinlog -vv mysqld-bin.000001
+mysqlbinlog -vv mariadb-bin.000001
 ```
 
 ## Search in binlog with Unix-Tools 
