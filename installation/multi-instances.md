@@ -1,6 +1,6 @@
 # Multi-Instances 
 
-## 🧪 Übung: Mehrere MariaDB-Instanzen unter Rocky Linux (mit SELinux)
+## Übung: Mehrere MariaDB-Instanzen unter Rocky Linux (mit SELinux)
 
 **Ziel:**
 
@@ -160,5 +160,7 @@ sudo systemctl start mariadb@node1.service
 sudo systemctl enable mariadb@node1.service
 ```
 
----
+## Reference: 
+
+  * https://mariadb.com/docs/server/server-management/starting-and-stopping-mariadb/systemd#interacting-with-multiple-mariadb-server-processes
 
