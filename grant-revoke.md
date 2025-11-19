@@ -29,6 +29,7 @@ mysql -utraining -p
 # 4. Anschauen, welchen Rechte wir als dieser Nutzer haben
 show grants; 
 show databases;
+select * from information_schema.tables \G
 use sakila; 
 ```
 
