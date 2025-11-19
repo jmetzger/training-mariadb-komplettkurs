@@ -86,6 +86,7 @@ mysql -utraining -p
 
 ```
 # jetzt geht es nicht mehr 
+use sakila;
 update actor set first_name = 'johanna' where actor_id = 1;
 # aber das geht
 select * from actor where actor_id = 1;
