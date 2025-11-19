@@ -63,6 +63,7 @@
      * [User- and Permission-concepts (best-practice)](/security/user-db-best-practice.md)
      * [Setup external access](external-access.md)
      * [Users zwingen sich neu anzumelden](kill-process.md)
+     * [max_connections pro user festlegen](/users/restrict-connections-per-user.md)
     
   1. User Authentication
      * [ed25519 authentification](auth/ed25519.md)
