@@ -82,7 +82,7 @@ user=root
 user=root
 ```
 
-## Schritt 2: Backup erstellen 
+### Schritt 2: Backup erstellen 
 
 ```
 mkdir /backups 
@@ -90,7 +90,7 @@ mkdir /backups
 mariabackup --target-dir=/backups/2023091901 --backup 
 ```
 
-## Schritt 3: Prepare durchführen 
+### Schritt 3: Prepare durchführen 
 
 ```
 # apply ib_logfile0 to tablespaces 
