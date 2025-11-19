@@ -77,6 +77,6 @@ Mi 20. Jan 09:41:55 CET 2021
 ```
 cd /usr/src
 mariadb-dump sakila > sakila-all.sql 
-echo "create database mynewdb" | mysql
+echo "create database mynewdb" | mariadb
 mariadb mynewdb < sakila-all.sql 
 ```
