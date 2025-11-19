@@ -117,6 +117,15 @@ create user ext@'192.168.56.%' identified by 'password';
 
 ```
 
+```
+# Achtung. Bei Redhat/Rocky - Firewall freischalten 
+firewall-cmd --list-all
+firewall-cmd --info-service=mysql
+firewall-cmd --add-service=mysql 
+firewall-cmd --runtime-to-permanent
+```
+
+
 ### Schritt 2 (auf lokalen Server): 
 
 ```
