@@ -16,7 +16,7 @@ systemctl restart mariadb
 cd /var/lib/mysql
 # is binary log there ? mariadb-
 ls -la *mysqld-bin* 
-mysql
+mariadb
 ```
 
 ```
