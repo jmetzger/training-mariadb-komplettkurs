@@ -85,7 +85,7 @@ SHOW EVENTS;
 ## One time event but preserved (so runs once every minute) 
 
 ```
-To keep the event after it is expired, you use the  ON COMPLETION PRESERVE clause.
+-- To keep the event after it is expired, you use the  ON COMPLETION PRESERVE clause.
 
 CREATE EVENT test_event_02
 ON SCHEDULE AT CURRENT_TIMESTAMP + INTERVAL 1 MINUTE
