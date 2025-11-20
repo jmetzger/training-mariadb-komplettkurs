@@ -42,9 +42,11 @@ Environment='MYSQLD_MULTI_INSTANCE=--defaults-file=/etc/my%I.cnf \
                         --skip-networking'
 ```
 
+```
+# dann speichern
+```
 
-
-## 1. Eigenes Datadir anlegen (SELinux-konform!)
+## 2. Eigenes Datadir anlegen (SELinux-konform!)
 
 MariaDB verwendet Standard-Label:
 
@@ -70,7 +72,7 @@ Ohne dieses Label startet die Instanz NICHT.
 
 ---
 
-## 2. Runtime-Pfad für Socket vorbereiten (SELinux)
+## 3. Runtime-Pfad für Socket vorbereiten (SELinux)
 
 Rocky nutzt idR `/var/run/mysqld`.
 Wir erstellen einen separaten Socket-Namen für node1:
@@ -88,7 +90,7 @@ sudo restorecon -v /var/run/mysqld/mysqld-node1.sock
 
 ---
 
-## 3. Konfigurationsdatei für die neue Instanz anlegen
+## 4. Konfigurationsdatei für die neue Instanz anlegen
 
 Auf RHEL/Rocky liegen instanz-spezifische Dateien standardmäßig unter:
 
@@ -119,7 +121,7 @@ sudo restorecon -v /etc/mynode1.cnf
 
 ---
 
-## 4. Instanz starten
+## 5. Instanz starten
 
 ```bash
 sudo systemctl start mariadb@node1.service
@@ -135,7 +137,7 @@ sudo grep AVC /var/log/audit/audit.log
 
 ---
 
-## 5. Mit der neuen Instanz verbinden
+## 6. Mit der neuen Instanz verbinden
 
 ```bash
 sudo mysql --socket=/var/run/mysqld/mysqld-node1.sock -u root
@@ -152,7 +154,7 @@ EXIT;
 
 ---
 
-## 6. SELinux Troubleshooting (falls nötig)
+## 7. SELinux Troubleshooting (falls nötig)
 
 Sollte trotzdem ein AVC auftauchen, hilf dir selbst:
 
@@ -171,7 +173,7 @@ sudo semodule -i mariadb_multi.pp
 
 ---
 
-## 7. Instanz stoppen / Boot-Start aktivieren
+## 8. Instanz stoppen / Boot-Start aktivieren
 
 ```bash
 sudo systemctl stop mariadb@node1.service
