@@ -77,14 +77,10 @@ sudo restorecon -v /var/run/mysqld/mysqld-node1.sock
 
 Auf RHEL/Rocky liegen instanz-spezifische Dateien standardmäßig unter:
 
-```
-/etc/my.cnf.d/
-```
-
 Wir erstellen:
 
 ```bash
-sudo tee /etc/my.cnf.d/mynode1.cnf >/dev/null <<'EOF'
+sudo tee /etc/mynode1.cnf >/dev/null <<'EOF'
 [mariadbd]
 # Eigenes Datadir
 datadir=/var/lib/mysql-node1
