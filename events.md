@@ -82,7 +82,7 @@ SHOW EVENTS;
 
 ```
 
-## One time event but preserved (so runs once every minute) 
+## One time event but preserved (runs 1 minute later, after created = interval) 
 
 ```
 -- To keep the event after it is expired, you use the  ON COMPLETION PRESERVE clause.
