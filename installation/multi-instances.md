@@ -27,7 +27,22 @@ Template sollte aussehen wie:
 mariadb@.service  enabled
 ```
 
----
+## 1. Einmalig für alle Instanzen (template) 
+
+```
+systemctl edit mariadb@.service
+```
+
+```
+[Service]
+ProtectHome=false
+Environment='MYSQLD_MULTI_INSTANCE=--defaults-file=/etc/my%I.cnf \
+                        --socket=/var/run/mysqld/mysqld-%I.sock \
+                        --datadir=/var/lib/mysql-%I \
+                        --skip-networking'
+```
+
+
 
 ## 1. Eigenes Datadir anlegen (SELinux-konform!)
 
