@@ -26,7 +26,7 @@ free
 ```
 # berechnen einer guten Größe
 # mysql -e 'select <speichergröße>/10 * 8'
-mysql -e 'select 3.8/10 * 8'
+mariadb -e 'select 3.8/10 * 8'
 ```
 
 ## Schritt 3: innodb_buffer_pool_size in config setzten
