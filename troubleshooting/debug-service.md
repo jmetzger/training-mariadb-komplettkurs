@@ -81,3 +81,7 @@ cat error.log | grep -i error
 grep -r datadir /etc 
 
 ```
+
+## log_warnings hochsetzen 
+
+  * https://mariadb.com/docs/server/server-management/variables-and-modes/server-system-variables#log_warnings
