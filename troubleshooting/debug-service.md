@@ -1,5 +1,44 @@
 # Debug Service 
 
+## Fehler erzeugen (Rocky) 
+
+```
+cd /etc
+nano my.cnf.d/server.cnf
+```
+
+```
+# konfiguratiosoption, die es nicht gibt
+# ans ende
+gummitulpe=23M
+```
+
+```
+# Speichern
+systemctl restart mariadb
+```
+
+
+## Fehler erzeugen (Ubuntu) 
+
+```
+cd /etc/mariadb.d
+nano 50-server.cnf
+```
+
+```
+# konfiguratiosoption, die es nicht gibt
+# ans ende
+gummitulpe=23M
+```
+
+```
+# Speichern
+systemctl restart mariadb
+```
+
+
+
 ## Walkthrough 
 
 ```
