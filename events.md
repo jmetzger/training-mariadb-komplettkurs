@@ -8,8 +8,29 @@ SHOW PROCESSLIST;
 
 -- Prüfen ob scheduler läuft 
 show variables like '%event%';
-set GLOBAL event_scheduler = on; 
+```
 
+### Setup in config 
+
+```
+# Redhat:
+#/etc/my.cnf.d/server.cnf
+
+# Ubuntu
+# /etc/mysql/mariadb.conf.d/50-server.cnf 
+```
+
+```
+[mysqld]
+event_scheduler
+```
+
+```
+systemctl restart mariad
+mariadb
+```
+
+```
 -- scheduler appears 
 SHOW PROCESSLIST;
 
