@@ -22,7 +22,7 @@ systemctl restart mariadb
 ## Fehler erzeugen (Ubuntu) 
 
 ```
-cd /etc/mariadb.d
+cd /etc/mysql/mariadb.d
 nano 50-server.cnf
 ```
 
