@@ -96,6 +96,12 @@ pid-file=/var/run/mysqld/mysqld-node1.pid
 EOF
 ```
 
+```bash
+sudo semanage fcontext -a -t mysqld_etc_t "/etc/mynode1.cnf"
+sudo restorecon -v /etc/mynode1.cnf
+
+```
+
 ---
 
 ## 4. Instanz starten
