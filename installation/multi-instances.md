@@ -61,6 +61,8 @@ Rocky nutzt idR `/var/run/mysqld`.
 Wir erstellen einen separaten Socket-Namen für node1:
 
 ```bash
+sudo mkdir /var/run/mysqld
+chown mysql:mysql /var/run/mysqld
 sudo touch /var/run/mysqld/mysqld-node1.sock
 sudo chown mysql:mysql /var/run/mysqld/mysqld-node1.sock
 sudo semanage fcontext -a -t mysqld_var_run_t "/var/run/mysqld/mysqld-node1.sock"
