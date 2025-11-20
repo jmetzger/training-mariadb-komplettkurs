@@ -9,7 +9,7 @@ nano my.cnf.d/server.cnf
 
 ```
 # konfiguratiosoption, die es nicht gibt
-# in den bereich: mysqld
+# in den bereich: [mysqld]
 gummitulpe=23M
 ```
 
@@ -28,7 +28,7 @@ nano 50-server.cnf
 
 ```
 # konfiguratiosoption, die es nicht gibt
-# ans ende
+# in den Bereich [mariadbd]
 gummitulpe=23M
 ```
 
