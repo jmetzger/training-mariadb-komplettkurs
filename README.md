@@ -33,6 +33,7 @@
      * [Linux - Upgrade between Major Versions and from MySQL <8](upgrades/major-version-and-mysql-less-than-8.md)
      * [MariaDB Upgrade 10.6. -> 10.11 (Debian/Ubuntu)](mariadb-upgrade-10-06-10-11-debian.md)
      * [MariaDB Upgrade 10.6 -> 10.11 (RHEL)](mariadb-upgrade-10-06-10-11-rhel.md)
+     * [MariaDB Upgrade 11.4 -> 11.8](upgrades/mariadb-upgrade-11-04-11-08-rhel.md)
    
   1. Graphical Tools
      * [Overview](tools/grafische-tools.md)
