@@ -49,8 +49,6 @@ CREATE USER 'admin'@'localhost' IDENTIFIED VIA unix_socket;
 ```ini
 [mysqld]
 log_error = /var/log/mysql/error.log
-general_log = 1
-general_log_file = /var/log/mysql/general.log
 slow_query_log = 1
 
 # MariaDB Audit Plugin
@@ -71,14 +69,10 @@ server_audit_logging = ON
 -- NIEMALS:
 GRANT ALL PRIVILEGES ON *.* TO 'user'@'%';
 -- Keine leeren Passwörter
--- Keine Standard-Ports in Production
+-- (Keine Standard-Ports in Production)
 ```
 
 
-Perfekt, dann machen wir das jetzt einmal „konkret für 11.8 auf einer Single-VM“.
-Ich gehe davon aus: klassische Linux-VM, MariaDB als Paket installiert.
-
----
 
 ## 1. Beispiel-Config (`my.cnf`) für MariaDB 11.8 (Single-VM)
 
@@ -152,8 +146,6 @@ interactive_timeout = 600
 # InnoDB / Storage (nur Auszug)
 #######################################
 
-innodb_file_per_table = 1
-
 # Optionale (Version abhängig!) Encryption-Flags:
 # innodb_encrypt_tables = ON
 # innodb_encrypt_log    = ON
@@ -223,27 +215,6 @@ FLUSH PRIVILEGES;
 
 ### 2.3. Starke Passwörter + Passwort-Check-Plugin
 
-Abhängig von deiner Paketierung, z. B. `simple_password_check`:
-
-```sql
-INSTALL SONAME 'simple_password_check';
-
-SET GLOBAL simple_password_check_minimal_length = 12;
-SET GLOBAL simple_password_check_digits         = 1;
-SET GLOBAL simple_password_check_letters        = 1;
-SET GLOBAL simple_password_check_other          = 1;
-```
-
-Optional kannst du das in der Config festhalten:
-
-```ini
-[mysqld]
-simple_password_check_minimal_length = 12
-simple_password_check_digits         = 1
-simple_password_check_letters        = 1
-simple_password_check_other          = 1
-```
-
 ---
 
 ## 3. Saubere User für deine App (Least Privilege)
@@ -261,7 +232,6 @@ CREATE USER 'appuser'@'localhost'
 GRANT SELECT, INSERT, UPDATE, DELETE
   ON appdb.* TO 'appuser'@'localhost';
 
-FLUSH PRIVILEGES;
 ```
 
 Wenn die App **remote** zugreift (z. B. von 10.0.10.x):
@@ -274,7 +244,6 @@ CREATE USER 'appuser'@'10.0.%'
 GRANT SELECT, INSERT, UPDATE, DELETE
   ON appdb.* TO 'appuser'@'10.0.%';
 
-FLUSH PRIVILEGES;
 ```
 
 Dazu musst du natürlich TLS in `my.cnf` aktiv haben.
