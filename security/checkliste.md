@@ -26,7 +26,7 @@ bind-address = 127.0.0.1  # Nur localhost (bei Bedarf spezifische IP)
 skip-networking           # Wenn nur lokale Verbindungen nötig
 ```
 
-## 4. Verschlüsselung
+## 4. Verschlüsselung (Tabellen - encryption - on - rest)
 ```ini
 # SSL/TLS erzwingen
 require_secure_transport = ON
