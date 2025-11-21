@@ -93,11 +93,6 @@ ON COMPLETION PRESERVE
 DO
    INSERT INTO messages(message,created_at)
    VALUES('Test MariaDB Event 2',NOW());
-
-
-
-
-
 ```
 
 ## Same version, but with begin end block 
