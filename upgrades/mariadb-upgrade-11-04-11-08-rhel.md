@@ -1,4 +1,4 @@
-# Upgrade MariaDB 10.6 -> 10.11 (RHEL,Rocky,Centos)
+# Upgrade MariaDB 11.4 -> 11.8 (RHEL,Rocky,Centos)
 
 ## Walkthrough
 
