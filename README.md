@@ -29,6 +29,7 @@
      * [Kill (kickout user) and stop server](kill-shutdown.md) 
     
   1. Upgrade
+     * [Linux - Upgrade between Major Versions and from MySQL <8](upgrades/major-version-and-mysql-less-than-8.md)
      * [MariaDB Upgrade 10.6. -> 10.11 (Debian/Ubuntu)](mariadb-upgrade-10-06-10-11-debian.md)
      * [MariaDB Upgrade 10.6 -> 10.11 (RHEL)](mariadb-upgrade-10-06-10-11-rhel.md)
    
