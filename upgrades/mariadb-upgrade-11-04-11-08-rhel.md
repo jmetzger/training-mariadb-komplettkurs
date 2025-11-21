@@ -1,5 +1,5 @@
 # Upgrade MariaDB 10.6 -> 10.11 (RHEL,Rocky,Centos)
-mariadb-upgrade-10-06-10-11-rhel.md
+
 ## Walkthrough
 
 ```
