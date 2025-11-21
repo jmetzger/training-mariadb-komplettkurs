@@ -3141,7 +3141,7 @@ systemctl restart mariadb
 
 ```
 cd /var/lib/mysql/mysql
-strings gtid_slave_pos;
+strings gtid_slave_pos.ibd;
 mysql;
 ```
 
@@ -3177,7 +3177,10 @@ revoke super on *.* from noroot@'localhost';
 ### working with mysqlbinlog and encryption 
 
 ```
-mysqlbinlog -vv --read-from-remote-server --socket /run/mysqld/mysqld.sock mysqld-bin.000003 | less
+## Evtl. findet er bereits das Socket, ohne dass ich es angebe
+mariadb-binlog -vv --read-from-remote-server mysqld-bin.000003 | less
+## Falls nicht, mit angeben
+mariadb-binlog -vv --read-from-remote-server --socket /run/mysqld/mysqld.sock mysqld-bin.000003 | less
 ```
 
 
@@ -3998,7 +4001,7 @@ log-bin
 ```
 systemctl restart mariadb 
 ### you should add data, otherwice no gtid will get created if you enable the binlog only from now on
-mysql -e "create schema foo;"
+mariadb -e "create schema foo;"
 ```
 
 ### Step 2a: Installation on ubuntu/debian (master)
@@ -4016,7 +4019,7 @@ dnf install -y MariaDB-server MariaDB-client MariaDB-backup
 
 ```
 ## check if available
-mariabackup --version 
+mariadb-backup --version 
 ```
 
 
@@ -4174,7 +4177,7 @@ systemctl start mariadb
 ## root@slave
 ## $ cat xtrabackup_binlog_info
 cd /home/kurs/2023092001
-cat xtrabackup_binlog_info 
+cat mariadb_backup_binlog_info 
 ## mariadb-bin.000096 568 0-1-2
 ```
 
