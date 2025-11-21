@@ -107,6 +107,8 @@ DO
    INSERT INTO messages(message,created_at)
    VALUES('Test MariaDB Event 3',NOW());
    END /
+
+-- Delimiter wieder auf ';' setzen 
 DELIMITER ;
 
 SELECT * FROM messages;
