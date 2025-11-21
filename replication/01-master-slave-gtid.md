@@ -42,7 +42,7 @@ dnf install -y MariaDB-server MariaDB-client MariaDB-backup
 
 ```
 # check if available
-mariabackup --version 
+mariadb-backup --version 
 ```
 
 
