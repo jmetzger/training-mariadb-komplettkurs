@@ -1,7 +1,5 @@
 # Upgrade MariaDB 10.6 -> 10.11 (Debian/Ubuntu) 
 
-
- mariadb-upgrade-10-06-10-11-debian.md
 ## Step 1: Backup anlegen. 
 
   * Eventually not necessary for slave, because we can set it up anyways (with mariabackup from master)
@@ -13,7 +11,7 @@
 ```
 # Change version in 
 # or where you have your repo definition
-# Change 10.6 -> 10.11 
+# Change 11.4 -> 11.8 
 /etc/apt/sources.list
 # or 
 /etc/apt/sources.list.d/mariadb.soruces 
@@ -32,13 +30,13 @@ apt list --installed | grep -i mariadb
 ```
 
 ```
-apt remove -y mariadb*10.6 libmariadb3
+apt remove -y mariadb*11.4 libmariadb3
 apt autoremove -y 
 ```
 
 ```
-sudo apt install -y mariadb-server # Achtung muss 10.11 sein 
-apt list --installed | grep -i mariadb # ist wirklich 10.11 installiert. 
+sudo apt install -y mariadb-server # Achtung muss 11.8 sein 
+apt list --installed | grep -i mariadb # ist wirklich 11.8 installiert. 
 ```
 
 ## Step 3: Check config and start 
