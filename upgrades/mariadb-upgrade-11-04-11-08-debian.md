@@ -50,6 +50,8 @@ ls -la 50-server.cnf*
 ```
 
 ```
+# Optional ! 
+# normally not needed, server schould already be running
 systemctl start mariadb 
 systemctl enable mariadb
 ```
