@@ -45,7 +45,7 @@ systemctl start mariadb
 systemctl enable mariadb
 
 # Only necessary, if mysql_upgrade_info is not 11.8 in /var/lib/mysql
-mariadb_upgrade # After that mysql_upgrade_info will be present in /var/lib/mysql with version-info
+mariadb-upgrade # After that mysql_upgrade_info will be present in /var/lib/mysql with version-info
 ```
 
 ## Reference:
