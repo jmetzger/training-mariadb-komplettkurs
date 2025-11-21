@@ -9,13 +9,13 @@ mariadb-upgrade-10-06-10-11-rhel.md
 # Step 1:
 # Change version in 
 # or where you have your repo definition
-# Change 10.6 -> 10.11 
+# Change 11.4 -> 11.8 
 cd /etc/yum.repos.d/
 nano MariaDB.repo
 ```
 
 ```
-# Change version in file from 10.6 -> 10.11
+# Change version in file from 11.4 -> 11.8
 # Save + quit 
 ```
 
@@ -31,10 +31,10 @@ dnf list installed | grep -i mariadb
 
 # Step 4
 dnf install -y MariaDB-server MariaDB-backup  
-dnf list --installed | grep -i mariadb # ist wirklich 10.11 installiert. 
+dnf list --installed | grep -i mariadb # ist wirklich 11.8 installiert. 
 
 # Step 4.5 
-# Check if old config files were saved as .rpmsave after delete of package 10.4 
+# Check if old config files were saved as .rpmsave after delete of package 11.4
 cd /etc/my.cnf.d/
 ls -la server.cnf
 # Eventually consolidate everything in one file loaded as last entry, e.g.
@@ -44,10 +44,10 @@ ls -la server.cnf
 systemctl start mariadb 
 systemctl enable mariadb
 
-# Only necessary, if mysql_upgrade_info is not 10.11.x in /var/lib/mysql
-mysql_upgrade # After that mysql_upgrade_info will be present in /var/lib/mysql with version-info
+# Only necessary, if mysql_upgrade_info is not 11.8 in /var/lib/mysql
+mariadb_upgrade # After that mysql_upgrade_info will be present in /var/lib/mysql with version-info
 ```
 
 ## Reference:
 
-  * https://mariadb.com/kb/en/upgrading-from-mariadb-10-6-to-mariadb-10-11/
+  * [Upgrade mariadb 11.4 -> 11.8](https://mariadb.com/docs/server/server-management/install-and-upgrade-mariadb/upgrading/mariadb-community-server-upgrade-paths/upgrading-from-mariadb-11-4-to-mariadb-11-8)
