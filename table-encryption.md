@@ -104,7 +104,10 @@ revoke super on *.* from noroot@'localhost';
 ## working with mysqlbinlog and encryption 
 
 ```
-mysqlbinlog -vv --read-from-remote-server --socket /run/mysqld/mysqld.sock mysqld-bin.000003 | less
+# Evtl. findet er bereits das Socket, ohne dass ich es angebe
+mariadb-binlog -vv --read-from-remote-server mysqld-bin.000003 | less
+# Falls nicht, mit angeben
+mariadb-binlog -vv --read-from-remote-server --socket /run/mysqld/mysqld.sock mysqld-bin.000003 | less
 ```
 
 
