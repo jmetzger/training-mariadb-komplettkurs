@@ -68,7 +68,7 @@ systemctl restart mariadb
 
 ```
 cd /var/lib/mysql/mysql
-strings gtid_slave_pos;
+strings gtid_slave_pos.ibd;
 mysql;
 ```
 
