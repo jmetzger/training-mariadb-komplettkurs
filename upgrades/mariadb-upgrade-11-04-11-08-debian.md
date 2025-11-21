@@ -1,4 +1,4 @@
-# Upgrade MariaDB 10.6 -> 10.11 (Debian/Ubuntu) 
+# Upgrade MariaDB 11.4 -> 11.8 (Debian/Ubuntu) 
 
 ## Step 1: Backup anlegen. 
 
