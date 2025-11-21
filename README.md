@@ -185,6 +185,7 @@
   1. Database Functions/Procedure/Triggers/Events
      * [Events](events.md)
      * [Event: Beispiel täglich Daten löschen](events/01-beispiel-taeglich-loeschen.md)
+     * [Event: Beispiel mit Daten aggregieren](events/02-beispiel-daten-aggregierung.md)
      * [Procedures](procedure.md)
      * [Functions](function.md)
      * [Triggers](triggers.md)
