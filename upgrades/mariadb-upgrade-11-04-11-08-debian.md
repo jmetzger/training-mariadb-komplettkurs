@@ -30,8 +30,10 @@ apt list --installed | grep -i mariadb
 ```
 
 ```
-apt remove -y mariadb*11.4 libmariadb3
-apt autoremove -y 
+apt remove -y mariadb-server mariadb-server-core mariadb-common libmariadb3
+apt autoremove -y
+# Sicherstellen, dass alles weg ist
+apt list --installed | grep -i mariadb
 ```
 
 ```
