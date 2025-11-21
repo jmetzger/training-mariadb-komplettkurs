@@ -29,8 +29,13 @@
      * [Kill (kickout user) and stop server](#kill-kickout-user-and-stop-server)
     
   1. Upgrade
+     * [Upgrade Documentation](https://mariadb.com/docs/server/server-management/install-and-upgrade-mariadb/upgrading)
+     * [Linux - Upgrade between Major Versions and from MySQL <8](#linux---upgrade-between-major-versions-and-from-mysql-<8)
+     * [MariaDB Upgrade 11.4 -> 11.8 (debian)](#mariadb-upgrade-114-->-118-debian)
+     * [MariaDB Upgrade 11.4 -> 11.8 (RHEL)](#mariadb-upgrade-114-->-118-rhel)
      * [MariaDB Upgrade 10.6. -> 10.11 (Debian/Ubuntu)](#mariadb-upgrade-106-->-1011-debianubuntu)
      * [MariaDB Upgrade 10.6 -> 10.11 (RHEL)](#mariadb-upgrade-106-->-1011-rhel)
+     
    
   1. Graphical Tools
      * [Overview](#overview)
@@ -63,6 +68,7 @@
      * [User- and Permission-concepts (best-practice)](#user--and-permission-concepts-best-practice)
      * [Setup external access](#setup-external-access)
      * [Users zwingen sich neu anzumelden](#users-zwingen-sich-neu-anzumelden)
+     * [max_connections pro user festlegen](#max_connections-pro-user-festlegen)
     
   1. User Authentication
      * [ed25519 authentification](#ed25519-authentification)
@@ -168,16 +174,18 @@
      * [Summary Tables](https://mysql.rjweb.org/doc.php/summarytables)
     
   1. Dokumentation / Library
-     * [Server System Variables](https://mariadb.com/kb/en/server-system-variables/#bind_address)
+     * [Server System Variables](https://mariadb.com/docs/server/server-management/variables-and-modes/server-system-variables#list-of-server-system-variables)
 
-  1. Dokumenation / multi-server
-     * [Multiple instances Linux with systemd](https://mariadb.com/kb/en/systemd/#interacting-with-multiple-mariadb-server-processes)
+  1. Mehrere Instanzen in Linux starten
+     * [Multiple instances Linux with systemd](#multiple-instances-linux-with-systemd)
 
   1. Misc
      * [Bis zu welcher Größe taugt mariadb](#bis-zu-welcher-größe-taugt-mariadb)
     
   1. Database Functions/Procedure/Triggers/Events
      * [Events](#events)
+     * [Event: Beispiel täglich Daten löschen](#event-beispiel-täglich-daten-löschen)
+     * [Event: Beispiel mit Daten aggregieren](#event-beispiel-mit-daten-aggregieren)
      * [Procedures](#procedures)
      * [Functions](#functions)
      * [Triggers](#triggers)
@@ -397,6 +405,10 @@ How your data is stored
 
 ### Setup repo and install
 
+>[!NOTE]
+>2025-11-17 MariaDB 11.8 is the latest MariaDB LTS Version.
+>Previous version was 11.4 
+
  * https://downloads.mariadb.org/mariadb/repositories/
 
 ```
@@ -406,7 +418,7 @@ sudo curl -o /etc/apt/keyrings/mariadb-keyring.pgp 'https://mariadb.org/mariadb_
 ```
 
 ```
-nano /etc/apt/sources.list.d/mariadb.sources 
+sudo nano /etc/apt/sources.list.d/mariadb.sources 
 ```
 
 ```
@@ -423,9 +435,9 @@ Signed-By: /etc/apt/keyrings/mariadb-keyring.pgp
 ```
 
 ```
-sudo apt-get update
+sudo apt update
 sudo apt search mariadb 
-sudo apt-get install mariadb-server
+sudo apt install mariadb-server
 ```
 
 ```
@@ -464,7 +476,8 @@ dnf install -y mariadb-server mariadb
 #### Setup Repo MariaDB - Server 11.4
 
 ```
-## Setup repo 
+## Setup repo
+sudo su -
 nano /etc/yum.repos.d/MariaDB.repo
 ```
 
@@ -557,16 +570,16 @@ netstat -an
 
 ```
 
-### How to fix (Ubuntu -> Mariadb Foundation) 
+### How to fix (Ubuntu -> Mariadb Foundation -> 11.4 ) 
 
 ```
-nano /etc/mysql/mariadb.conf.d/50-server.cnf
+nano /etc/mysql/mariadb.conf.d/99-server.cnf 
 ```
 
 ```
 ## In Section [mysqld] 
 ## Change bind-address to -> bind-address = 0.0.0.0
-[mysqld]
+[mariadbd]
 bind-address = 0.0.0.0
 ```
 
@@ -702,6 +715,45 @@ systemctl start mariadb
 ### Debug not starting service
 
 
+### Fehler erzeugen (Rocky) 
+
+```
+cd /etc
+nano my.cnf.d/server.cnf
+```
+
+```
+## konfiguratiosoption, die es nicht gibt
+## in den bereich: [mysqld]
+gummitulpe=23M
+```
+
+```
+## Speichern
+systemctl restart mariadb
+```
+
+
+### Fehler erzeugen (Ubuntu) 
+
+```
+cd /etc/mysql/mariadb.conf.d
+nano 50-server.cnf
+```
+
+```
+## konfiguratiosoption, die es nicht gibt
+## in den Bereich [mariadbd]
+gummitulpe=23M
+```
+
+```
+## Speichern
+systemctl restart mariadb
+```
+
+
+
 ### Walkthrough 
 
 ```
@@ -744,6 +796,10 @@ cat error.log | grep -i error
 grep -r datadir /etc 
 
 ```
+
+### log_warnings hochsetzen 
+
+  * https://mariadb.com/docs/server/server-management/variables-and-modes/server-system-variables#log_warnings
 
 ### Debugging not starting service on Windows
 
@@ -861,6 +917,149 @@ root@its-lu20s04:~#
 ```
 
 ## Upgrade
+
+### Upgrade Documentation
+
+  * https://mariadb.com/docs/server/server-management/install-and-upgrade-mariadb/upgrading
+
+### Linux - Upgrade between Major Versions and from MySQL <8
+
+
+### Upgrading Between Major MariaDB Versions
+
+```
+MariaDB is designed to allow easy upgrades.
+You should be able to trivially upgrade from ANY earlier MariaDB version to the latest one (for example MariaDB 10.3.x to MariaDB 10.11.x), usually in a few seconds. This is also mainly true for any MySQL version < 8.0 to MariaDB 10.4 and up.
+```
+
+### Referenz:
+
+  * https://mariadb.com/docs/server/server-management/install-and-upgrade-mariadb/upgrading/platform-specific-upgrade-guides/upgrading-on-linux/upgrading-between-major-mariadb-versions
+
+### MariaDB Upgrade 11.4 -> 11.8 (debian)
+
+
+### Step 1: Backup anlegen. 
+
+  * Eventually not necessary for slave, because we can set it up anyways (with mariabackup from master)
+  * Best Practice, start wih slave 
+
+
+### Step 2: Change Version .sources or .list - file 
+
+```
+## Change version in 
+## or where you have your repo definition
+## Change 11.4 -> 11.8 
+/etc/apt/sources.list
+## or 
+/etc/apt/sources.list.d/mariadb.sources 
+```
+
+```
+apt update
+```
+
+```
+systemctl stop mariadb 
+```
+
+```
+apt list --installed | grep -i mariadb
+```
+
+```
+apt remove -y mariadb-server mariadb-server-core mariadb-common libmariadb3
+apt autoremove -y
+## Sicherstellen, dass alles weg ist
+apt list --installed | grep -i mariadb
+```
+
+```
+sudo apt install -y mariadb-server # Achtung muss 11.8 sein 
+apt list --installed | grep -i mariadb # ist wirklich 11.8 installiert. 
+```
+
+### Step 3: Check config and start 
+
+```
+cd /etc/mysql/mariadb.conf.d/
+ls -la 50-server.cnf*
+## e.g. 
+```
+
+```
+## Optional ! 
+## normally not needed, server schould already be running
+systemctl start mariadb 
+systemctl enable mariadb
+```
+
+### Step 4: Check if mysql_upgrade already was done ?  
+
+```
+## Only necessary, if mysql_upgrade_info is not 10.11.x in /var/lib/mysql  
+mysql_upgrade # After that mysql_upgrade_info will be present in /var/lib/mysql with version-info 
+```
+
+### Reference 
+
+  * https://mariadb.com/kb/en/upgrading-from-mariadb-10-6-to-mariadb-10-11/
+
+### MariaDB Upgrade 11.4 -> 11.8 (RHEL)
+
+
+### Walkthrough
+
+```
+## Step 0;
+## Sicherung anlegen (mysqldump / mariabackup) 
+
+## Step 1:
+## Change version in 
+## or where you have your repo definition
+## Change 11.4 -> 11.8 
+cd /etc/yum.repos.d/
+nano MariaDB.repo
+```
+
+```
+## Change version in file from 11.4 -> 11.8
+## Save + quit 
+```
+
+
+```
+## Step 2:
+systemctl stop mariadb 
+
+## Step 3
+dnf remove -y MariaDB-* 
+## verify nothing is present 
+dnf list installed | grep -i mariadb 
+
+## Step 4
+dnf install -y MariaDB-server MariaDB-backup  
+dnf list --installed | grep -i mariadb # ist wirklich 11.8 installiert. 
+
+## Step 4.5 
+## Check if old config files were saved as .rpmsave after delete of package 11.4
+cd /etc/my.cnf.d/
+ls -la server.cnf
+## Eventually consolidate everything in one file loaded as last entry, e.g.
+## z_settings.cnf 
+
+## Step 5:
+systemctl start mariadb 
+systemctl enable mariadb
+
+## Only necessary, if mysql_upgrade_info is not 11.8 in /var/lib/mysql
+mariadb-upgrade # After that mysql_upgrade_info will be present in /var/lib/mysql with version-info
+```
+
+### Reference:
+
+  * [Upgrade mariadb 11.4 -> 11.8](https://mariadb.com/docs/server/server-management/install-and-upgrade-mariadb/upgrading/mariadb-community-server-upgrade-paths/upgrading-from-mariadb-11-4-to-mariadb-11-8)
 
 ### MariaDB Upgrade 10.6. -> 10.11 (Debian/Ubuntu)
 
@@ -1108,7 +1307,7 @@ free
 ```
 ## berechnen einer guten Größe
 ## mysql -e 'select <speichergröße>/10 * 8'
-mysql -e 'select 3.8/10 * 8'
+mariadb -e 'select 3.8/10 * 8'
 ```
 
 ### Schritt 3: innodb_buffer_pool_size in config setzten
@@ -1402,8 +1601,8 @@ wget https://downloads.mysql.com/docs/sakila-db.tar.gz
 tar xvf sakila-db.tar.gz
 
 cd sakila-db 
-mysql < sakila-schema.sql 
-mysql < sakila-data.sql 
+mariadb < sakila-schema.sql 
+mariadb < sakila-data.sql 
 
 ```
 
@@ -1441,6 +1640,7 @@ mysql -utraining -p
 ## 4. Anschauen, welchen Rechte wir als dieser Nutzer haben
 show grants; 
 show databases;
+select * from information_schema.schemata \G
 use sakila; 
 ```
 
@@ -1497,6 +1697,7 @@ mysql -utraining -p
 
 ```
 ## jetzt geht es nicht mehr 
+use sakila;
 update actor set first_name = 'johanna' where actor_id = 1;
 ## aber das geht
 select * from actor where actor_id = 1;
@@ -1527,6 +1728,15 @@ create user ext@'192.168.56.%' identified by 'password';
 
 ```
 
+```
+## Achtung. Bei Redhat/Rocky - Firewall freischalten 
+firewall-cmd --list-all
+firewall-cmd --info-service=mysql
+firewall-cmd --add-service=mysql 
+firewall-cmd --runtime-to-permanent
+```
+
+
 #### Schritt 2 (auf lokalen Server): 
 
 ```
@@ -1552,7 +1762,6 @@ grant all on sakila.* to ext@'192.168.56.%';
 #### Schritt 4: Local System 
 
 ```
-exit;
 ## on local system test connection
 mysql -uext -p -h<ip des remoteserver>
 show grants;
@@ -2083,6 +2292,18 @@ ERROR 2013 (HY000): Lost connection to MySQL server during query
 
 ```
 
+### max_connections pro user festlegen
+
+
+
+```
+ALTER USER ext@'192.168.56.%' WITH MAX_USER_CONNECTIONS 10
+```
+
+### Reference 
+
+  * https://mariadb.com/docs/server/reference/sql-statements/account-management-sql-statements/alter-user
+
 ## User Authentication
 
 ### ed25519 authentification
@@ -2195,16 +2416,16 @@ select @@binlog_format;
 ### Dumping (best option) without active binary log 
 
 ```
-mysqldump --all-databases --single-transaction > /usr/src/all-databases.sql
+mariadb-dump --all-databases --single-transaction > /usr/src/all-databases.sql
 ## if you want to include procedures use --routines 
 ## with event - scheduled tasks 
-mysqldump --all-databases --single-transaction --routines --events > /usr/src/all-databases.sql
+mariadb-dump --all-databases --single-transaction --routines --events > /usr/src/all-databases.sql
 ```
 
 #### Windows-Version 
 
 ```
-mysqldump -uroot -p --all-databases --single-transaction --routines --events > C:\Users\Administrator\Desktop\all-databases.sql
+mariadb-dump -uroot -p --all-databases --single-transaction --routines --events > C:\Users\Administrator\Desktop\all-databases.sql
 ```
 
 ### Useful options for PIT 
@@ -2214,7 +2435,7 @@ mysqldump -uroot -p --all-databases --single-transaction --routines --events > C
 
 ## on local systems using socket, there are no huge benefits concerning --compress
 ## when you dump over the network use it for sure 
-mysqldump --all-databases --single-transaction --routines --events  --master-data=2 --flush-logs  > /usr/src/all-databases.sql;
+mariadb-dump --all-databases --single-transaction --routines --events  --master-data=2 --flush-logs  > /usr/src/all-databases.sql;
 ```
 
 ### With PIT_Recovery you can use --delete-master-logs 
@@ -2222,7 +2443,7 @@ mysqldump --all-databases --single-transaction --routines --events  --master-dat
   * All logs before flushing will be deleted 
   
 ```
-mysqldump --all-databases --single-transaction --gtid --master-data=2 --routines --events --flush-logs --delete-master-logs > /usr/src/all-databases.sql;
+mariadb-dump --all-databases --single-transaction --gtid --master-data=2 --routines --events --flush-logs --delete-master-logs > /usr/src/all-databases.sql;
 ```
 
 ```
@@ -2233,21 +2454,21 @@ mariadb-dump --all-databases --single-transaction --gtid --master-data=2 --routi
 ### Flush binary logs from mysql 
 
 ```
-mysql -e "PURGE BINARY LOGS BEFORE '2013-04-22 09:55:22'";
+mariadb -e "PURGE BINARY LOGS BEFORE '2013-04-22 09:55:22'";
 
 ```
 
 ### Version with zipping 
 
 ```
-mysqldump —-all-databases —-single-transaction —-gtid —-master-data=2 —-routines 
+mariadb —-all-databases —-single-transaction —-gtid —-master-data=2 —-routines 
 --events —-flush-logs --compress | gzip > /usr/src/all-databases.sql.gz  
 ```
 
 ### Performance Test mysqldump (1.7 Million rows in contributions) 
 
 ```
-date; mysqldump --all-databases --single-transaction --gtid --master-data=2 --routines --events --flush-logs --compress > /usr/src/all-databases.sql; date
+date; mariadb-dump --all-databases --single-transaction --gtid --master-data=2 --routines --events --flush-logs --compress > /usr/src/all-databases.sql; date
 Mi 20. Jan 09:40:44 CET 2021
 Mi 20. Jan 09:41:55 CET 2021 
 ```
@@ -2259,18 +2480,18 @@ Mi 20. Jan 09:41:55 CET 2021
  mkdir /backups
  chmod 777 /backups
  chown mysql:mysql /backups
- mysqldump --tab=/backups contributions
- mysqldump --tab=/backups --master-data=2 contributions
- mysqldump --tab=/backups --master-data=2 contributions > /backups/master-data.tx
+ mariadb-dump --tab=/backups contributions
+ mariadb-dump --tab=/backups --master-data=2 contributions
+ mariadb-dump --tab=/backups --master-data=2 contributions > /backups/master-data.tx
 ```
 
 ### Create new database base on sakila database 
 
 ```
 cd /usr/src
-mysqldump sakila > sakila-all.sql 
-echo "create database mynewdb" | mysql
-mysql mynewdb < sakila-all.sql 
+mariadb-dump sakila > sakila-all.sql 
+echo "create database mynewdb" | mariadb
+mariadb mynewdb < sakila-all.sql 
 ```
 
 ### backup user with mysqldump
@@ -2304,9 +2525,10 @@ mysqldump -ubackup -p  --single-transaction --routines --events sakila > /usr/sr
 
 ```
 ## Step 1 : Create full backup (assuming 24:00 o'clock)
-mysqldump --all-databases --single-transaction --master-data=2 --routines --events --flush-logs --delete-master-logs > /usr/src/all-databases.sql;
+mariadb-dump --all-databases --single-transaction --master-data=2 --routines --events --flush-logs --delete-master-logs > /usr/src/all-databases.sql;
 
 ## Step 1.5: look into data
+mariadb
 mysql>use sakila;
 mysql>select * from actor;
 
@@ -2314,16 +2536,19 @@ mysql>select * from actor;
 mysql>use sakila; 
 mysql>insert into actor (first_name,last_name) values ('john','The Rock');
 mysql>insert into actor (first_name,last_name) values ('johanne','Johannson');
+mysql> exit;
 
 ## Optional: Step 3: Looking into binary to see this data 
 cd /var/lib/mysql 
 ## last binlog 
-mysqlbinlog -vv mariadb-bin.000005
+mariadb-binlog -vv mariadb-bin.000005
 
-## Step 4: Some how a guy deletes data 
+## Step 4: Some how a guy deletes data
+mariadb
 mysql>use sakila; delete from actor where actor_id > 200;
 ## now only 200 datasets 
 mysql>use sakila; select * from actor;
+mysql>exit;
 
 ```
   
@@ -2336,17 +2561,17 @@ mysql>use sakila; select * from actor;
 cd /var/lib/mysql
 ## Find the position where the problem occured
 ## Look into
-## mysqlbinlog -vv mysqld-bin.000005
+## mariadb-binlog -vv mysqld-bin.000005
 ## and create a recover.sql - file (before apply full backup)
-mysqlbinlog -vv --stop-position=857 mysqld-bin.000005 > /usr/src/recover.sql
+mariadb-binlog -vv --stop-position=857 mysqld-bin.000005 > /usr/src/recover.sql
 ## in case of multiple binlog like so:
-## mysqlbinlog -vv --stop-position=857 mysqld-bin.000005 mysqld-bin.000006 > /usr/src/recover.sql
+## mariadb-binlog -vv --stop-position=857 mysqld-bin.000005 mysqld-bin.000006 > /usr/src/recover.sql
 ```
 
 ```
 ## Step 1: Apply full backup 
 cd /usr/src/
-mysql < all-databases.sql 
+mariadb < all-databases.sql 
 ```
 
 ```
@@ -2359,7 +2584,7 @@ use sakila; select * from actor;
 ```
 ## Step 3: now apply recover.sql 
 ## auf der Kommandozeile 
-mysql < recover.sql 
+mariadb < recover.sql 
 ```
 
 ```
@@ -2429,6 +2654,7 @@ dnf install mariadb-backup
 #### Installation deb (Ubuntu/Debian) 
 
 ```
+apt update
 apt search mariadb-backup 
 apt install -y mariadb-backup 
 ```
@@ -2493,7 +2719,7 @@ user=root
 user=root
 ```
 
-### Schritt 2: Backup erstellen 
+#### Schritt 2: Backup erstellen 
 
 ```
 mkdir /backups 
@@ -2501,7 +2727,7 @@ mkdir /backups
 mariabackup --target-dir=/backups/2023091901 --backup 
 ```
 
-### Schritt 3: Prepare durchführen 
+#### Schritt 3: Prepare durchführen 
 
 ```
 ## apply ib_logfile0 to tablespaces 
@@ -2521,9 +2747,7 @@ chmod -R 755 /var/lib/mysql # otherwice socket for unprivileged user does not wo
 ## ls -laZ /var/lib
 systemctl start mariadb 
 
-### important for selinux if it does not work
-### mariadb 11.4 from mariadb does not have problems here !
-### does not start
+### important for selinux if it does not start
 restorecon -vr /var/lib/mysql 
 systemctl start mariadb
 
@@ -2722,7 +2946,7 @@ systemctl restart mariadb
 cd /var/lib/mysql
 ## is binary log there ? mariadb-
 ls -la *mysqld-bin* 
-mysql
+mariadb
 ```
 
 ```
@@ -2737,8 +2961,8 @@ exit
 ```
 cd /var/lib/mysql
 ## Das letzte nehmen, wenn mehrere da sind 
-mysqlbin -vv mysqld-bin.000001
-mysql
+mariadb-binlog -vv mariadb-bin.000001
+mariadb
 ```
 
 ```
@@ -2748,7 +2972,7 @@ exit;
 
 ```
 ## Das letzte nehmen, wenn mehrere da sind 
-mysqlbinlog -vv mysqld-bin.000001
+mysqlbinlog -vv mariadb-bin.000001
 ```
 
 ### Search in binlog with Unix-Tools 
@@ -2970,7 +3194,7 @@ mysqlbinlog -vv --read-from-remote-server --socket /run/mysqld/mysqld.sock mysql
 
 ```
 ## Step 1
-## /etc/my.cnf.d/mariadb-server.cnf 
+## /etc/my.cnf.d/server.cnf 
 ## or: debian /etc/mysql/mariadb.conf.d/50-server.cnf 
 [mysqld]
 slow-query-log 
@@ -3698,7 +3922,7 @@ mysqladmin status
 
 | Metric	| Comments	| Suggested Alert | 
 | ------------- |:-------------:| -----:|
-| Slow_queries	| Number of queries that took more than long_query_time seconds to execute. Slow queries generate excessive disk reads, memory and CPU usage. Check slow_query_log to find them.	| None | 
+| Slow_queries	| Number of queries that took more than long_query_time seconds to execute. Slow queries generate excessive disk reads, memory and CPU usage. Check slow_query_log to find them.	**show status like '%slow%';** | None | 
 | Select_full_join	| Number of full joins needed to answer queries. If too high, improve your indexing or database schema.	| None |
 | Created_tmp_disk_tables	| Number of temporary tables (typically for joins) stored on slow spinning disks, instead of faster RAM.	| None |
 | (Full table scans) Handler_read%	Number of times the system reads the first row of a table index. (if 0 a table scan is done - because no key was read). Sequential reads might indicate a faulty index.	None
@@ -4564,7 +4788,7 @@ Basically, this is the optimal value to set wsrep_slave_threads or wsrep_applier
 hostnamectl set-hostname mariadb1.training.local 
 ## so that you will see it in your current prompt 
 su -
-hostnamectl 
+hostnamectl
 ```
 
 ### Frisches Datenverzeichnis anlegen
@@ -5220,13 +5444,198 @@ select count(distinct(vendor_city)) from contributions;
 
 ### Server System Variables
 
-  * https://mariadb.com/kb/en/server-system-variables/#bind_address
+  * https://mariadb.com/docs/server/server-management/variables-and-modes/server-system-variables#list-of-server-system-variables
 
-## Dokumenation / multi-server
+## Mehrere Instanzen in Linux starten
 
 ### Multiple instances Linux with systemd
 
-  * https://mariadb.com/kb/en/systemd/#interacting-with-multiple-mariadb-server-processes
+
+### Übung: Mehrere MariaDB-Instanzen unter Rocky Linux (mit SELinux)
+
+**Ziel:**
+
+* 2. Instanz `mariadb@node1.service`
+* eigenes Datadir
+* eigene Config
+* SELinux-konform
+* systemd-Template nutzen
+
+Rocky Linux verwendet SELinux (default **Enforcing**) → wenn du das nicht berücksichtigst, startet die zweite Instanz NICHT.
+
+---
+
+### 0. Voraussetzungen
+
+```bash
+sudo systemctl status mariadb
+systemctl list-unit-files | grep mariadb@
+```
+
+Template sollte aussehen wie:
+
+```
+mariadb@.service  enabled
+```
+
+### 1. Einmalig für alle Instanzen (template) 
+
+```
+systemctl edit mariadb@.service
+```
+
+```
+[Service]
+ProtectHome=false
+Environment='MYSQLD_MULTI_INSTANCE=--defaults-file=/etc/my%I.cnf \
+                        --socket=/var/run/mysqld/mysqld-%I.sock \
+                        --datadir=/var/lib/mysql-%I \
+                        --skip-networking'
+```
+
+```
+## dann speichern
+```
+
+### 2. Eigenes Datadir anlegen (SELinux-konform!)
+
+MariaDB verwendet Standard-Label:
+
+* Datenverzeichnisse → `mysqld_db_t`
+* Laufzeitdateien (Sockets) → `mysqld_var_run_t`
+
+Wir erstellen:
+
+```bash
+sudo mkdir -p /var/lib/mysql-node1
+sudo chown -R mysql:mysql /var/lib/mysql-node1
+```
+
+Jetzt SELinux richtig labeln:
+
+```bash
+sudo semanage fcontext -a -t mysqld_db_t "/var/lib/mysql-node1(/.*)?"
+sudo restorecon -Rv /var/lib/mysql-node1
+```
+
+**Wichtig:**
+Ohne dieses Label startet die Instanz NICHT.
+
+---
+
+### 3. Runtime-Pfad für Socket vorbereiten (SELinux)
+
+Rocky nutzt idR `/var/run/mysqld`.
+Wir erstellen einen separaten Socket-Namen für node1:
+
+```bash
+sudo mkdir /var/run/mysqld
+chown mysql:mysql /var/run/mysqld
+sudo touch /var/run/mysqld/mysqld-node1.sock
+sudo chown mysql:mysql /var/run/mysqld/mysqld-node1.sock
+sudo semanage fcontext -a -t mysqld_var_run_t "/var/run/mysqld/mysqld-node1.sock"
+sudo restorecon -v /var/run/mysqld/mysqld-node1.sock
+```
+
+(Das echte Socket wird später vom Daemon erstellt → aber das Label muss vorher existieren.)
+
+---
+
+### 4. Konfigurationsdatei für die neue Instanz anlegen
+
+Auf RHEL/Rocky liegen instanz-spezifische Dateien standardmäßig unter:
+
+Wir erstellen:
+
+```bash
+sudo tee /etc/mynode1.cnf >/dev/null <<'EOF'
+[mariadbd]
+## Eigenes Datadir
+datadir=/var/lib/mysql-node1
+
+## Eigener Socket
+socket=/var/run/mysqld/mysqld-node1.sock
+
+## Eigener Port
+port=3307
+
+## Eigener PID-File
+pid-file=/var/run/mysqld/mysqld-node1.pid
+EOF
+```
+
+```bash
+sudo semanage fcontext -a -t mysqld_etc_t "/etc/mynode1.cnf"
+sudo restorecon -v /etc/mynode1.cnf
+
+```
+
+---
+
+### 5. Instanz starten
+
+```bash
+sudo systemctl start mariadb@node1.service
+sudo systemctl status mariadb@node1.service
+```
+
+Wenn SELinux etwas blockiert hätte, würdest du es sehen mit:
+
+```bash
+sudo journalctl -u mariadb@node1.service -xe
+sudo grep AVC /var/log/audit/audit.log
+```
+
+---
+
+### 6. Mit der neuen Instanz verbinden
+
+```bash
+sudo mysql --socket=/var/run/mysqld/mysqld-node1.sock -u root
+```
+
+Testbefehle:
+
+```sql
+SHOW VARIABLES LIKE 'port';
+CREATE DATABASE multi_instance_test;
+SHOW DATABASES;
+EXIT;
+```
+
+---
+
+### 7. SELinux Troubleshooting (falls nötig)
+
+Sollte trotzdem ein AVC auftauchen, hilf dir selbst:
+
+#### A) Zeige die letzten SELinux-Fehler
+
+```bash
+sudo ausearch -m avc -ts recent
+```
+
+#### B) Automatische Policy generieren (Notlösung!)
+
+```bash
+sudo grep mariadbd /var/log/audit/audit.log | audit2allow -M mariadb_multi
+sudo semodule -i mariadb_multi.pp
+```
+
+---
+
+### 8. Instanz stoppen / Boot-Start aktivieren
+
+```bash
+sudo systemctl stop mariadb@node1.service
+sudo systemctl start mariadb@node1.service
+sudo systemctl enable mariadb@node1.service
+```
+
+### Reference: 
+
+  * https://mariadb.com/docs/server/server-management/starting-and-stopping-mariadb/systemd#interacting-with-multiple-mariadb-server-processes
+
 
 ## Misc
 
@@ -5504,8 +5913,29 @@ SHOW PROCESSLIST;
 
 -- Prüfen ob scheduler läuft 
 show variables like '%event%';
-set GLOBAL event_scheduler = on; 
+```
 
+#### Setup in config 
+
+```
+## Redhat:
+##/etc/my.cnf.d/server.cnf
+
+## Ubuntu
+## /etc/mysql/mariadb.conf.d/50-server.cnf 
+```
+
+```
+[mysqld]
+event_scheduler
+```
+
+```
+systemctl restart mariad
+mariadb
+```
+
+```
 -- scheduler appears 
 SHOW PROCESSLIST;
 
@@ -5557,10 +5987,10 @@ SHOW EVENTS;
 
 ```
 
-### One time event but preserved (so runs once every minute) 
+### One time event but preserved (runs 1 minute later, after created = interval) 
 
 ```
-To keep the event after it is expired, you use the  ON COMPLETION PRESERVE clause.
+-- To keep the event after it is expired, you use the  ON COMPLETION PRESERVE clause.
 
 CREATE EVENT test_event_02
 ON SCHEDULE AT CURRENT_TIMESTAMP + INTERVAL 1 MINUTE
@@ -5568,11 +5998,6 @@ ON COMPLETION PRESERVE
 DO
    INSERT INTO messages(message,created_at)
    VALUES('Test MariaDB Event 2',NOW());
-
-
-
-
-
 ```
 
 ### Same version, but with begin end block 
@@ -5587,6 +6012,8 @@ DO
    INSERT INTO messages(message,created_at)
    VALUES('Test MariaDB Event 3',NOW());
    END /
+
+-- Delimiter wieder auf ';' setzen 
 DELIMITER ;
 
 SELECT * FROM messages;
@@ -5596,7 +6023,7 @@ SELECT * FROM messages;
 ### Recurring Example 
 
 ```
-CREATE EVENT test_event_03
+CREATE EVENT test_event_04
 ON SCHEDULE EVERY 1 MINUTE
 STARTS CURRENT_TIMESTAMP
 ENDS CURRENT_TIMESTAMP + INTERVAL 1 HOUR
@@ -5703,6 +6130,137 @@ SELECT * FROM messages;
 
 
 ```
+
+### Event: Beispiel täglich Daten löschen
+
+
+### Voraussetzung: 
+
+  * Event das regelmäßig in messages schreibt.
+
+[Vorbereitung Tabelle](/events.md#preparation-1)
+[Erstellung Event zum Schreiben](/events.md#recurring-example)
+
+### Übung - zum Daten löschen (Event) 
+
+```
+## Beispiele 
+## Alles älter als 1 Jahr löschen  
+delete FROM messages where createt_at < (now() - interval 2 year)
+
+## alles älter als 10 Minuten
+## Er rechnet aber 00:00 Uhr 
+delete FROM messages where created_at < (now() - interval 10 minute)
+```
+
+```
+use schulung;
+DELIMITER /
+CREATE EVENT eraser_10min
+  ON SCHEDULE
+    EVERY 10 MINUTE
+    STARTS (TIMESTAMP(CURRENT_DATE))
+  DO
+  BEGIN
+  delete FROM messages where created_at < (now() - interval 10 minute);
+  END /
+
+DELIMITER ;
+```
+
+```
+## mach 10 Minuten, z.B. 16:20
+## Hat er etwas gelöscht 
+select * from messages;
+```
+
+### Event: Beispiel mit Daten aggregieren
+
+
+### Schritt 1:
+
+```
+ use sakila; select first_name from actor;
+```
+
+### Schritt 2: Gruppieren nach Vorname 
+
+```
+select first_name from actor group by first_name;
+```
+
+### Schritt 3: auch noch die Anzahl ausgeben 
+
+```
+select first_name,count(*) as namenzahl from actor group by first_name;
+```
+
+### Schritt 4: nach buchstaben 
+
+```
+select LEFT(first_name,1),count(*) as namenzahl from actor group by LEFT(first_name,1);
+```
+
+### Schritt 5: Tabellenstruktur anlegen 
+
+```
+CREATE TABLE actor_stats (    first_letter CHAR(1),    actor_count INT,    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP);
+```
+
+### Schritt 6: Testweise Daten einfügen 
+
+```
+INSERT INTO actor_stats (first_letter, actor_count)
+  SELECT LEFT(first_name,1),count(*) as namenzahl 
+  FROM actor 
+  GROUP BY LEFT(first_name,1);
+
+select * from actor_stats; 
+truncate actor_stats;
+select * from actor_stats; 
+```
+
+### Schritt 7: Procedure 
+
+```
+DELIMITER $$
+CREATE PROCEDURE aggregate_actors_by_letter()
+BEGIN
+  TRUNCATE actor_stats;
+  INSERT INTO actor_stats (first_letter, actor_count)
+  SELECT LEFT(first_name,1),count(*) as namenzahl 
+  FROM actor 
+  GROUP BY LEFT(first_name,1);  
+  
+END$$
+DELIMITER ;
+```
+
+### Schritt 8: Testweise aufrufen 
+
+```
+ CALL aggregate_actors_by_letter;
+```
+
+### Schritt 9: event
+
+```
+DELIMITER /
+CREATE EVENT actor_stats
+ON SCHEDULE EVERY 1 MINUTE
+DO
+   BEGIN
+     CALL aggregate_actors_by_letter();
+   END /
+
+-- Delimiter wieder auf ';' setzen 
+DELIMITER ;
+
+show events; 
+TRUNCATE actor_stats;
+```
+--  nach 1 minute 
+SELECT * FROM actor_stats;
 
 ### Procedures
 
@@ -6058,16 +6616,16 @@ netstat -an
 
 ```
 
-### How to fix (Ubuntu -> Mariadb Foundation) 
+### How to fix (Ubuntu -> Mariadb Foundation -> 11.4 ) 
 
 ```
-nano /etc/mysql/mariadb.conf.d/50-server.cnf
+nano /etc/mysql/mariadb.conf.d/99-server.cnf 
 ```
 
 ```
 ## In Section [mysqld] 
 ## Change bind-address to -> bind-address = 0.0.0.0
-[mysqld]
+[mariadbd]
 bind-address = 0.0.0.0
 ```
 
@@ -6937,8 +7495,29 @@ SHOW PROCESSLIST;
 
 -- Prüfen ob scheduler läuft 
 show variables like '%event%';
-set GLOBAL event_scheduler = on; 
+```
 
+#### Setup in config 
+
+```
+## Redhat:
+##/etc/my.cnf.d/server.cnf
+
+## Ubuntu
+## /etc/mysql/mariadb.conf.d/50-server.cnf 
+```
+
+```
+[mysqld]
+event_scheduler
+```
+
+```
+systemctl restart mariad
+mariadb
+```
+
+```
 -- scheduler appears 
 SHOW PROCESSLIST;
 
@@ -6990,10 +7569,10 @@ SHOW EVENTS;
 
 ```
 
-### One time event but preserved (so runs once every minute) 
+### One time event but preserved (runs 1 minute later, after created = interval) 
 
 ```
-To keep the event after it is expired, you use the  ON COMPLETION PRESERVE clause.
+-- To keep the event after it is expired, you use the  ON COMPLETION PRESERVE clause.
 
 CREATE EVENT test_event_02
 ON SCHEDULE AT CURRENT_TIMESTAMP + INTERVAL 1 MINUTE
@@ -7001,11 +7580,6 @@ ON COMPLETION PRESERVE
 DO
    INSERT INTO messages(message,created_at)
    VALUES('Test MariaDB Event 2',NOW());
-
-
-
-
-
 ```
 
 ### Same version, but with begin end block 
@@ -7020,6 +7594,8 @@ DO
    INSERT INTO messages(message,created_at)
    VALUES('Test MariaDB Event 3',NOW());
    END /
+
+-- Delimiter wieder auf ';' setzen 
 DELIMITER ;
 
 SELECT * FROM messages;
@@ -7029,7 +7605,7 @@ SELECT * FROM messages;
 ### Recurring Example 
 
 ```
-CREATE EVENT test_event_03
+CREATE EVENT test_event_04
 ON SCHEDULE EVERY 1 MINUTE
 STARTS CURRENT_TIMESTAMP
 ENDS CURRENT_TIMESTAMP + INTERVAL 1 HOUR
@@ -7498,7 +8074,7 @@ Step 2: Lookup data, but a lot lookups needed
 
 ```
 ## Step 1
-## /etc/my.cnf.d/mariadb-server.cnf 
+## /etc/my.cnf.d/server.cnf 
 ## or: debian /etc/mysql/mariadb.conf.d/50-server.cnf 
 [mysqld]
 slow-query-log 
@@ -8268,8 +8844,8 @@ wget https://downloads.mysql.com/docs/sakila-db.tar.gz
 tar xvf sakila-db.tar.gz
 
 cd sakila-db 
-mysql < sakila-schema.sql 
-mysql < sakila-data.sql 
+mariadb < sakila-schema.sql 
+mariadb < sakila-data.sql 
 
 ```
 
