@@ -14,7 +14,7 @@
 # Change 11.4 -> 11.8 
 /etc/apt/sources.list
 # or 
-/etc/apt/sources.list.d/mariadb.soruces 
+/etc/apt/sources.list.d/mariadb.sources 
 ```
 
 ```
